@@ -1,57 +1,121 @@
-# Herramientas
-NASM := nasm
-CXX  := g++
+# Makefile para RanaOS bootable ISO
 
-# Flags de compilación
+# Herramientas
+NASM          := nasm
+CXX           := g++
+LD            := ld
+GRUB_MKRESCUE := grub-mkrescue
+QEMU          := qemu-system-i386
+
+# Flags
 CXXFLAGS := -m32 -ffreestanding -O2 -Wall -Wextra \
             -fno-exceptions -fno-rtti -fno-pie -fno-pic \
             -std=gnu++17
+LDFLAGS  := -m elf_i386
 
-# Flags de link
-LDFLAGS := -static -nostdlib -nostartfiles
+# Directorios
+ISO_DIR   := isodir
+BOOT_DIR  := $(ISO_DIR)/boot
+GRUB_DIR  := $(BOOT_DIR)/grub
+
+# Fuentes ASM
+ASM_SRCS := boot.asm
+
+ASM_OBJS := boot.o
+
+# Fuentes C++
+# Obs.: los objetos van en la raíz: console.o, keyboard.o, etc.
+CPP_SRCS := kernel/kernel.cpp                \
+            kernel/Console.cpp               \
+            kernel/Keyboard.cpp              \
+            kernel/io.cpp                    \
+            kernel/idt.cpp                   \
+            kernel/pic.cpp
+
+CPP_OBJS := kernel.o                         \
+            console.o                        \
+            keyboard.o                       \
+            io.o                             \
+            idt.o                            \
+            pic.o
+
+# Script de linker
+LDSCRIPT := kernel/linker.ld
+
+# Salidas
+KERNEL_ELF := kernel.elf
+ISO_IMG    := RanaOS.iso
 
 .PHONY: all clean iso run
 
-# Objetivos
-ASM_SRCS := boot.asm
-CPP_SRCS := kernel.cpp Keyboard.cpp Console.cpp
-
-ASM_OBJS := $(ASM_SRCS:.asm=.o)
-CPP_OBJS := $(CPP_SRCS:.cpp=.o)
-
 all: iso
 
-# 1) Ensamblar boot.S
-%.o: %.asm
+# --------------------------------------------------------
+# 1) Ensamblar ASM
+# --------------------------------------------------------
+boot.o: boot.asm
 	$(NASM) -f elf32 $< -o $@
 
+getKey.o: kernel/getKey.asm
+	$(NASM) -f elf32 $< -o $@
+
+keyboard_poll.o: kernel/keyboard_poll.asm
+	$(NASM) -f elf32 $< -o $@
+
+# --------------------------------------------------------
 # 2) Compilar C++
-%.o: %.cpp
+# --------------------------------------------------------
+kernel.o: kernel/kernel.cpp kernel/Console.h kernel/Keyboard.h kernel/io.h \
+          kernel/idt.h kernel/pic.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# 3) Linkear todo en un ELF
-kernel.elf: $(ASM_OBJS) $(CPP_OBJS) linker.ld
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -T linker.ld \
-		-o $@ $(ASM_OBJS) $(CPP_OBJS)	
+console.o: kernel/Console.cpp kernel/Console.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# 4) ISO de arranque (usamos el ELF directamente)
-iso: kernel.elf
-	mkdir -p isodir/boot/grub
-	cp kernel.elf isodir/boot/kernel.elf
-	echo 'set timeout=0'                         > isodir/boot/grub/grub.cfg
-	echo 'set default=0'                        >> isodir/boot/grub/grub.cfg
-	echo ''                                     >> isodir/boot/grub/grub.cfg
-	echo 'menuentry "MiOS 32-bit" {'            >> isodir/boot/grub/grub.cfg
-	echo '  multiboot /boot/kernel.elf'         >> isodir/boot/grub/grub.cfg
-	echo '  boot'                               >> isodir/boot/grub/grub.cfg
-	echo '}'                                    >> isodir/boot/grub/grub.cfg
-	grub-mkrescue -o miOS.iso isodir
-	rm -rf isodir
+keyboard.o: kernel/Keyboard.cpp kernel/Keyboard.h kernel/idt.h kernel/pic.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+io.o: kernel/io.cpp kernel/io.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+idt.o: kernel/idt.cpp kernel/idt.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+pic.o: kernel/pic.cpp kernel/pic.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# --------------------------------------------------------
+# 3) Linkear kernel ELF
+# --------------------------------------------------------
+$(KERNEL_ELF): $(ASM_OBJS) $(CPP_OBJS) $(LDSCRIPT)
+	$(LD) $(LDFLAGS) -T $(LDSCRIPT) -o $@ \
+	    $(ASM_OBJS) $(CPP_OBJS)
+
+# --------------------------------------------------------
+# 4) Generar ISO booteable con GRUB
+# --------------------------------------------------------
+iso: $(KERNEL_ELF)
+	@rm -rf $(ISO_DIR)
+	@mkdir -p $(GRUB_DIR)
+	@cp $(KERNEL_ELF) $(BOOT_DIR)/kernel.elf
+	@cp grub/grub.cfg $(GRUB_DIR)/grub.cfg
+	@$(GRUB_MKRESCUE) -o $(ISO_IMG) $(ISO_DIR) \
+	    --modules="multiboot part_msdos"
+	@rm -rf $(ISO_DIR)
+	@echo ">>> ISO creada: $(ISO_IMG)"
+
+# --------------------------------------------------------
+# 5) Arrancar en QEMU
+# --------------------------------------------------------
 run: iso
-	qemu-system-i386 -cdrom miOS.iso -m 512M -curses
+	$(QEMU) -cdrom $(ISO_IMG) -m 512M -curses
 
+# --------------------------------------------------------
+# 6) Limpiar
+# --------------------------------------------------------
 clean:
-	rm -f *.o *.elf *.iso
-	rm -rf isodir
+	@rm -f *.o getKey.o keyboard_poll.o \
+	         $(CPP_OBJS) $(ASM_OBJS) \
+	         $(KERNEL_ELF) $(ISO_IMG)
+	@rm -rf $(ISO_DIR)
 

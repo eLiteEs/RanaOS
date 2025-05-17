@@ -1,25 +1,17 @@
-[BITS 32]
-[GLOBAL _start]
-[EXTERN kmain]
-
+[bits 32]
 section .multiboot
 align 4
-    dd 0x1BADB002             ; magic
-    dd 0x00                   ; flags
-    dd -(0x1BADB002 + 0x00)   ; checksum
+multiboot_header:
+    dd 0x1BADB002
+    dd 0x00
+    dd - (0x1BADB002 + 0x00)
 
 section .text
+global _start
+extern kmain
+
 _start:
-    cli
-    mov esp, stack_top
     call kmain
-
-.hang:
-    jmp .hang
-
-section .bss
-align 4
-stack_bottom:
-    resb 4096
-stack_top:
+.halt:
+    jmp .halt
 
