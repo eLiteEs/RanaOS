@@ -17,7 +17,7 @@ void keyboard_install();
  * Devuelve el siguiente código ASCII (o negativo para flechas).
  * Espera (bloquea) hasta que haya una tecla.
  */
-char getKey();
+// char getKey();
 /**
  * Handler de IRQ1, llamado desde ensamblador.
  */

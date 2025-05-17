@@ -44,7 +44,7 @@ static inline uint8_t inb(uint16_t port) {
 static inline void outb(uint16_t port, uint8_t val) {
     asm volatile("outb %0, %1" : : "a"(val), "Nd"(port));
 }
-
+/*
 char scancodeToAscii(uint8_t sc) {
     bool release = sc & 0x80;
     uint8_t code = sc & 0x7F;
@@ -56,7 +56,7 @@ char scancodeToAscii(uint8_t sc) {
     if (release) return 0;
 
     return shiftDown ? scancodeMapShift[code] : scancodeMap[code];
-}
+}*/
 
 extern "C" void keyboard_handler() {
     uint8_t sc = inb(0x60);
@@ -91,26 +91,43 @@ void keyboard_install() {
 }
 
 
-extern "C" char getKey() {
-    uint8_t status, sc;
-    char    c = 0;
+// scancodeToAscii y códigos especiales
+#define KEY_LEFT  0x4B
+#define KEY_RIGHT 0x4D
+#define KEY_UP    0x48
+#define KEY_DOWN  0x50
+#define KEY_BACKSPACE 0x0E
+#define KEY_ENTER 0x1C
 
-    while (c == 0) {
-        // 1) Espera a que el controlador de teclado indique que hay dato
+char scancodeToAscii(uint8_t sc) {
+    static const char table[] = {
+        0, 27, '1', '2', '3', '4', '5', '6', '7', '8', // 0x00 - 0x09
+        '9', '0', '-', '=', '\b', '\t', 'q', 'w', 'e', 'r', // 0x0A - 0x13
+        't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', 0, // 0x14 - 0x1D
+        'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', // 0x1E - 0x27
+        '\'', '`', 0, '\\', 'z', 'x', 'c', 'v', 'b', 'n', // 0x28 - 0x31
+        'm', ',', '.', '/', 0, '*', 0, ' ' // ...hasta 0x39
+    };
+
+    if (sc < sizeof(table)) return table[sc];
+    return 0;
+}
+
+extern "C" int getKey() {
+    uint8_t status, sc;
+
+    while (true) {
+        // Espera a que el controlador de teclado tenga dato
         do {
             asm volatile("inb $0x64, %0" : "=a"(status));
         } while ((status & 1) == 0);
 
-        // 2) Lee el scancode
+        // Lee el scancode
         asm volatile("inb $0x60, %0" : "=a"(sc));
 
-        // 3) Si es "key up", ignorar
-        if (sc & 0x80) 
-            continue;
+        // Ignora el "key up"
+        if (sc & 0x80) continue;
 
-        // 4) Traducir a ASCII; scancodeToAscii devuelve 0 si no es imprimible
-        c = scancodeToAscii(sc);
+        return sc;
     }
-
-    return c;
 }

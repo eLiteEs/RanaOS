@@ -26,18 +26,10 @@ ASM_OBJS := boot.o
 # Fuentes C++
 # Obs.: los objetos van en la raíz: console.o, keyboard.o, etc.
 CPP_SRCS := kernel/kernel.cpp                \
-            kernel/Console.cpp               \
-            kernel/Keyboard.cpp              \
-            kernel/io.cpp                    \
-            kernel/idt.cpp                   \
-            kernel/pic.cpp
+            kernel/Console.cpp
 
 CPP_OBJS := kernel.o                         \
-            console.o                        \
-            keyboard.o                       \
-            io.o                             \
-            idt.o                            \
-            pic.o
+            console.o
 
 # Script de linker
 LDSCRIPT := kernel/linker.ld
@@ -70,18 +62,6 @@ kernel.o: kernel/kernel.cpp kernel/Console.h kernel/Keyboard.h kernel/io.h \
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 console.o: kernel/Console.cpp kernel/Console.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-keyboard.o: kernel/Keyboard.cpp kernel/Keyboard.h kernel/idt.h kernel/pic.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-io.o: kernel/io.cpp kernel/io.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-idt.o: kernel/idt.cpp kernel/idt.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-pic.o: kernel/pic.cpp kernel/pic.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # --------------------------------------------------------

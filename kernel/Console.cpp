@@ -6,13 +6,11 @@ uint8_t   Console::color        = 0x07;
 uint16_t* Console::vgaBuffer    = (uint16_t*)VGA_ADDRESS;
 char      Console::lineBuffer[] = {0};
 
-extern "C" uint8_t getKey();  // Definido en ensamblador
-
 void Console::clearScreen() {
     uint16_t blank = (color << 8) | ' ';
-    for (int i = 0; i < VGA_WIDTH*VGA_HEIGHT; ++i) {
+    for (int i = 0; i < VGA_WIDTH * VGA_HEIGHT; ++i)
         vgaBuffer[i] = blank;
-    }
+
     cursorPos = 0;
     updateCursor();
 }
@@ -29,7 +27,10 @@ void Console::putChar(char c) {
     } else {
         vgaBuffer[cursorPos++] = (color << 8) | c;
     }
-    if (cursorPos >= VGA_WIDTH*VGA_HEIGHT) scroll();
+
+    if (cursorPos >= VGA_WIDTH * VGA_HEIGHT)
+        scroll();
+
     updateCursor();
 }
 
@@ -41,57 +42,132 @@ void Console::write(const char* str) {
 void Console::scroll() {
     for (int y = 1; y < VGA_HEIGHT; ++y)
         for (int x = 0; x < VGA_WIDTH; ++x)
-            vgaBuffer[(y-1)*VGA_WIDTH + x] = vgaBuffer[y*VGA_WIDTH + x];
+            vgaBuffer[(y - 1) * VGA_WIDTH + x] = vgaBuffer[y * VGA_WIDTH + x];
 
     uint16_t blank = (color << 8) | ' ';
     for (int x = 0; x < VGA_WIDTH; ++x)
-        vgaBuffer[(VGA_HEIGHT-1)*VGA_WIDTH + x] = blank;
+        vgaBuffer[(VGA_HEIGHT - 1) * VGA_WIDTH + x] = blank;
 
     cursorPos -= VGA_WIDTH;
 }
 
+// Función auxiliar para escribir un byte al puerto (outb)
+void outb(uint16_t port, uint8_t val) {
+    asm volatile("outb %0, %1" : : "a"(val), "Nd"(port));
+}
+
 void Console::updateCursor() {
     uint16_t pos = cursorPos;
-    asm volatile("outb %0, %%dx" : : "a"((uint8_t)(pos & 0xFF)), "d"(0x3D5));
-    asm volatile("outb %0, %%dx" : : "a"((uint8_t)((pos>>8)&0xFF)), "d"(0x3D4));
+    outb(0x3D4, 0x0F);
+    outb(0x3D5, (uint8_t)(pos & 0xFF));
+    outb(0x3D4, 0x0E);
+    outb(0x3D5, (uint8_t)((pos >> 8) & 0xFF));
 }
+
+// --- Teclado ---
+
+extern "C" int getKey() {
+    uint8_t status, sc;
+
+    while (true) {
+        do {
+            asm volatile("inb $0x64, %0" : "=a"(status));
+        } while ((status & 1) == 0);
+
+        asm volatile("inb $0x60, %0" : "=a"(sc));
+        if (sc & 0x80) continue;
+        return sc;
+    }
+}
+
+#define KEY_LEFT       0x4B
+#define KEY_RIGHT      0x4D
+#define KEY_UP         0x48
+#define KEY_DOWN       0x50
+#define KEY_BACKSPACE  0x0E
+#define KEY_ENTER      0x1C
+
+char scancodeToAscii(uint8_t sc) {
+    static const char table[] = {
+        0, 27, '1','2','3','4','5','6','7','8',
+        '9','0','-','=','\b','\t','q','w','e','r',
+        't','y','u','i','o','p','[',']','\n',0,
+        'a','s','d','f','g','h','j','k','l',';',
+        '\'', '`', 0, '\\','z','x','c','v','b','n',
+        'm',',','.','/', 0, '*', 0, ' '
+    };
+    if (sc < sizeof(table)) return table[sc];
+    return 0;
+}
+
+// --- Línea editable ---
 
 char* Console::readLine(char* buffer, int maxLength) {
     int length = 0;
+    int cursor = 0;
+    int startPos = cursorPos;
 
     while (true) {
-        char c = getKey();
+        int sc = getKey();
 
-        if (c == '\r' || c == '\n') {
+        if (sc == KEY_ENTER) {
             putChar('\n');
             break;
         }
-        else if (c == 8) {  // Backspace
-            if (length > 0) {
+
+        else if (sc == KEY_BACKSPACE) {
+            if (cursor > 0) {
+                for (int i = cursor - 1; i < length - 1; ++i)
+                    buffer[i] = buffer[i + 1];
                 length--;
-                putChar('\b');
-                putChar(' ');
-                putChar('\b');
+                cursor--;
+
+                // Borrar carácter visualmente
+                for (int i = cursor; i < length; ++i)
+                    vgaBuffer[startPos + i] = (color << 8) | buffer[i];
+                vgaBuffer[startPos + length] = (color << 8) | ' ';
+
+                cursorPos = startPos + cursor;
+                updateCursor();
             }
         }
-        else if (c >= 32 && c <= 126 && length < maxLength - 1) {
-            buffer[length++] = c;
-            putChar(c);
+
+        else if (sc == KEY_LEFT) {
+            if (cursor > 0) {
+                cursor--;
+                cursorPos--;
+                updateCursor();
+            }
         }
-        // otros códigos (flechas) podrías añadirlos luego...
+
+        else if (sc == KEY_RIGHT) {
+            if (cursor < length) {
+                cursor++;
+                cursorPos++;
+                updateCursor();
+            }
+        }
+
+        else {
+            char c = scancodeToAscii(sc);
+            if (c && length < maxLength - 1) {
+                for (int i = length; i > cursor; --i)
+                    buffer[i] = buffer[i - 1];
+                buffer[cursor] = c;
+                length++;
+                cursor++;
+
+                // Redibujar línea
+                for (int i = cursor - 1; i < length; ++i)
+                    vgaBuffer[startPos + i] = (color << 8) | buffer[i];
+
+                cursorPos = startPos + cursor;
+                updateCursor();
+            }
+        }
     }
 
     buffer[length] = '\0';
     return buffer;
 }
 
-void Console::updateLineBufferDisplay(int cursor, int length) {
-    for (int i = 0; i < length; i++) {
-        vgaBuffer[i] = (color << 8) | lineBuffer[i];
-    }
-    for (int i = length; i < VGA_WIDTH; i++) {
-        vgaBuffer[i] = (color << 8) | ' ';
-    }
-    cursorPos = cursor;
-    updateCursor();
-}
