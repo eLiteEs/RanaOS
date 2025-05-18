@@ -17,6 +17,10 @@ LDFLAGS  := -m elf_i386
 ISO_DIR   := isodir
 BOOT_DIR  := $(ISO_DIR)/boot
 GRUB_DIR  := $(BOOT_DIR)/grub
+FILES_SRC_DIR = files
+FILES_DEST_DIR = $(ISO_DIR)/files
+
+FILES = $(wildcard $(FILES_SRC_DIR)/*.bin)
 
 # Fuentes ASM
 ASM_SRCS := boot.asm
@@ -74,8 +78,11 @@ $(KERNEL_ELF): $(ASM_OBJS) $(CPP_OBJS) $(LDSCRIPT)
 # --------------------------------------------------------
 # 4) Generar ISO booteable con GRUB
 # --------------------------------------------------------
+copy-binaries:
+	@mkdir -p $(FILES_DEST_DIR)
+	cp $(FILES) $(FILES_DEST_DIR)
+
 iso: $(KERNEL_ELF)
-	@rm -rf $(ISO_DIR)
 	@mkdir -p $(GRUB_DIR)
 	@cp $(KERNEL_ELF) $(BOOT_DIR)/kernel.elf
 	@cp grub/grub.cfg $(GRUB_DIR)/grub.cfg

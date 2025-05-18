@@ -35,15 +35,18 @@ char* substr(const char* str, int start, int length = -1) {
 
 void runcommand(char* s) {
 	if(!strcmp(s, "help")) {
-		Console::write("RanaOS alpha 4 - Help\n");
+		Console::write("RanaOS - Help\n");
 		Console::write("  help >> Show this list.\n");
 		Console::write("  version >> Show the version of the current release of RanaOS.\n");
-		Console::write("  echo [text] >> Print text to the console\n");
+		Console::write("  echo [text] >> Print text to the screen\n");
+		Console::write("  clear || cls >> Clear the screen.\n");
 	} else if(!strcmp(s, "version")) {
-		Console::write("RanaOS alpha 3\nLicensed with GNU GPL v3.\n");
+		Console::write("RanaOS alpha 4\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
 		Console::write(substr(s, 5));
 		Console::putChar('\n');
+	} else if(!strcmp(s, "clear") || !strcmp(s, "cls")) {
+		Console::clearScreen();
 	} else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}
@@ -56,7 +59,7 @@ extern "C" void kmain() {
 	Console::write("RanaOS alpha 4\nUse 'help' for getting a list of commands.\n");
 
 	while (1) {
-		Console::write("\n$- ");
+		Console::write("$- ");
 		char* s = Console::readLine(linebuf, sizeof(linebuf));
 		
 		runcommand(s);		
