@@ -23,9 +23,9 @@ FILES_DEST_DIR = $(ISO_DIR)/files
 FILES = $(wildcard $(FILES_SRC_DIR)/*.bin)
 
 # Fuentes ASM
-ASM_SRCS := boot.asm
+ASM_SRCS := boot.asm io.asm
 
-ASM_OBJS := boot.o
+ASM_OBJS := boot.o io.o
 
 # Fuentes C++
 # Obs.: los objetos van en la raíz: console.o, keyboard.o, etc.
@@ -50,6 +50,9 @@ all: iso
 # 1) Ensamblar ASM
 # --------------------------------------------------------
 boot.o: boot.asm
+	$(NASM) -f elf32 $< -o $@
+
+io.o: kernel/io.asm
 	$(NASM) -f elf32 $< -o $@
 
 getKey.o: kernel/getKey.asm

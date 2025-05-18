@@ -1,4 +1,41 @@
 #include "Console.h"
+#include "io.h"
+
+#define CMOS_ADDRESS 0x70
+#define CMOS_DATA    0x71
+
+uint8_t read_cmos(uint8_t reg) {
+    outb(CMOS_ADDRESS, reg);
+    return inb(CMOS_DATA);
+}
+
+uint8_t bcd_to_bin(uint8_t val) {
+    return (val & 0x0F) + ((val >> 4) * 10);
+}
+
+uint8_t getSecond() {
+    return bcd_to_bin(read_cmos(0x00));
+}
+
+uint8_t getMinute() {
+    return bcd_to_bin(read_cmos(0x02));
+}
+
+uint8_t getHour() {
+    return bcd_to_bin(read_cmos(0x04));
+}
+
+uint8_t getDay() {
+    return bcd_to_bin(read_cmos(0x07));
+}
+
+uint8_t getMonth() {
+    return bcd_to_bin(read_cmos(0x08));
+}
+
+uint8_t getYear() {
+    return bcd_to_bin(read_cmos(0x09)); // Solo últimos dos dígitos
+}
 
 int strcmp(const char* a, const char* b) {
 	while (*a && *b) {
@@ -57,6 +94,8 @@ static char linebuf[256];
 extern "C" void kmain() {
 	Console::clearScreen();
 	Console::write("RanaOS alpha 4\nUse 'help' for getting a list of commands.\n");
+
+	Console::println(getHour(), ":", getMinute(), "  ", getDay(), "/", getMonth(), "/", getYear(), "\n");
 
 	while (1) {
 		Console::write("$- ");

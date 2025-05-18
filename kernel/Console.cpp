@@ -39,6 +39,28 @@ void Console::write(const char* str) {
     while (*str) putChar(*str++);
 }
 
+void Console::write(char c) {
+    putChar(c);
+}
+
+void Console::write(int value) {
+    char buffer[12];
+    itoa(value, buffer, 10);
+    write(buffer);
+}
+
+void Console::write(uint8_t value) {
+    write((int)value);
+}
+
+void Console::write(bool value) {
+    write(value ? "true" : "false");
+}
+
+void Console::println() {
+    putChar('\n');
+}
+
 void Console::scroll() {
     for (int y = 1; y < VGA_HEIGHT; ++y)
         for (int x = 0; x < VGA_WIDTH; ++x)
@@ -169,5 +191,39 @@ char* Console::readLine(char* buffer, int maxLength) {
 
     buffer[length] = '\0';
     return buffer;
+}
+
+void Console::itoa(int value, char* str, int base) {
+    char* ptr = str;
+    bool isNegative = false;
+
+    if (value == 0) {
+        *ptr++ = '0';
+        *ptr = '\0';
+        return;
+    }
+
+    if (value < 0 && base == 10) {
+        isNegative = true;
+        value = -value;
+    }
+
+    while (value != 0) {
+        int rem = value % base;
+        *ptr++ = (rem < 10) ? rem + '0' : rem - 10 + 'A';
+        value /= base;
+    }
+
+    if (isNegative)
+        *ptr++ = '-';
+
+    *ptr = '\0';
+
+    // Invierte el string
+    for (char* start = str, *end = ptr - 1; start < end; ++start, --end) {
+        char tmp = *start;
+        *start = *end;
+        *end = tmp;
+    }
 }
 
