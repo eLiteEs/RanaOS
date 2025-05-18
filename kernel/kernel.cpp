@@ -75,8 +75,12 @@ void runcommand(char* s) {
 		Console::write("RanaOS - Help\n");
 		Console::write("  help >> Show this list.\n");
 		Console::write("  version >> Show the version of the current release of RanaOS.\n");
-		Console::write("  echo [text] >> Print text to the screen\n");
+		Console::write("  echo [text] >> Print text to the screen.\n");
 		Console::write("  clear || cls >> Clear the screen.\n");
+		Console::write("  time >> Show current time.\n");
+		Console::write("  date >> Show current date.\n");
+
+		Console::putChar('\n');
 	} else if(!strcmp(s, "version")) {
 		Console::write("RanaOS alpha 4\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
@@ -84,6 +88,10 @@ void runcommand(char* s) {
 		Console::putChar('\n');
 	} else if(!strcmp(s, "clear") || !strcmp(s, "cls")) {
 		Console::clearScreen();
+	} else if(!strcmp(s, "time")) {
+		Console::println(getHour(), ":", getMinute(), "\n");
+	} else if(!strcmp(s, "date")) {
+		Console::println(getDay(), "/", getMinute(), "/", getYear(), "\n");
 	} else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}
