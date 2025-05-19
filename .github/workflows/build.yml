@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-msi-windows:
-    runs-on: windows-latest
+  build-iso-windows:
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
