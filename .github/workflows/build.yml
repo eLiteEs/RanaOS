@@ -1,0 +1,22 @@
+name: Build .iso
+
+on:
+	workflow_dispatch:
+
+jobs:
+	build-iso:
+		runs-on: ubuntu-latest
+
+		steps:
+		 - name: Checkout code
+		   uses: actions/chechout@v4
+		 
+		 - name: Generate .iso using make
+		   run: make
+
+		 - name: Upload .iso
+		   uses: actions/upload-artifact@v4
+		   with: 
+		     name: RanaOS
+		     path: |
+		       RanaOS.iso
