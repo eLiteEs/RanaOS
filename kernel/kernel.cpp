@@ -269,7 +269,7 @@ void runcommand(char* s) {
 
 		Console::putChar('\n');
 	} else if(!strcmp(s, "version")) {
-		Console::write("RanaOS beta 1\nLicensed with GNU GPL v3.\n");
+		Console::write("RanaOS beta 2\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
 		Console::write(substr(s, 5));
 		Console::putChar('\n');
@@ -329,7 +329,7 @@ static char linebuf[256];
 
 extern "C" void kmain() {
 	Console::clearScreen();
-	Console::write("RanaOS beta 1", 0, 2);
+	Console::write("RanaOS beta 2", 0, 2);
 
 	Console::putChar('\n');
 
