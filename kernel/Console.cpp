@@ -39,6 +39,24 @@ void Console::write(const char* str) {
     while (*str) putChar(*str++);
 }
 
+void Console::write(const char* str, uint8_t fg, uint8_t bg) {
+    // Guardamos color actual
+    uint8_t oldColor = color;
+
+    // Seteamos nuevo color
+    color = (bg << 4) | (fg & 0x0F);
+
+    // Escribimos
+    write(str);
+
+    // Restauramos color anterior
+    color = oldColor;
+}
+void Console::write(const char* str, uint8_t fg) {
+    write(str, fg, (color >> 4)); // usa fondo actual
+}
+
+
 void Console::write(char c) {
     putChar(c);
 }

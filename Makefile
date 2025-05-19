@@ -28,12 +28,16 @@ ASM_SRCS := boot.asm io.asm
 ASM_OBJS := boot.o io.o
 
 # Fuentes C++
-# Obs.: los objetos van en la raíz: console.o, keyboard.o, etc.
 CPP_SRCS := kernel/kernel.cpp                \
-            kernel/Console.cpp
+            kernel/Console.cpp                \
+            kernel/floppy.cpp                 \
+            kernel/fatnenuphar.cpp
 
+# Objetos
 CPP_OBJS := kernel.o                         \
-            console.o
+            console.o                         \
+            floppy.o                          \
+            fatnenuphar.o
 
 # Script de linker
 LDSCRIPT := kernel/linker.ld
@@ -60,6 +64,12 @@ getKey.o: kernel/getKey.asm
 
 keyboard_poll.o: kernel/keyboard_poll.asm
 	$(NASM) -f elf32 $< -o $@
+
+floppy.o: kernel/floppy.cpp kernel/floppy.h kernel/io.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+fatnenuphar.o: kernel/fatnenuphar.cpp kernel/fatnenuphar.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # --------------------------------------------------------
 # 2) Compilar C++
@@ -109,3 +119,8 @@ clean:
 	         $(KERNEL_ELF) $(ISO_IMG)
 	@rm -rf $(ISO_DIR)
 
+# --------------------------------------------------------
+# 8) Generate FATnenuphar bin
+# --------------------------------------------------------
+fatnenuphar:
+	g++ -std=c++17 -O2 fatnenuphar.cpp -o fatnenuphar

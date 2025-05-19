@@ -22,6 +22,8 @@ public:
     static void updateLineBufferDisplay(int cursor, int length);
     static char* readLine(char* buffer, int maxLength);
 
+    static void write(const char* str, uint8_t fg);
+    static void write(const char* str, uint8_t fg, uint8_t bg);
 private:
     static const uint16_t VGA_WIDTH  = 80;
     static const uint16_t VGA_HEIGHT = 25;
