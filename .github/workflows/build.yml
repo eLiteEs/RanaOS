@@ -17,6 +17,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y \
+        build-essential \
+        nasm \
+        g++-multilib \
+        binutils \
+        grub-pc-bin \
+        xorriso
+
     - name: Build ISO
       run: |
         make
