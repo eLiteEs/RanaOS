@@ -1,4 +1,4 @@
-char* parrot[] = {
+const char* parrot[] = {
 "                        .cccc;;cc;';c.\n"
 "                      .,:dkdc:;;:c:,:d:.\n"
 "                     .loc'.,cc::::::,..,:.\n"
