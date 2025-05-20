@@ -99,6 +99,7 @@ iso: $(KERNEL_ELF)
 	@mkdir -p $(GRUB_DIR)
 	@cp $(KERNEL_ELF) $(BOOT_DIR)/kernel.elf
 	@cp grub/grub.cfg $(GRUB_DIR)/grub.cfg
+	@cp grub/bg.png $(GRUB_DIR)/bg.png
 	@$(GRUB_MKRESCUE) -o $(ISO_IMG) $(ISO_DIR) \
 	    --modules="multiboot part_msdos"
 	@rm -rf $(ISO_DIR)

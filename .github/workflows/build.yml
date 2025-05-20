@@ -1,41 +1,45 @@
-name: Build .iso
+name: Build RanaOS ISO
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: [ main ]
 
 jobs:
-  build-iso-windows:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
     - name: Install dependencies
       run: |
-        sudo apt update
-        sudo apt install -y \
-        build-essential \
-        nasm \
-        g++-multilib \
-        binutils \
-        grub-pc-bin \
-        xorriso
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          binutils \
+          nasm \
+          g++ \
+          grub-pc-bin \
+          xorriso \
+          qemu-system-i386
 
-    - name: Build ISO
+    - name: Build ISO image
+      run: make
+
+    - name: Verify ISO image was created
       run: |
-        make
-      
-    
-    - name: Upload .iso
+        if [ ! -f RanaOS.iso ]; then
+          echo "Error: RanaOS.iso was not created"
+          exit 1
+        fi
+        echo "ISO image created successfully: RanaOS.iso"
+
+    - name: Upload ISO artifact
       uses: actions/upload-artifact@v4
       with:
-        name: RanaOS
-        path: |
-          RanaOS.iso
+        name: RanaOS.iso
+        path: RanaOS.iso
+

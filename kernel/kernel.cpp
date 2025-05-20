@@ -280,8 +280,7 @@ void runcommand(char* s) {
 	} else if(!strcmp(s, "date")) {
 		Console::println(getDay(), "/", getMonth(), "/", getYear(), "\n");
 	} else if(!strcmp(substr(s, 0, 5), "read ")) {	
-		fn_init(diskImageBuffer, DISK_SIZE_BYTES);
-		
+		fn_init(diskImageBuffer, DISK_SIZE_BYTES);	
 	
     		char* content = readFile(substr(s, 5));
     		if (!content) {
@@ -305,11 +304,12 @@ void runcommand(char* s) {
 
 		listFilesOnFloppy();
 	} else if(!strcmp(s, "parrot")) {
-		int i = 0;
-    		while (1) {
-        		set_cursor(0, 0);
+    		int i = 0;
+
+		while(true) {
+        		Console::clearScreen();
         		Console::println(parrot[i]);
-        		delay_ms(500); // delay realista
+        		pit_wait_ticks(1000);
 
         		if (was_c_pressed()) {
         	    		break;
@@ -318,6 +318,10 @@ void runcommand(char* s) {
         		i++;
         		if (parrot[i] == NULL)
             			i = 0;
+
+			for(int j = 0; j < 10000; j++) {
+				int k = 2 * 2;
+			}
     		}
 	} else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
