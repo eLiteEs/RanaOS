@@ -3,7 +3,6 @@
 #include "floppy.h"
 #include "fatnenuphar.h"
 #include <stdint.h>
-#include <string.h>
 #include "parrot.cpp"
 
 #define DISK_SIZE_BYTES (128 * 1024)

@@ -1,3 +1,9 @@
+#ifdef __cplusplus
+  #define NULL 0
+#else
+  #define NULL ((void*)0)
+#endif
+
 const char* parrot[] = {
 "                        .cccc;;cc;';c.\n"
 "                      .,:dkdc:;;:c:,:d:.\n"
