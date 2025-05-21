@@ -24,7 +24,7 @@ The bootloader (i'm not sure if it's being used) is coded in assembly. The kerne
 
 ## Recommended tools to have instaled
 
-On my Ubuntu WSL I have instaled `qemu`, `nasm`, `xorriso`, `grub_mkrescue` and `gcc`. (maybe some are missing)
+On my Ubuntu WSL I have instaled `qemu`, `nasm`, `xorriso`, `grub_mkrescue`, `binutils`, `mtools` and `g++`. (maybe some are missing)
 
 ## License
 
