@@ -24,7 +24,8 @@ jobs:
           g++ \
           grub-pc-bin \
           xorriso \
-          qemu-system-i386
+          qemu-system-i386 \
+          mtools
 
     - name: Build ISO image
       run: make
