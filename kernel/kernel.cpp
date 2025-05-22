@@ -318,9 +318,7 @@ void runcommand(char* s) {
         		if (parrot[i] == NULL)
             			i = 0;
 
-			for(int j = 0; j < 10000; j++) {
-				int k = 2 * 2;
-			}
+			for(int j = 0; j < 10000; j++) {}
     		}
 	} else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
@@ -329,6 +327,13 @@ void runcommand(char* s) {
 }
 
 static char linebuf[256];
+
+void enable_cursor_blink() {
+    outb(0x3D4, 0x0A);
+    uint8_t val = inb(0x3D5);
+    val &= ~(1 << 5); // clear bit 5 = habilitar parpadeo
+    outb(0x3D5, val);
+}
 
 extern "C" void kmain() {
 	Console::clearScreen();
@@ -347,6 +352,11 @@ extern "C" void kmain() {
 	g_cycles_per_ms = measure_cpu_frequency();
 
 	Console::println((int)measure_cpu_frequency(), " GHz");
+
+	Console::println("Enabling cursor...");
+	enable_cursor_blink();
+	Console::enable_cursor(0, 15);
+	Console::set_cursor(0);
 
 	Console::println(getHour(), ":", getMinute(), "  ", get_weekday_name(), ", ", getDay(), "/", getMonth(), "/", getYear(), "\n");
 

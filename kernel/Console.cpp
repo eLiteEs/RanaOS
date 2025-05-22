@@ -1,4 +1,5 @@
 #include "Console.h"
+#include "io.h"
 #define VGA_ADDRESS 0xB8000
 
 uint16_t  Console::cursorPos    = 0;
@@ -19,6 +20,21 @@ void Console::setColor(uint8_t newColor) {
     color = newColor;
 }
 
+void Console::enable_cursor(uint8_t start, uint8_t end) {
+    outb(0x3D4, 0x0A);
+    outb(0x3D5, (inb(0x3D5) & 0xC0) | start);
+
+    outb(0x3D4, 0x0B);
+    outb(0x3D5, (inb(0x3D5) & 0xE0) | end);
+}
+
+void Console::set_cursor(uint16_t pos) {
+    outb(0x3D4, 0x0F);
+    outb(0x3D5, (uint8_t)(pos & 0xFF));
+    outb(0x3D4, 0x0E);
+    outb(0x3D5, (uint8_t)((pos >> 8) & 0xFF));
+}
+
 void Console::putChar(char c) {
     if (c == '\n') {
         cursorPos += VGA_WIDTH - (cursorPos % VGA_WIDTH);
@@ -28,10 +44,11 @@ void Console::putChar(char c) {
         vgaBuffer[cursorPos++] = (color << 8) | c;
     }
 
-    if (cursorPos >= VGA_WIDTH * VGA_HEIGHT)
+    if (cursorPos >= VGA_WIDTH * VGA_HEIGHT) {
         scroll();
+    }
 
-    updateCursor();
+    set_cursor(cursorPos);
 }
 
 void Console::write(const char* str) {
@@ -89,11 +106,6 @@ void Console::scroll() {
         vgaBuffer[(VGA_HEIGHT - 1) * VGA_WIDTH + x] = blank;
 
     cursorPos -= VGA_WIDTH;
-}
-
-// Función auxiliar para escribir un byte al puerto (outb)
-void outb(uint16_t port, uint8_t val) {
-    asm volatile("outb %0, %1" : : "a"(val), "Nd"(port));
 }
 
 void Console::updateCursor() {

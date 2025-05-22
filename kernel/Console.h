@@ -24,6 +24,9 @@ public:
 
     static void write(const char* str, uint8_t fg);
     static void write(const char* str, uint8_t fg, uint8_t bg);
+    static void enable_cursor(uint8_t start, uint8_t end);
+    static void set_cursor(uint16_t pos);
+
 private:
     static const uint16_t VGA_WIDTH  = 80;
     static const uint16_t VGA_HEIGHT = 25;
