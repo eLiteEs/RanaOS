@@ -318,9 +318,7 @@ void runcommand(char* s) {
         		if (parrot[i] == NULL)
             			i = 0;
 
-			for(int j = 0; j < 10000; j++) {
-				int k = 2 * 2;
-			}
+			for(int j = 0; j < 10000; j++) {	}
     		}
 	} else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
