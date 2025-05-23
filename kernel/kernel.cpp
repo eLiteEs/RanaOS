@@ -204,8 +204,8 @@ const char* get_weekday_name() {
     int month = getMonth();
     int year = getYear() + 2000;
     static const char* weekdays[] = {
-        "Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"
-    };
+        "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"
+	};
 
     if (month < 3) {
         month += 12;
@@ -265,6 +265,7 @@ void runcommand(char* s) {
 		Console::write("  time >> Show current time.\n");
 		Console::write("  date >> Show current date.\n");
 		Console::write("  parrot >> Dancing parrot animation from ascii.live.\n");
+		Console::write("  day >> Get the weekday name.\n");
 
 		Console::putChar('\n');
 	} else if(!strcmp(s, "version")) {
@@ -320,6 +321,8 @@ void runcommand(char* s) {
 
 			for(int j = 0; j < 10000; j++) {	}
     		}
+	} else if(!strcmp(s, "day")) {
+		Console::println(get_weekday_name());
 	} else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 		Console::putChar('\n');
@@ -358,7 +361,7 @@ extern "C" void kmain() {
 	Console::enable_cursor(0, 15);
 	Console::set_cursor(0);
 
-	Console::println(getHour(), ":", getMinute(), "  ", get_weekday_name(), ", ", getDay(), "/", getMonth(), "/", getYear(), "\n");
+	Console::println(getHour(), ":", getMinute(), "  ", substr(get_weekday_name(), 0, 3), ", ", getDay(), "/", getMonth(), "/", getYear(), "\n");
 
 	Console::println("Use 'help' for getting a list of commands.\n");
 
