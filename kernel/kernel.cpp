@@ -266,19 +266,17 @@ void runcommand(char* s) {
 		Console::write("  date >> Show current date.\n");
 		Console::write("  parrot >> Dancing parrot animation from ascii.live.\n");
 		Console::write("  day >> Get the weekday name.\n");
-
-		Console::putChar('\n');
 	} else if(!strcmp(s, "version")) {
-		Console::write("RanaOS beta 2\nLicensed with GNU GPL v3.\n");
+		Console::write("eLite Systems RanaOS beta 2\nLicensed with GNU GPL v3.");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
 		Console::write(substr(s, 5));
 		Console::putChar('\n');
 	} else if(!strcmp(s, "clear") || !strcmp(s, "cls")) {
 		Console::clearScreen();
 	} else if(!strcmp(s, "time")) {
-		Console::println(getHour(), ":", getMinute(), "\n");
+		Console::println(getHour(), ":", getMinute());
 	} else if(!strcmp(s, "date")) {
-		Console::println(getDay(), "/", getMonth(), "/", getYear(), "\n");
+		Console::println(getDay(), "/", getMonth(), "/", getYear());
 	} else if(!strcmp(substr(s, 0, 5), "read ")) {	
 		fn_init(diskImageBuffer, DISK_SIZE_BYTES);	
 	
@@ -325,7 +323,6 @@ void runcommand(char* s) {
 		Console::println(get_weekday_name());
 	} else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
-		Console::putChar('\n');
 	}
 }
 
@@ -340,7 +337,8 @@ void enable_cursor_blink() {
 
 extern "C" void kmain() {
 	Console::clearScreen();
-	Console::write("RanaOS beta 2", 0, 2);
+	Console::write("eLite Systems ");
+	Console::write(" RanaOS beta 2 ", 0, 2);
 
 	Console::putChar('\n');
 
