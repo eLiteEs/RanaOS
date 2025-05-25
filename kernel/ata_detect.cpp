@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include "io.h"
-#include "console.h"
+#include "Console.h"
 #include "disk.h"
 
 uint16_t ata_read_word(uint16_t port) {
