@@ -3,14 +3,14 @@
 # Herramientas
 NASM          := nasm
 CXX           := g++
-LD            := ld
+LD	:= ld
 GRUB_MKRESCUE := grub-mkrescue
 QEMU          := qemu-system-i386
 
 # Flags
 CXXFLAGS := -m32 -ffreestanding -O2 -Wall -Wextra \
-            -fno-exceptions -fno-rtti -fno-pie -fno-pic \
-            -std=gnu++17
+	-fno-exceptions -fno-rtti -fno-pie -fno-pic \
+	-std=gnu++17
 LDFLAGS  := -m elf_i386
 
 # Directorios
@@ -28,19 +28,19 @@ ASM_SRCS := boot.asm io.asm
 ASM_OBJS := boot.o io.o
 
 # Fuentes C++
-CPP_SRCS := kernel/kernel.cpp                \
-            kernel/Console.cpp                \
-            kernel/floppy.cpp                 \
-            kernel/fatnenuphar.cpp           \
-            kernel/disk.cpp
+CPP_SRCS := kernel/kernel.cpp	    \
+	kernel/Console.cpp	    \
+	kernel/floppy.cpp	     \
+	kernel/fatnenuphar.cpp           \
+	kernel/disk.cpp
 
 
 # Objetos
-CPP_OBJS := kernel.o                         \
-            console.o                         \ 
-            floppy.o                          \
-            fatnenuphar.o                    \
-            disk.o
+CPP_OBJS := kernel.o		 \
+	console.o		 \ 
+	floppy.o		  \
+	fatnenuphar.o	        \
+	disk.o
 
 # Script de linker
 LDSCRIPT := kernel/linker.ld
