@@ -78,6 +78,52 @@ void Console::write(char c) {
     putChar(c);
 }
 
+void Console::write(long long unsigned int& value) {
+    char buffer[21]; // 20 dígitos para 64-bit decimal + '\0'
+    // itoa estándar no soporta 64-bit en muchas implementaciones,
+    // así que implementaremos una versión simple para uint64_t
+    
+    unsigned long long val = value;
+    buffer[20] = '\0';
+    int pos = 19;
+    
+    if (val == 0) {
+        buffer[pos--] = '0';
+    } else {
+        while (val > 0 && pos >= 0) {
+            buffer[pos--] = '0' + (val % 10);
+            val /= 10;
+        }
+    }
+    
+    // Ahora el número está en buffer[pos+1..19], así que movemos o pasamos el puntero
+    write(buffer + pos + 1);
+}
+void Console::write(double value) {
+    if (value < 0) {
+        write('-');
+        value = -value;
+    }
+
+    // Obtener parte entera
+    unsigned long long int_part = (unsigned long long)value;
+
+    // Obtener parte decimal multiplicando por 1000 (3 decimales)
+    double frac = value - int_part;
+    unsigned int frac_part = (unsigned int)(frac * 1000);
+
+    // Escribir parte entera (usa tu write(long long unsigned int&) que ya tienes)
+    write(int_part);
+
+    write('.');
+
+    // Escribir parte decimal, asegurando 3 dígitos (rellena ceros si es necesario)
+    if (frac_part < 100) write('0');
+    if (frac_part < 10) write('0');
+    write((int)frac_part);
+}
+
+
 void Console::write(int value) {
     char buffer[12];
     itoa(value, buffer, 10);

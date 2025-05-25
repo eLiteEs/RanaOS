@@ -23,13 +23,14 @@ echo =======================
 %CXX% %CXXFLAGS% -c kernel/Console.cpp -o console.o
 %CXX% %CXXFLAGS% -c kernel/floppy.cpp -o floppy.o
 %CXX% %CXXFLAGS% -c kernel/fatnenuphar.cpp -o fatnenuphar.o
+%CXX% %CXXFLAGS% -c kernel/disk.cpp -o disk.o
 
 echo ===========================
 echo = Linkeando kernel.elf... =
 echo ===========================
 %LD% %LDFLAGS% -T kernel/linker.ld -o kernel.elf ^
   boot.o io.o ^
-  kernel.o console.o floppy.o fatnenuphar.o
+  kernel.o console.o floppy.o fatnenuphar.o disk.o
 
 echo =======================
 echo = Preparando ISO...  =

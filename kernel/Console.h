@@ -10,9 +10,12 @@ public:
     static void putChar(char c);
     static void write(const char* str);
     static void write(char c);
+    static void write(long long unsigned int& value);
     static void write(int value);
     static void write(uint8_t value);
     static void write(bool value);
+    static void write(double value);
+    static void write(float value) { write((double)value); }  // opcional
 
     static void println(); // fin de línea sin argumentos
     template<typename T, typename... Args>

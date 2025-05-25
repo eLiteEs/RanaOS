@@ -4,6 +4,8 @@
 #include "fatnenuphar.h"
 #include <stdint.h>
 #include "parrot.cpp"
+#include "ata_detect.cpp"
+#include "read_file.cpp"
 
 #define DISK_SIZE_BYTES (128 * 1024)
 #define MAX_FILE_SIZE   2048
@@ -122,47 +124,6 @@ bool was_c_pressed() {
     // Código 0x2E = tecla 'C' (scancode set 1)
     return sc == 0x2E;
 }
-
-static constexpr int MAX_FILE_ENTRIES = FN_DIR_ENTRIES;
-
-// ———————— buffers únicos ————————
-static uint8_t diskImageBuffer[DISK_SIZE_BYTES];
-static char    fileReadBuffer[MAX_FILE_SIZE];
-
-// ———————— Función de lectura genérica ————————
-char* readFile(const char* filename) {
-    int bytesRead = fn_read_file(filename, fileReadBuffer, MAX_FILE_SIZE);
-    return (bytesRead > 0) ? fileReadBuffer : nullptr;
-}
-
-void listFilesOnFloppy() {
-    // 1) Leer todo el floppy al buffer
-    if (!floppy_read_image(DISK_SIZE_BYTES / FLOPPY_SECTOR_SIZE,
-                           diskImageBuffer))
-    {
-        Console::write("Error leyendo floppy\n");
-        return;
-    }
-
-    // 2) Inicializar Fatnenuphar
-    fn_init(diskImageBuffer, DISK_SIZE_BYTES);
-
-    // 3) Obtener la lista de entradas
-    FN_FileEntry entries[MAX_FILE_ENTRIES];
-    int count = fn_list_files(entries, MAX_FILE_ENTRIES);
-
-    // 4) Imprimir
-    Console::write("Archivos en Fatnenuphar:\n");
-    for (int i = 0; i < count; ++i) {
-        Console::write("  - ");
-        Console::write(entries[i].filename);
-        Console::write("\n");
-    }
-    if (count == 0) {
-        Console::write("  (ninguno)\n");
-    }
-}
-
 
 #define CMOS_ADDRESS 0x70
 #define CMOS_DATA    0x71
@@ -297,6 +258,7 @@ void runcommand(char* s) {
 		Console::write("  date >> Show current date.\n");
 		Console::write("  parrot >> Dancing parrot animation from ascii.live.\n");
 		Console::write("  day >> Get the weekday name.\n");
+		Console::write("  di || disks >> Get the available disks.\n");
 	} else if(!strcmp(s, "version")) {
 		Console::write("eLite Systems RanaOS beta 2\nLicensed with GNU GPL v3.");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
@@ -308,30 +270,15 @@ void runcommand(char* s) {
 		Console::println(getHour(), ":", getMinute());
 	} else if(!strcmp(s, "date")) {
 		Console::println(getDay(), "/", getMonth(), "/", getYear());
-	} else if(!strcmp(substr(s, 0, 5), "read ")) {	
-		fn_init(diskImageBuffer, DISK_SIZE_BYTES);	
-	
-    		char* content = readFile(substr(s, 5));
-    		if (!content) {
-        		Console::write("Archivo no encontrado o error leyendo.\n");
-    		} else {
-        		Console::write("Contenido:\n");
-        		Console::write(content);
-		}
-	} else if(!strcmp(s, "ls") || !strcmp(s, "dir")) {
-		// 1) Leer todos los sectores del floppy
-    		if (!floppy_read_image(DISK_SIZE_BYTES / FLOPPY_SECTOR_SIZE,
-                           diskImageBuffer))
-    		{
-        		Console::write("Error leyendo floppy\n");
-        		return;
-    		}
-
-    		// 2) Inicializar Fatnenuphar usando el buffer y su tamaño
-    		fn_init(diskImageBuffer, DISK_SIZE_BYTES);
-
-
-		listFilesOnFloppy();
+	} else if(!strcmp(substr(s, 0, 5), "read ")) {
+    	char** content = load_file_content('C', "file.txt");
+        if (content && *content) {
+            Console::println("Contenido:\n", *content);
+        } else {
+            Console::println("Archivo no encontrado o error.");
+        }
+	} else if(!strcmp(s, "di") || !strcmp(s, "disks")) {
+        detect_disks();
 	} else if(!strcmp(s, "parrot")) {
     	int i = 0;
 

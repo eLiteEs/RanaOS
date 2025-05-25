@@ -31,13 +31,16 @@ ASM_OBJS := boot.o io.o
 CPP_SRCS := kernel/kernel.cpp                \
             kernel/Console.cpp                \
             kernel/floppy.cpp                 \
-            kernel/fatnenuphar.cpp
+            kernel/fatnenuphar.cpp           \
+            kernel/disk.cpp
+
 
 # Objetos
 CPP_OBJS := kernel.o                         \
-            console.o                         \
+            console.o                         \ 
             floppy.o                          \
-            fatnenuphar.o
+            fatnenuphar.o                    \
+            disk.o
 
 # Script de linker
 LDSCRIPT := kernel/linker.ld

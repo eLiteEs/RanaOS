@@ -1,30 +1,7 @@
 #include <stdint.h>
-
-// Structure holding disk info
-struct DiskInfo {
-    char letter;
-    const char* channel;
-    const char* role;
-    uint64_t capacity_bytes;
-    bool read_write;
-    char model[41]; // 40 chars + null terminator
-};
-
-// Simulated console — replace with your real implementation
-namespace Console {
-    void println(...) {} // Placeholder. Replace with actual implementation.
-}
-
-// I/O port access
-static inline uint8_t inb(uint16_t port) {
-    uint8_t ret;
-    asm volatile ("inb %1, %0" : "=a"(ret) : "Nd"(port));
-    return ret;
-}
-
-static inline void outb(uint16_t port, uint8_t data) {
-    asm volatile ("outb %0, %1" : : "a"(data), "Nd"(port));
-}
+#include "io.h"
+#include "console.h"
+#include "disk.h"
 
 uint16_t ata_read_word(uint16_t port) {
     uint16_t ret;
