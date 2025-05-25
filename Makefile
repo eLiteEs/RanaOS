@@ -36,11 +36,11 @@ CPP_SRCS := kernel/kernel.cpp	    \
 
 
 # Objetos
-CPP_OBJS := kernel.o		 \
-	console.o		 \ 
-	floppy.o		  \
-	fatnenuphar.o	        \
-	disk.o
+CPP_OBJS := kernel.o				 \
+			console.o		         \ 
+			floppy.o		         \
+			fatnenuphar.o	         \
+			disk.o
 
 # Script de linker
 LDSCRIPT := kernel/linker.ld
