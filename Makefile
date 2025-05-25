@@ -84,6 +84,9 @@ kernel.o: kernel/kernel.cpp kernel/Console.h kernel/Keyboard.h kernel/io.h \
 console.o: kernel/Console.cpp kernel/Console.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+disk.o: kernel/disk.cpp kernel/disk.h kernel/io.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 # --------------------------------------------------------
 # 3) Linkear kernel ELF
 # --------------------------------------------------------
