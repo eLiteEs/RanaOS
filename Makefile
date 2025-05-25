@@ -37,7 +37,7 @@ CPP_SRCS := kernel/kernel.cpp	    \
 
 # Objetos
 CPP_OBJS := kernel.o				 \
-			console.o		         \ 
+			console.o		         \
 			floppy.o		         \
 			fatnenuphar.o	         \
 			disk.o
