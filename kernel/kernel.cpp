@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include "parrot.cpp"
 #include "ata_detect.cpp"
-#include "read_file.cpp"
 
 #define DISK_SIZE_BYTES (128 * 1024)
 #define MAX_FILE_SIZE   2048
@@ -270,33 +269,26 @@ void runcommand(char* s) {
 		Console::println(getHour(), ":", getMinute());
 	} else if(!strcmp(s, "date")) {
 		Console::println(getDay(), "/", getMonth(), "/", getYear());
-	} else if(!strcmp(substr(s, 0, 5), "read ")) {
-    	char** content = load_file_content('C', "file.txt");
-        if (content && *content) {
-            Console::println("Contenido:\n", *content);
-        } else {
-            Console::println("Archivo no encontrado o error.");
-        }
 	} else if(!strcmp(s, "di") || !strcmp(s, "disks")) {
-        detect_disks();
+        	detect_disks();
 	} else if(!strcmp(s, "parrot")) {
-    	int i = 0;
+    		int i = 0;
 
 		while(true) {
-        	Console::clearScreen();
-        	Console::println(parrot[i]);
-        	pit_wait_ticks(1000);
+        		Console::clearScreen();
+        		Console::println(parrot[i]);
+        		pit_wait_ticks(1000);
 
-        	if (was_c_pressed()) {
-            		break;
-        	}
+        		if (was_c_pressed()) {
+            			break;
+        		}
 
-        	i++;
-        	if (parrot[i] == NULL) {
-           		i = 0;
+        		i++;
+        		if (parrot[i] == NULL) {
+           			i = 0;
 			} else {
-                wait_ms(50);
-            }
+                		wait_ms(50);
+            		}
 		}	
 	} else if(!strcmp(s, "day")) {
 		Console::println(get_weekday_name());

@@ -7,6 +7,38 @@ uint8_t   Console::color        = 0x07;
 uint16_t* Console::vgaBuffer    = (uint16_t*)VGA_ADDRESS;
 char      Console::lineBuffer[] = {0};
 
+extern "C" {
+
+// Unsigned 64-bit division: returns quotient
+unsigned long long __udivdi3(unsigned long long n, unsigned long long d) {
+    unsigned long long q = 0, r = 0;
+    for (int i = 63; i >= 0; i--) {
+        r <<= 1;
+        r |= (n >> i) & 1;
+        if (r >= d) {
+            r -= d;
+            q |= (1ULL << i);
+        }
+    }
+    return q;
+}
+
+// Unsigned 64-bit modulo: returns remainder
+unsigned long long __umoddi3(unsigned long long n, unsigned long long d) {
+    unsigned long long r = 0;
+    for (int i = 63; i >= 0; i--) {
+        r <<= 1;
+        r |= (n >> i) & 1;
+        if (r >= d) {
+            r -= d;
+        }
+    }
+    return r;
+}
+
+}
+
+
 void Console::clearScreen() {
     uint16_t blank = (color << 8) | ' ';
     for (int i = 0; i < VGA_WIDTH * VGA_HEIGHT; ++i)
@@ -56,6 +88,31 @@ void Console::write(const char* str) {
     while (*str) putChar(*str++);
 }
 
+void Console::write(unsigned long long value) {
+    // Buffer to hold digits (max 20 digits for 64-bit decimal)
+    char buffer[20];
+    int pos = 0;
+
+    // Handle zero explicitly
+    if (value == 0) {
+        putChar('0');
+        return;
+    }
+
+    // Extract digits in reverse order
+    while (value > 0) {
+        unsigned int digit = value % 10;
+        value /= 10;
+        buffer[pos++] = '0' + digit;
+    }
+
+    // Print digits in correct order
+    for (int i = pos - 1; i >= 0; i--) {
+        putChar(buffer[i]);
+    }
+}
+
+
 void Console::write(const char* str, uint8_t fg, uint8_t bg) {
     // Guardamos color actual
     uint8_t oldColor = color;
@@ -78,27 +135,6 @@ void Console::write(char c) {
     putChar(c);
 }
 
-void Console::write(long long unsigned int& value) {
-    char buffer[21]; // 20 dígitos para 64-bit decimal + '\0'
-    // itoa estándar no soporta 64-bit en muchas implementaciones,
-    // así que implementaremos una versión simple para uint64_t
-    
-    unsigned long long val = value;
-    buffer[20] = '\0';
-    int pos = 19;
-    
-    if (val == 0) {
-        buffer[pos--] = '0';
-    } else {
-        while (val > 0 && pos >= 0) {
-            buffer[pos--] = '0' + (val % 10);
-            val /= 10;
-        }
-    }
-    
-    // Ahora el número está en buffer[pos+1..19], así que movemos o pasamos el puntero
-    write(buffer + pos + 1);
-}
 void Console::write(double value) {
     if (value < 0) {
         write('-');

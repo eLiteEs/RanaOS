@@ -10,7 +10,6 @@ public:
     static void putChar(char c);
     static void write(const char* str);
     static void write(char c);
-    static void write(long long unsigned int& value);
     static void write(int value);
     static void write(uint8_t value);
     static void write(bool value);
@@ -30,6 +29,7 @@ public:
     static void enable_cursor(uint8_t start, uint8_t end);
     static void set_cursor(uint16_t pos);
 
+    static void write(unsigned long long value);
 private:
     static const uint16_t VGA_WIDTH  = 80;
     static const uint16_t VGA_HEIGHT = 25;

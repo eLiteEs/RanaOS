@@ -29,18 +29,12 @@ ASM_OBJS := boot.o io.o
 
 # Fuentes C++
 CPP_SRCS := kernel/kernel.cpp	    \
-	kernel/Console.cpp	    \
-	kernel/floppy.cpp	     \
-	kernel/fatnenuphar.cpp           \
-	kernel/disk.cpp
+	kernel/Console.cpp
 
 
 # Objetos
 CPP_OBJS := kernel.o				 \
-			console.o		         \
-			floppy.o		         \
-			fatnenuphar.o	         \
-			disk.o
+			console.o
 
 # Script de linker
 LDSCRIPT := kernel/linker.ld
@@ -68,12 +62,6 @@ getKey.o: kernel/getKey.asm
 keyboard_poll.o: kernel/keyboard_poll.asm
 	$(NASM) -f elf32 $< -o $@
 
-floppy.o: kernel/floppy.cpp kernel/floppy.h kernel/io.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-fatnenuphar.o: kernel/fatnenuphar.cpp kernel/fatnenuphar.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
 # --------------------------------------------------------
 # 2) Compilar C++
 # --------------------------------------------------------
@@ -82,9 +70,6 @@ kernel.o: kernel/kernel.cpp kernel/Console.h kernel/Keyboard.h kernel/io.h \
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 console.o: kernel/Console.cpp kernel/Console.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-disk.o: kernel/disk.cpp kernel/disk.h kernel/io.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # --------------------------------------------------------

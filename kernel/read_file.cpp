@@ -28,7 +28,6 @@ bool read_entire_disk(const DiskInfo& disk, void* out_buffer, uint32_t size_in_b
 char** load_file_content(char disk_letter, const char* filename) {
     static uint8_t disk_image[128 * 1024];            // Entire disk image (128 KB max)
     static char    file_buffer[64 * 1024];            // Max 64 KB file
-    static char*   result_ptr = file_buffer;
     static char*   result_array[1] = { file_buffer }; // char**
 
     DiskInfo* disk = find_disk_by_letter(disk_letter);
