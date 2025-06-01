@@ -259,7 +259,7 @@ void runcommand(char* s) {
 		Console::write("  day >> Get the weekday name.\n");
 		Console::write("  di || disks >> Get the available disks.\n");
 	} else if(!strcmp(s, "version")) {
-		Console::write("eLite Systems RanaOS beta 2\nLicensed with GNU GPL v3.");
+		Console::write("eLite Systems RanaOS beta 2\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
 		Console::write(substr(s, 5));
 		Console::putChar('\n');
