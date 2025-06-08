@@ -23,17 +23,19 @@ FILES_DEST_DIR = $(ISO_DIR)/files
 FILES = $(wildcard $(FILES_SRC_DIR)/*.bin)
 
 # Fuentes ASM
-ASM_SRCS := boot.asm io.asm
+ASM_SRCS := boot.asm
 
-ASM_OBJS := boot.o io.o
+ASM_OBJS := boot.o
 
 # Fuentes C++
 CPP_SRCS := kernel/kernel.cpp	    \
-	kernel/Console.cpp
+	kernel/Console.cpp 				\
+	kernel/io.cpp
 
 # Objetos
 CPP_OBJS := kernel.o				\
-	console.o
+	console.o 						\
+	io.o
 
 # Script de linker
 LDSCRIPT := kernel/linker.ld
@@ -52,8 +54,8 @@ all: iso
 boot.o: boot.asm
 	$(NASM) -f elf32 $< -o $@
 
-io.o: kernel/io.asm
-	$(NASM) -f elf32 $< -o $@
+#io.o: kernel/io.asm
+#	$(NASM) -f elf32 $< -o $@
 
 getKey.o: kernel/getKey.asm
 	$(NASM) -f elf32 $< -o $@
@@ -69,6 +71,9 @@ kernel.o: kernel/kernel.cpp kernel/Console.h kernel/Keyboard.h kernel/io.h \
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 console.o: kernel/Console.cpp kernel/Console.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+io.o: kernel/io.cpp kernel/io.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # --------------------------------------------------------

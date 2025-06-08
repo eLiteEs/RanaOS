@@ -246,6 +246,8 @@ void wait_ms(uint32_t ms) {
     }
 }
 
+static char linebuf[256];
+
 void runcommand(char* s) {	
 	if(!strcmp(s, "help")) {
 		Console::write("RanaOS - Help\n");
@@ -258,6 +260,7 @@ void runcommand(char* s) {
 		Console::write("  parrot >> Dancing parrot animation from ascii.live.\n");
 		Console::write("  day >> Get the weekday name.\n");
 		Console::write("  di || disks >> Get the available disks.\n");
+        Console::write("  shutdown >> Power off the computer\n");
 	} else if(!strcmp(s, "version")) {
 		Console::write("eLite Systems RanaOS beta 2\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
@@ -292,12 +295,25 @@ void runcommand(char* s) {
 		}	
 	} else if(!strcmp(s, "day")) {
 		Console::println(get_weekday_name());
-	} else {
+	} else if(!strcmp(s, "shutdown")) {
+        Console::println("Are you sure that you want to power off the computer? (y=yes, else=no): ");
+        char* answer = Console::readLine(linebuf, sizeof(linebuf));
+
+        if(!strcmp(answer, "y")) {
+            outw(0xB004, 0x2000);
+
+            outw(0x604, 0x2000);
+
+            outw(0x4004, 0x3400);
+
+            for (;;) {
+                __asm__ __volatile__("hlt");
+            }
+        }
+    } else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}
 }
-
-static char linebuf[256];
 
 void enable_cursor_blink() {
     outb(0x3D4, 0x0A);
