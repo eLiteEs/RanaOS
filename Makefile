@@ -10,7 +10,7 @@ QEMU          := qemu-system-i386
 # Flags
 CXXFLAGS := -m32 -ffreestanding -O2 -Wall -Wextra \
 	-fno-exceptions -fno-rtti -fno-pie -fno-pic \
-	-std=gnu++17
+	-std=gnu++17 -Ikernel
 LDFLAGS  := -m elf_i386
 
 # Directorios
@@ -31,10 +31,9 @@ ASM_OBJS := boot.o io.o
 CPP_SRCS := kernel/kernel.cpp	    \
 	kernel/Console.cpp
 
-
 # Objetos
-CPP_OBJS := kernel.o				 \
-			console.o
+CPP_OBJS := kernel.o				\
+	console.o
 
 # Script de linker
 LDSCRIPT := kernel/linker.ld

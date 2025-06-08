@@ -82,7 +82,7 @@ void detect_disks() {
     }
 
     if (letter_index == 0) {
-        Console::println("No disks detected, comrade.");
+        Console::println("No disks detected.");
     }
 }
 
