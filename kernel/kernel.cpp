@@ -305,7 +305,7 @@ void runcommand(char* s) {
 		Console::write("  parrot >> Dancing parrot animation from ascii.live.\n");
 		Console::write("  day >> Get the weekday name.\n");
 		Console::write("  di || disks >> Get the available disks.\n");
-        Console::write("  shutdown >> Power off the computer.\n");
+        Console::write("  shutdwn >> Power off the computer.\n");
         Console::write("  reboot >> Reboot the computer.\n");
 	} else if(!strcmp(s, "version")) {
 		Console::write("eLite Systems RanaOS beta 2\nLicensed with GNU GPL v3.\n");
@@ -341,8 +341,8 @@ void runcommand(char* s) {
 		}	
 	} else if(!strcmp(s, "day")) {
 		Console::println(get_weekday_name());
-	} else if(!strcmp(s, "shutdown")) {
-        Console::println("Are you sure that you want to power off the computer? (y=yes, else=no): ");
+	} else if(!strcmp(s, "shutdwn")) {
+        Console::write("Are you sure that you want to power off the computer? (y=yes, else=no): ");
         char* answer = Console::readLine(linebuf, sizeof(linebuf));
 
         if(!strcmp(answer, "y")) {
@@ -357,7 +357,7 @@ void runcommand(char* s) {
             }
         }
     } else if(!strcmp(s, "reboot")) {
-        Console::println("Are you sure that you want to reboot the computer? (y=yes, else=no): ");
+        Console::write("Are you sure that you want to reboot the computer? (y=yes, else=no): ");
         char* answer = Console::readLine(linebuf, sizeof(linebuf));
         
         if(!strcmp(answer, "y")) {
