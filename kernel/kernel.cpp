@@ -215,6 +215,51 @@ char* substr(const char* str, int start, int length = -1) {
     return buffer;
 }
 
+bool isNumber(const char* str) {
+    if (!str || *str == '\0') return false;
+
+    // Saltar espacios
+    while (*str == ' ' || *str == '\t') ++str;
+
+    // Manejar signo
+    if (*str == '-' || *str == '+') ++str;
+
+    // Debe haber al menos un dígito
+    if (*str < '0' || *str > '9') return false;
+
+    while (*str) {
+        if (*str < '0' || *str > '9') return false;
+        ++str;
+    }
+
+    return true;
+}
+int stoi(const char* str) {
+    int result = 0;
+    int sign = 1;
+
+    // Saltar espacios en blanco
+    while (*str == ' ' || *str == '\t') {
+        ++str;
+    }
+
+    // Manejar signo negativo
+    if (*str == '-') {
+        sign = -1;
+        ++str;
+    } else if (*str == '+') {
+        ++str;
+    }
+
+    // Convertir dígitos
+    while (*str >= '0' && *str <= '9') {
+        result = result * 10 + (*str - '0');
+        ++str;
+    }
+
+    return result * sign;
+}
+
 void wait(int secs) {
 	int now = getSecond();
 	while(getSecond() != now + secs) {}
@@ -228,7 +273,7 @@ void wait_ms(uint32_t ms) {
         uint32_t chunk = (ms > 54) ? 54 : ms;
         ms -= chunk;
 
-        uint16_t divisor = (uint16_t)(1193.182 * chunk);
+        uint16_t divisor = (uint16_t)(1193182 / 1000 * chunk); // = 1193 * chunk
 
         // Set PIT channel 0 to mode 0 (one-shot), binary counting
         outb(PIT_COMMAND, 0b00110100); // channel 0, access lobyte/hibyte, mode 0
@@ -319,7 +364,16 @@ void runcommand(char* s) {
             while (inb(0x64) & 0x02);
             outb(0x64, 0xFE);
         }
+    } else if(!strcmp(substr(s, 0, 5), "wait ")) {
+        char* time = substr(s, 5);
+
+        if(isNumber(time)) {
+            wait_ms(stoi(time));
+        } else {
+            Console::write("The introduced delay isn't a number.\n");
+        }
     } else {
+        Console::write(substr(s, 0, 5));
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}
 }
