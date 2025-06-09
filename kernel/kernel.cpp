@@ -276,23 +276,23 @@ void runcommand(char* s) {
 	} else if(!strcmp(s, "di") || !strcmp(s, "disks")) {
         	detect_disks();
 	} else if(!strcmp(s, "parrot")) {
-    		int i = 0;
+    	int i = 0;
 
 		while(true) {
-        		Console::clearScreen();
-        		Console::println(parrot[i]);
-        		pit_wait_ticks(1000);
+    		Console::clearScreen();
+        	Console::println(parrot[i]);
+        	pit_wait_ticks(1000);
 
-        		if (was_c_pressed()) {
-            			break;
-        		}
+        	if (was_c_pressed()) {
+    			break;
+            }
 
-        		i++;
+        	i++;
         		if (parrot[i] == NULL) {
            			i = 0;
 			} else {
-                		wait_ms(50);
-            		}
+                wait_ms(50);
+            	}
 		}	
 	} else if(!strcmp(s, "day")) {
 		Console::println(get_weekday_name());
