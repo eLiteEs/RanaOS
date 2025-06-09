@@ -373,7 +373,6 @@ void runcommand(char* s) {
             Console::write("The introduced delay isn't a number.\n");
         }
     } else {
-        Console::write(substr(s, 0, 5));
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}
 }
