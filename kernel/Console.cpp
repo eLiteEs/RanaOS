@@ -200,7 +200,7 @@ void Console::updateCursor() {
 
 // --- Teclado ---
 
-extern "C" int getKey() {
+extern "C" int Console::getKey() {
     uint8_t status, sc;
 
     while (true) {

@@ -11,4 +11,6 @@ extern "C" {
 
     uint16_t inw(uint16_t port);
     void outw(uint16_t port, uint16_t val);
+
+    void insw(uint16_t port, void* addr, int count); 
 }

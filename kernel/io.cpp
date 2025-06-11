@@ -36,4 +36,14 @@ void outw(uint16_t port, uint16_t val) {
                   : "a"(val), "Nd"(port));
 }
 
+void insw(uint16_t port, void* addr, int count) {
+    __asm__ volatile (
+        "cld\n"
+        "rep insw\n"
+        : "+D"(addr), "+c"(count)
+        : "d"(port)
+        : "memory"
+    );
+}
+
 }

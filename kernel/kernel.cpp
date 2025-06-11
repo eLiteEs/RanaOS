@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "parrot.cpp"
 #include "ata_detect.cpp"
+#include "fat32.h"
 
 #define DISK_SIZE_BYTES (128 * 1024)
 #define MAX_FILE_SIZE   2048
@@ -333,19 +334,19 @@ void runcommand(char* s) {
             }
 
         	i++;
-        		if (parrot[i] == NULL) {
-           			i = 0;
+        	if (parrot[i] == NULL) {
+           		i = 0;
 			} else {
                 wait_ms(50);
-            	}
+            }
 		}	
 	} else if(!strcmp(s, "day")) {
 		Console::println(get_weekday_name());
 	} else if(!strcmp(s, "shutdwn")) {
         Console::write("Are you sure that you want to power off the computer? (y=yes, else=no): ");
-        char* answer = Console::readLine(linebuf, sizeof(linebuf));
+        char answer = Console::getKey();
 
-        if(!strcmp(answer, "y")) {
+        if(answer == 0x15) {
             outw(0xB004, 0x2000);
 
             outw(0x604, 0x2000);
@@ -358,9 +359,9 @@ void runcommand(char* s) {
         }
     } else if(!strcmp(s, "reboot")) {
         Console::write("Are you sure that you want to reboot the computer? (y=yes, else=no): ");
-        char* answer = Console::readLine(linebuf, sizeof(linebuf));
+        char answer = Console::getKey();
         
-        if(!strcmp(answer, "y")) {
+        if(answer == 0x15) {
             while (inb(0x64) & 0x02);
             outb(0x64, 0xFE);
         }
@@ -372,6 +373,8 @@ void runcommand(char* s) {
         } else {
             Console::write("The introduced delay isn't a number.\n");
         }
+    } else if(!strcmp(s, "ls")) {
+        ls_fat32('C');
     } else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}
@@ -384,10 +387,51 @@ void enable_cursor_blink() {
     outb(0x3D5, val);
 }
 
+char* int_to_str(int value) {
+    static char buffer[12];
+    char* ptr = buffer + sizeof(buffer) - 1;
+    bool neg = value < 0;
+    *ptr = '\0';
+    unsigned int u = neg ? -value : value;
+    do {
+        *--ptr = '0' + (u % 10);
+        u /= 10;
+    } while (u);
+    if (neg) *--ptr = '-';
+    return ptr;
+}
+
+char* concat(const char* a, const char* b) {
+    static char buffer[256];
+    char* p = buffer;
+    while (*a) *p++ = *a++;
+    while (*b) *p++ = *b++;
+    *p = 0;
+    return buffer;
+}
+
+char* format_wth_0(int i) {
+    if(i <= 9) {
+        return concat("0", int_to_str(i));
+    } else {
+        return int_to_str(i);
+    } 
+
+    return 0;
+}
+
 extern "C" void kmain() {
-	Console::clearScreen();
-	Console::write("eLite Systems ");
-	Console::write(" RanaOS beta 2 ", 0, 2);
+	// OG Loading
+    Console::clearScreen();
+    Console::write(" eLite      ", 0, 4);
+    wait_ms(500);
+    Console::write(" Systems    ", 0, 2);
+    wait_ms(500);
+    Console::write(" RanaOS     ", 0, 1);
+    wait_ms(500);
+    Console::write(" beta 2     ", 0, 14);
+
+    wait_ms(250);
 
 	Console::putChar('\n');
 
@@ -408,7 +452,14 @@ extern "C" void kmain() {
 	Console::enable_cursor(0, 15);
 	Console::set_cursor(0);
 
-	Console::println(getHour(), ":", getMinute(), "  ", substr(get_weekday_name(), 0, 3), ", ", getDay(), "/", getMonth(), "/", getYear(), "\n");
+    Console::write("\n");
+
+	Console::write("eLite Systems ");
+	Console::write(" RanaOS beta 2 ", 0, 2);
+
+	Console::write("\n\n");
+
+    Console::println(format_wth_0(getHour()), ":", format_wth_0(getMinute()), "  ", substr(get_weekday_name(), 0, 3), ", ", format_wth_0(getDay()), "/", format_wth_0(getMonth()), "/", getYear(), "\n");
 
 	Console::println("Use 'help' for getting a list of commands.\n");
 

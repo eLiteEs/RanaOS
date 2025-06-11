@@ -30,12 +30,18 @@ ASM_OBJS := boot.o
 # Fuentes C++
 CPP_SRCS := kernel/kernel.cpp	    \
 	kernel/Console.cpp 				\
-	kernel/io.cpp
+	kernel/io.cpp 					\
+	kernel/fat32.cpp 				\
+	kernel/disk.cpp 				\
+	kernel/floppy.cpp
 
 # Objetos
 CPP_OBJS := kernel.o				\
 	console.o 						\
-	io.o
+	io.o 							\
+	fat32.o 						\
+	disk.o 							\
+	floppy.o
 
 # Script de linker
 LDSCRIPT := kernel/linker.ld
@@ -67,13 +73,22 @@ keyboard_poll.o: kernel/keyboard_poll.asm
 # 2) Compilar C++
 # --------------------------------------------------------
 kernel.o: kernel/kernel.cpp kernel/Console.h kernel/Keyboard.h kernel/io.h \
-          kernel/idt.h kernel/pic.h
+          kernel/idt.h kernel/pic.h kernel/fat32.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 console.o: kernel/Console.cpp kernel/Console.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 io.o: kernel/io.cpp kernel/io.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+disk.o: kernel/disk.cpp kernel/disk.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+fat32.o: kernel/fat32.cpp kernel/fat32.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+floppy.o: kernel/floppy.cpp kernel/floppy.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # --------------------------------------------------------

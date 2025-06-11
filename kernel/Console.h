@@ -30,6 +30,8 @@ public:
     static void set_cursor(uint16_t pos);
 
     static void write(unsigned long long value);
+
+    static int getKey();
 private:
     static const uint16_t VGA_WIDTH  = 80;
     static const uint16_t VGA_HEIGHT = 25;
