@@ -346,7 +346,8 @@ void runcommand(char* s, bool auth) {
 		Console::println(get_weekday_name());
 	} else if(!strcmp(s, "shutdwn")) {
         Console::write("Are you sure that you want to power off the computer? (y=yes, else=no): ");
-        char answer = Console::getKey();
+        bool tr = false;
+        char answer = Console::getKey(tr);
 
         if(answer == 0x15) {
             outw(0xB004, 0x2000);
@@ -361,7 +362,8 @@ void runcommand(char* s, bool auth) {
         }
     } else if(!strcmp(s, "reboot")) {
         Console::write("Are you sure that you want to reboot the computer? (y=yes, else=no): ");
-        char answer = Console::getKey();
+        bool tr = false;
+        char answer = Console::getKey(tr);
         
         if(answer == 0x15) {
             while (inb(0x64) & 0x02);

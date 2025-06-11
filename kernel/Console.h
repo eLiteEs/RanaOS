@@ -31,7 +31,7 @@ public:
 
     static void write(unsigned long long value);
 
-    static int getKey();
+    static int getKey(bool& shift);
 private:
     static const uint16_t VGA_WIDTH  = 80;
     static const uint16_t VGA_HEIGHT = 25;
