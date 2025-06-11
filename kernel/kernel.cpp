@@ -294,7 +294,7 @@ void wait_ms(uint32_t ms) {
 
 static char linebuf[256];
 
-void runcommand(char* s) {	
+void runcommand(char* s, bool auth) {	
 	if(!strcmp(s, "help")) {
 		Console::write("RanaOS - Help\n");
 		Console::write("  help >> Show this list.\n");
@@ -307,8 +307,10 @@ void runcommand(char* s) {
 		Console::write("  day >> Get the weekday name.\n");
 		Console::write("  di || disks >> Get the available disks.\n");
         Console::write("  shutdwn >> Power off the computer.\n");
+        Console::write("      ... /y >> Power off the computer without asking.\n");
         Console::write("  reboot >> Reboot the computer.\n");
-	} else if(!strcmp(s, "version")) {
+	    Console::write("      ... /y >> Reboot the computer without asking.\n");
+    } else if(!strcmp(s, "version")) {
 		Console::write("eLite Systems RanaOS beta 2\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
 		Console::write(substr(s, 5));
@@ -375,6 +377,27 @@ void runcommand(char* s) {
         }
     } else if(!strcmp(s, "ls")) {
         ls_fat32('C');
+    } else if(!strcmp(s, "shutdwn /y")) {
+        if(auth) {
+            outw(0xB004, 0x2000);
+
+            outw(0x604, 0x2000);
+
+            outw(0x4004, 0x3400);
+
+            for (;;) {
+                __asm__ __volatile__("hlt");
+            }
+        } else {
+            Console::println("No permission for powering off the computer.");
+        }
+    } else if(!strcmp(s, "reboot /y")) {
+        if(auth) {
+            while (inb(0x64) & 0x02);
+            outb(0x64, 0xFE);
+        } else {
+            Console::println("No permission for rebooting the computer.");
+        } 
     } else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}
@@ -467,7 +490,7 @@ extern "C" void kmain() {
 		Console::write("$- ");
 		char* s = Console::readLine(linebuf, sizeof(linebuf));
 		
-		runcommand(s);		
+		runcommand(s, true);		
 	}
 }
 

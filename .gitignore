@@ -1,6 +1,5 @@
 *.o
 *.bin
 *.img
-*.iso
 *.elf
 isodir/
