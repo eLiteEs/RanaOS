@@ -339,7 +339,7 @@ void runcommand(char* s, bool auth) {
 		Console::write("  parrot >> Dancing parrot animation from ascii.live.\n");
 		Console::write("  day >> Get the weekday name.\n");
 		Console::write("  di || disks >> Get the available disks.\n");
-        Console::write("  shutdwn >> Power off the computer.\n");
+        Console::write("  shutdwn || shutdown >> Power off the computer.\n");
         Console::write("      ... /y >> Power off the computer without asking.\n");
         Console::write("  reboot >> Reboot the computer.\n");
 	    Console::write("      ... /y >> Reboot the computer without asking.\n");
@@ -377,7 +377,7 @@ void runcommand(char* s, bool auth) {
 		}	
 	} else if(!strcmp(s, "day")) {
 		Console::println(get_weekday_name());
-	} else if(!strcmp(s, "shutdwn")) {
+	} else if(!strcmp(s, "shutdwn") || !strcmp(s, "shutdown")) {
         Console::write("Are you sure that you want to power off the computer? (y=yes, else=no): ");
         bool tr = false;
         char answer = Console::getKey(tr);
@@ -412,7 +412,7 @@ void runcommand(char* s, bool auth) {
         }
     } else if(!strcmp(s, "ls")) {
         ls_fat32('C');
-    } else if(!strcmp(s, "shutdwn /y")) {
+    } else if(!strcmp(s, "shutdwn /y") || !strcmp(s, "shutdown /y")) {
         if(auth) {
             outw(0xB004, 0x2000);
 
