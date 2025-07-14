@@ -292,6 +292,39 @@ void wait_ms(uint32_t ms) {
     }
 }
 
+char* int_to_str(int value) {
+    static char buffer[12];
+    char* ptr = buffer + sizeof(buffer) - 1;
+    bool neg = value < 0;
+    *ptr = '\0';
+    unsigned int u = neg ? -value : value;
+    do {
+        *--ptr = '0' + (u % 10);
+        u /= 10;
+    } while (u);
+    if (neg) *--ptr = '-';
+    return ptr;
+}
+
+char* concat(const char* a, const char* b) {
+    static char buffer[256];
+    char* p = buffer;
+    while (*a) *p++ = *a++;
+    while (*b) *p++ = *b++;
+    *p = 0;
+    return buffer;
+}
+
+char* format_wth_0(int i) {
+    if(i <= 9) {
+        return concat("0", int_to_str(i));
+    } else {
+        return int_to_str(i);
+    } 
+
+    return 0;
+}
+
 static char linebuf[256];
 
 void runcommand(char* s, bool auth) {	
@@ -318,9 +351,9 @@ void runcommand(char* s, bool auth) {
 	} else if(!strcmp(s, "clear") || !strcmp(s, "cls")) {
 		Console::clearScreen();
 	} else if(!strcmp(s, "time")) {
-		Console::println(getHour(), ":", getMinute());
+		Console::println(getHour(), ":", format_wth_0(getMinute()));
 	} else if(!strcmp(s, "date")) {
-		Console::println(getDay(), "/", getMonth(), "/", getYear());
+		Console::println(getDay(), "/", format_wth_0(getMonth()), "/", getYear());
 	} else if(!strcmp(s, "di") || !strcmp(s, "disks")) {
         	detect_disks();
 	} else if(!strcmp(s, "parrot")) {
@@ -410,39 +443,6 @@ void enable_cursor_blink() {
     uint8_t val = inb(0x3D5);
     val &= ~(1 << 5); // clear bit 5 = habilitar parpadeo
     outb(0x3D5, val);
-}
-
-char* int_to_str(int value) {
-    static char buffer[12];
-    char* ptr = buffer + sizeof(buffer) - 1;
-    bool neg = value < 0;
-    *ptr = '\0';
-    unsigned int u = neg ? -value : value;
-    do {
-        *--ptr = '0' + (u % 10);
-        u /= 10;
-    } while (u);
-    if (neg) *--ptr = '-';
-    return ptr;
-}
-
-char* concat(const char* a, const char* b) {
-    static char buffer[256];
-    char* p = buffer;
-    while (*a) *p++ = *a++;
-    while (*b) *p++ = *b++;
-    *p = 0;
-    return buffer;
-}
-
-char* format_wth_0(int i) {
-    if(i <= 9) {
-        return concat("0", int_to_str(i));
-    } else {
-        return int_to_str(i);
-    } 
-
-    return 0;
 }
 
 extern "C" void kmain() {
