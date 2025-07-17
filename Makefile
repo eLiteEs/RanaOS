@@ -127,7 +127,7 @@ run: iso
 clean:
 	@rm -f *.o getKey.o keyboard_poll.o \
 	         $(CPP_OBJS) $(ASM_OBJS) \
-	         $(KERNEL_ELF) $(ISO_IMG)
+	         $(KERNEL_ELF)
 
 # --------------------------------------------------------
 # 8) Generate FATnenuphar bin
