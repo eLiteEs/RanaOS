@@ -446,6 +446,43 @@ void enable_cursor_blink() {
 }
 
 extern "C" void kmain() {
+    // Arch-like startup
+    Console::write("[TASK] ", 3);
+    Console::println("Starting RanaOS...");
+
+    // Init PIT
+    Console::write("[TASK] ", 3);
+    Console::println("Starting PIT...");
+    Console::write("[INFO] ", 9);
+    Console::println("Using default configuration (1 tick = 1 millisecond)");
+
+    pit_init(1000);
+
+    Console::write("[SUCCESS] ", 2);
+    Console::println("PIT Started successfully!");
+
+    // Save CPU speed
+    Console::write("[TASK] ", 3);
+    Console::println("Gathering CPU speed...");
+
+    g_cycles_per_ms = measure_cpu_frequency();
+
+    Console::write("[SUCCESS] ", 2);
+    Console::println("CPU Speed saved succesfully!");
+    
+    // Enable cursor
+    Console::write("[TASK] ", VGA_COLOR_CYAN);
+    Console::println("Enabling cursor...");
+
+	enable_cursor_blink();
+	Console::enable_cursor(0, 15);
+	Console::set_cursor(0);
+
+    Console::write("[SUCCESS] ", 2);
+    Console::println("Cursor enabled!");
+
+    wait_ms(1500);
+
 	// OG Loading
     Console::clearScreen();
     Console::write(" eLite      ", 0, 4);
@@ -458,26 +495,7 @@ extern "C" void kmain() {
 
     wait_ms(250);
 
-	Console::putChar('\n');
-
-	Console::write("Starting PIT (1 tick = 1 millisecond)... ");
-
-	pit_init(1000);	
-
-	Console::println("PIT Started successfully!");
-
-	Console::write("Reading CPU frequency... ");
-
-	g_cycles_per_ms = measure_cpu_frequency();
-
-	Console::println((int)measure_cpu_frequency(), " GHz");
-
-	Console::println("Enabling cursor...");
-	enable_cursor_blink();
-	Console::enable_cursor(0, 15);
-	Console::set_cursor(0);
-
-    Console::write("\n");
+	Console::write("\n\n");
 
 	Console::write("eLite Systems ");
 	Console::write(" RanaOS beta 2 ", 0, 2);
