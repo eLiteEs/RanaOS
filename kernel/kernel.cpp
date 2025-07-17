@@ -452,7 +452,7 @@ extern "C" void kmain() {
     wait_ms(500);
     Console::write(" Systems    ", 0, 2);
     wait_ms(500);
-    Console::write(" RanaOS     ", 0, 1);
+    Console::write(" RanaOS     ", 0, 3);
     wait_ms(500);
     Console::write(" beta 2     ", 0, 14);
 
