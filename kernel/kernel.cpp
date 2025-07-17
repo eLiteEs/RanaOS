@@ -6,6 +6,8 @@
 #include "parrot.cpp"
 #include "ata_detect.cpp"
 #include "fat32.h"
+#include "multiboot.h"
+#include "Graphics.h"
 
 #define DISK_SIZE_BYTES (128 * 1024)
 #define MAX_FILE_SIZE   2048
@@ -325,7 +327,49 @@ char* format_wth_0(int i) {
     return 0;
 }
 
+// Random things
+static uint32_t rand_seed = 1;
+
+// Generador LCG básico
+uint32_t rand_lcg() {
+    // Parámetros del generador LCG (usados en glibc)
+    rand_seed = (1103515245 * rand_seed + 12345) & 0x7FFFFFFF;
+    return rand_seed;
+}
+
+// Función para establecer la semilla
+void srand_lcg(uint32_t seed) {
+    rand_seed = seed;
+}
+
+// Función que genera un número aleatorio entre min y max (inclusive)
+int32_t rand_range(int32_t min, int32_t max) {
+    if (min > max) {
+        // Intercambiar si min es mayor que max
+        int32_t temp = min;
+        min = max;
+        max = temp;
+    }
+    
+    // Calcular el rango
+    uint32_t range = max - min + 1;
+    
+    // Generar número aleatorio en el rango [0, range-1]
+    uint32_t rand_val = rand_lcg() % range;
+    
+    // Ajustar al rango [min, max] y devolver
+    return min + rand_val;
+}
+
 static char linebuf[256];
+multiboot_info_t* mbi;
+
+#define KEY_LEFT       0x4B
+#define KEY_RIGHT      0x4D
+#define KEY_UP         0x48
+#define KEY_DOWN       0x50 
+#define KEY_BACKSPACE  0x0E
+#define KEY_ENTER      0x1C
 
 void runcommand(char* s, bool auth) {	
 	if(!strcmp(s, "help")) {
@@ -343,6 +387,7 @@ void runcommand(char* s, bool auth) {
         Console::write("      ... /y >> Power off the computer without asking.\n");
         Console::write("  reboot >> Reboot the computer.\n");
 	    Console::write("      ... /y >> Reboot the computer without asking.\n");
+        Console::write("  jogo >> Play a game on graphical mode.\n");
     } else if(!strcmp(s, "version")) {
 		Console::write("eLite Systems RanaOS beta 2\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
@@ -433,6 +478,68 @@ void runcommand(char* s, bool auth) {
         } else {
             Console::println("No permission for rebooting the computer.");
         } 
+    } else if(!strcmp(s, "jogo") /* aka boludez */) {
+        Console::clearScreen();
+
+        Graphics::init();
+        Graphics::clear_screen(0x00000900);
+
+        // Some variables
+        int x = 10;
+        int y = 10;
+
+        int fruitX = 40;
+        int fruitY = 40;
+
+        int points = 0;
+
+        bool playing = true;
+
+        while(playing)
+        {
+            Graphics::clear_screen(0x00000900); // Clear screen
+
+            Graphics::DrawRect(x, y, 10, 10, 0x04); // Draw player
+
+            Graphics::DrawRect(fruitX, fruitY, 10, 10, 0x06); // Draw fruit
+
+            // Draw points
+            for (int i = 0; i < points; i++) 
+            {
+                Graphics::DrawRect(2 + 4 * i, 2, 4, 4, 0x06);
+            }
+
+            // Move the player on key
+            bool tr = false;
+            char answer = Console::getKey(tr);
+
+            if(answer == KEY_RIGHT && x + 10 != 300)
+            {
+                x += 10;
+                
+            } else if(answer == KEY_LEFT && x - 10 != 0) 
+            {
+                x -= 10;
+            } else if(answer == KEY_UP && y - 10 != 0)
+            {
+                y -= 10;
+            } else if(answer == KEY_DOWN && y + 10 != 200) 
+            {
+                y += 10;
+            } else 
+            {
+                playing = false;
+            }
+
+            // Chekc collision between player and fruit
+            if(x == fruitX && y == fruitY) {
+                points++;
+                fruitX = rand_range(10, 30) * 10;
+                fruitY = rand_range(10, 18) * 10;
+            }
+        }
+
+        Graphics::switch_to_text_mode();
     } else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}
@@ -445,41 +552,69 @@ void enable_cursor_blink() {
     outb(0x3D5, val);
 }
 
-extern "C" void kmain() {
+extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
     // Arch-like startup
-    Console::write("[TASK] ", 3);
+    Console::clearScreen();
     Console::println("Starting RanaOS...");
 
     // Init PIT
-    Console::write("[TASK] ", 3);
+    Console::write("[ TASK ]    ", 3);
     Console::println("Starting PIT...");
-    Console::write("[INFO] ", 9);
+    Console::write("[ INFO ]    ", 9);
     Console::println("Using default configuration (1 tick = 1 millisecond)");
 
     pit_init(1000);
 
-    Console::write("[SUCCESS] ", 2);
+    Console::write("[ SUCCESS ] ", 2);
     Console::println("PIT Started successfully!");
 
     // Save CPU speed
-    Console::write("[TASK] ", 3);
+    Console::write("[ TASK ]    ", 3);
     Console::println("Gathering CPU speed...");
 
-    g_cycles_per_ms = measure_cpu_frequency();
+    //g_cycles_per_ms = measure_cpu_frequency();
 
-    Console::write("[SUCCESS] ", 2);
+    Console::write("[ SUCCESS ] ", 2);
     Console::println("CPU Speed saved succesfully!");
     
     // Enable cursor
-    Console::write("[TASK] ", VGA_COLOR_CYAN);
+    Console::write("[ TASK ]    ", VGA_COLOR_CYAN);
     Console::println("Enabling cursor...");
 
-	enable_cursor_blink();
-	Console::enable_cursor(0, 15);
-	Console::set_cursor(0);
+    enable_cursor_blink();
+    Console::enable_cursor(0, 15);
+    Console::set_cursor(0);
 
-    Console::write("[SUCCESS] ", 2);
+    Console::write("[ SUCCESS ] ", 2);
     Console::println("Cursor enabled!");
+
+    // Check Multiboot header
+    Console::write("[ TASK ]    ", VGA_COLOR_CYAN);
+    Console::println("Checking GRUB multiboot header magic number...");
+    if (magic != 0x2BADB002) {  // Magic number for Multiboot-compliant bootloader
+        Console::write("[ FATAL ERROR ] ", VGA_COLOR_RED);
+        Console::println("Magic number not maching expected value, can't load RanaOS.");
+        Console::println("Press any key to exit RanaOS...");
+
+        bool b = false;
+        char c = Console::getKey(b);
+        return;
+    }
+    Console::write("[ SUCCESS ] ", VGA_COLOR_GREEN);
+    Console::println("Magic nuber value correct");
+
+    // Move mbi to local mbi
+    Console::write("[ TASK ]    ", VGA_COLOR_CYAN);
+    Console::println("Move MBI information...");
+
+    mbi = mbi2;
+
+    Console::write("[ SUCCESS ] ", 9);
+    Console::println("MBI information moved successfully");
+
+
+    Console::write("[ INFO ]    ", VGA_COLOR_LIGHT_BLUE);
+    Console::println("Entering RanaOS in 1500 ms");
 
     wait_ms(1500);
 

@@ -1,11 +1,11 @@
 # Makefile para RanaOS bootable ISO
 
 # Herramientas
-NASM          := nasm
-CXX           := g++
-LD	:= ld
+NASM		  := nasm
+CXX		   := g++
+LD			:= ld
 GRUB_MKRESCUE := grub-mkrescue
-QEMU          := qemu-system-i386
+QEMU		  := qemu-system-i386
 
 # Flags
 CXXFLAGS := -m32 -ffreestanding -O2 -Wall -Wextra \
@@ -22,33 +22,31 @@ FILES_DEST_DIR = $(ISO_DIR)/files
 
 FILES = $(wildcard $(FILES_SRC_DIR)/*.bin)
 
-# Fuentes ASM
+# Fuentes	
 ASM_SRCS := boot.asm
-
 ASM_OBJS := boot.o
 
-# Fuentes C++
-CPP_SRCS := kernel/kernel.cpp	    \
-	kernel/Console.cpp 				\
-	kernel/io.cpp 					\
-	kernel/fat32.cpp 				\
-	kernel/disk.cpp 				\
-	kernel/floppy.cpp
+CPP_SRCS := kernel/kernel.cpp \
+	kernel/Console.cpp \
+	kernel/io.cpp \
+	kernel/fat32.cpp \
+	kernel/disk.cpp \
+	kernel/floppy.cpp \
+	kernel/Graphics.cpp
 
-# Objetos
-CPP_OBJS := kernel.o				\
-	console.o 						\
-	io.o 							\
-	fat32.o 						\
-	disk.o 							\
-	floppy.o
+CPP_OBJS := kernel.o \
+	console.o \
+	io.o \
+	fat32.o \
+	disk.o \
+	floppy.o \
+	Graphics.o
 
-# Script de linker
 LDSCRIPT := kernel/linker.ld
 
 # Salidas
 KERNEL_ELF := kernel.elf
-ISO_IMG    := RanaOS.iso
+ISO_IMG	:= RanaOS.iso
 
 .PHONY: all clean iso run
 
@@ -60,20 +58,11 @@ all: iso
 boot.o: boot.asm
 	$(NASM) -f elf32 $< -o $@
 
-#io.o: kernel/io.asm
-#	$(NASM) -f elf32 $< -o $@
-
-getKey.o: kernel/getKey.asm
-	$(NASM) -f elf32 $< -o $@
-
-keyboard_poll.o: kernel/keyboard_poll.asm
-	$(NASM) -f elf32 $< -o $@
-
 # --------------------------------------------------------
 # 2) Compilar C++
 # --------------------------------------------------------
 kernel.o: kernel/kernel.cpp kernel/Console.h kernel/Keyboard.h kernel/io.h \
-          kernel/idt.h kernel/pic.h kernel/fat32.h
+		  kernel/idt.h kernel/pic.h kernel/fat32.h kernel/Graphics.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 console.o: kernel/Console.cpp kernel/Console.h
@@ -91,12 +80,15 @@ fat32.o: kernel/fat32.cpp kernel/fat32.h
 floppy.o: kernel/floppy.cpp kernel/floppy.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+Graphics.o: kernel/Graphics.cpp kernel/Graphics.h kernel/multiboot.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 # --------------------------------------------------------
 # 3) Linkear kernel ELF
 # --------------------------------------------------------
 $(KERNEL_ELF): $(ASM_OBJS) $(CPP_OBJS) $(LDSCRIPT)
 	$(LD) $(LDFLAGS) -T $(LDSCRIPT) -o $@ \
-	    $(ASM_OBJS) $(CPP_OBJS)
+		$(ASM_OBJS) $(CPP_OBJS)
 
 # --------------------------------------------------------
 # 4) Generar ISO booteable con GRUB
@@ -111,7 +103,7 @@ iso: $(KERNEL_ELF)
 	@cp grub/grub.cfg $(GRUB_DIR)/grub.cfg
 	@cp grub/bg-fixed.png $(GRUB_DIR)/bg.png
 	@$(GRUB_MKRESCUE) -o $(ISO_IMG) $(ISO_DIR) \
-	    --modules="multiboot part_msdos"
+		--modules="multiboot part_msdos"
 	@rm -rf $(ISO_DIR)
 	@echo ">>> ISO creada: $(ISO_IMG)"
 
@@ -119,18 +111,17 @@ iso: $(KERNEL_ELF)
 # 5) Arrancar en QEMU
 # --------------------------------------------------------
 run: iso
-	$(QEMU) -cdrom $(ISO_IMG) -m 512M -curses
+	$(QEMU) -cdrom $(ISO_IMG) -m 512M -vga std
 
 # --------------------------------------------------------
 # 6) Limpiar
 # --------------------------------------------------------
 clean:
-	@rm -f *.o getKey.o keyboard_poll.o \
-	         $(CPP_OBJS) $(ASM_OBJS) \
-	         $(KERNEL_ELF)
+	@rm -f *.o $(CPP_OBJS) $(ASM_OBJS) \
+			 $(KERNEL_ELF)
 
 # --------------------------------------------------------
-# 8) Generate FATnenuphar bin
+# 7) Generate FATnenuphar bin
 # --------------------------------------------------------
 fatnenuphar:
 	g++ -std=c++17 -O2 fatnenuphar.cpp -o fatnenuphar
