@@ -1,5 +1,6 @@
 #include "Console.h"
 #include "io.h"
+#include <stddef.h> 
 #include <stdint.h>
 
 extern "C" {
@@ -47,3 +48,8 @@ void insw(uint16_t port, void* addr, int count) {
 }
 
 }
+/*
+void* operator new[](size_t size) {
+    // Implementación simple con malloc
+    return malloc(size);
+}*/

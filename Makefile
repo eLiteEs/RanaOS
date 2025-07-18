@@ -2,16 +2,20 @@
 
 # Herramientas
 NASM		  := nasm
-CXX		   := g++
-LD			:= ld
+CXX		   	  := g++
+LD			  := ld
 GRUB_MKRESCUE := grub-mkrescue
 QEMU		  := qemu-system-i386
+C             := gcc
 
 # Flags
 CXXFLAGS := -m32 -ffreestanding -O2 -Wall -Wextra \
 	-fno-exceptions -fno-rtti -fno-pie -fno-pic \
 	-std=gnu++17 -Ikernel
-LDFLAGS  := -m elf_i386
+LDFLAGS := -m elf_i386 -nostdlib
+CFLAGS := -m32 -ffreestanding -O2 -Wall -Wextra \
+    -fno-pie -fno-pic \
+    -std=gnu17 -Ikernel
 
 # Directorios
 ISO_DIR   := isodir
@@ -23,8 +27,8 @@ FILES_DEST_DIR = $(ISO_DIR)/files
 FILES = $(wildcard $(FILES_SRC_DIR)/*.bin)
 
 # Fuentes	
-ASM_SRCS := boot.asm
-ASM_OBJS := boot.o
+ASM_SRCS := boot.asm threads.asm
+ASM_OBJS := boot.o threads.o
 
 CPP_SRCS := kernel/kernel.cpp \
 	kernel/Console.cpp \
@@ -32,7 +36,8 @@ CPP_SRCS := kernel/kernel.cpp \
 	kernel/fat32.cpp \
 	kernel/disk.cpp \
 	kernel/floppy.cpp \
-	kernel/Graphics.cpp
+	kernel/Graphics.cpp \
+	kenrel/Font.c
 
 CPP_OBJS := kernel.o \
 	console.o \
@@ -40,7 +45,8 @@ CPP_OBJS := kernel.o \
 	fat32.o \
 	disk.o \
 	floppy.o \
-	Graphics.o
+	Graphics.o \
+	Font.o
 
 LDSCRIPT := kernel/linker.ld
 
@@ -58,11 +64,14 @@ all: iso
 boot.o: boot.asm
 	$(NASM) -f elf32 $< -o $@
 
+threads.o: threads.asm
+	$(NASM) -f elf32 $< -o $@
+
 # --------------------------------------------------------
 # 2) Compilar C++
 # --------------------------------------------------------
 kernel.o: kernel/kernel.cpp kernel/Console.h kernel/Keyboard.h kernel/io.h \
-		  kernel/idt.h kernel/pic.h kernel/fat32.h kernel/Graphics.h
+		  kernel/idt.h kernel/pic.h kernel/fat32.h kernel/Graphics.h kernel/Font.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 console.o: kernel/Console.cpp kernel/Console.h
@@ -82,6 +91,9 @@ floppy.o: kernel/floppy.cpp kernel/floppy.h
 
 Graphics.o: kernel/Graphics.cpp kernel/Graphics.h kernel/multiboot.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+Font.o: kernel/Font.c kernel/Font.h
+	$(C) $(CFLAGS) -c $< -o $@
 
 # --------------------------------------------------------
 # 3) Linkear kernel ELF

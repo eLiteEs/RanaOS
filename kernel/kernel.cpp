@@ -481,8 +481,8 @@ void runcommand(char* s, bool auth) {
     } else if(!strcmp(s, "jogo") /* aka boludez */) {
         Console::clearScreen();
 
-        Graphics::init();
-        Graphics::clear_screen(0x00000900);
+        gfx_init();
+        gfx_clear_screen(COLOR_BLUE);
 
         // Some variables
         int x = 10;
@@ -497,16 +497,16 @@ void runcommand(char* s, bool auth) {
 
         while(playing)
         {
-            Graphics::clear_screen(0x00000900); // Clear screen
+            gfx_clear_screen(COLOR_BLUE); // Clear screen
 
-            Graphics::DrawRect(x, y, 10, 10, 0x04); // Draw player
+            gfx_fill_rect(x, y, 10, 10, 0x04); // Draw player
 
-            Graphics::DrawRect(fruitX, fruitY, 10, 10, 0x06); // Draw fruit
+            gfx_fill_rect(fruitX, fruitY, 10, 10, 0x06); // Draw fruit
 
             // Draw points
             for (int i = 0; i < points; i++) 
             {
-                Graphics::DrawRect(2 + 4 * i, 2, 4, 4, 0x06);
+                gfx_fill_rect(2 + 4 * i, 2, 4, 4, 0x06);
             }
 
             // Move the player on key

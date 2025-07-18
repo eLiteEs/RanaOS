@@ -1,3 +1,22 @@
+#include "Graphics.h"
+#include "io.h"
+#include "Font.h"
+#include <stdbool.h>
+
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 200
+
+static uint8_t* vga = (uint8_t*)0xA0000;
+static uint8_t* font = nullptr;
+
+// Implementación de funciones matemáticas básicas
+static float absf(float x) { return (x < 0) ? -x : x; }
+static int absi(int x) { return (x < 0) ? -x : x; }
+static float sinf(float x);
+static float cosf(float x);
+static float tanf(float x);
+
+// ================== FUNCIONES BÁSICAS ==================
 // graphics.cpp
 #include "Graphics.h"
 #include "io.h"
@@ -24,7 +43,7 @@ static uint8_t g_320x200x256[] = {
     0x41, 0x00, 0x0F, 0x00, 0x00
 };
 
-void Graphics::write_registers(uint8_t* regs) {
+void write_registers(uint8_t* regs) {
     // MISC
     outb(0x3C2, *regs++);
     
@@ -58,62 +77,251 @@ void Graphics::write_registers(uint8_t* regs) {
     outb(0x3C0, 0x20);
 }
 
-void Graphics::init() {
+void gfx_init() {
     write_registers(g_320x200x256);
     
     // Configurar plano de memoria
     outb(0x3C4, 0x02);
     outb(0x3C5, 0x0F);
-    
-    // Limpiar pantalla
-    clear_screen(0);
 }
 
-void Graphics::put_pixel(uint16_t x, uint16_t y, uint8_t color) {
-    if(x >= WIDTH || y >= HEIGHT) return;
-    VGA[y * WIDTH + x] = color;
+void gfx_put_pixel(int x, int y, uint8_t color) {
+    if (x < 0 || x >= SCREEN_WIDTH || y < 0 || y >= SCREEN_HEIGHT) return;
+    vga[y * SCREEN_WIDTH + x] = color;
 }
 
-void Graphics::clear_screen(uint8_t color) {
-    for(uint32_t i = 0; i < WIDTH * HEIGHT; i++) {
-        VGA[i] = color;
+void gfx_clear_screen(uint8_t color) {
+    for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) {
+        vga[i] = color;
     }
 }
 
-void Graphics::switch_to_text_mode() {
-    // 1. Esperar retrace vertical para evitar glitches
-    while((inb(0x3DA) & 0x08));
-    while(!((inb(0x3DA) & 0x08)));
+// ================== FORMAS 2D ==================
+void gfx_draw_line(int x0, int y0, int x1, int y1, uint8_t color) {
+    int dx = absi(x1 - x0);
+    int dy = -absi(y1 - y0);
+    int sx = (x0 < x1) ? 1 : -1;
+    int sy = (y0 < y1) ? 1 : -1;
+    int err = dx + dy;
     
-    // 2. Secuencia de reset VGA segura
-    outb(0x3C4, 0x01); outb(0x3C5, 0x00); // Deshabilitar protección
-    outb(0x3C4, 0x00); outb(0x3C5, 0x03); // Reset secuenciador
-    outb(0x3C4, 0x01); outb(0x3C5, 0x01); // Clocking mode
-    
-    // 3. Configuración mínima de modo texto
-    uint8_t crtc[] = {0x5F, 0x4F, 0x50, 0x82, 0x55, 0x81, 0xBF, 0x1F, 
-                      0x00, 0x4F, 0x0D, 0x0E, 0x00, 0x00, 0x00, 0x00};
-    for(uint8_t i = 0; i < 16; i++) {
-        outb(0x3D4, i); outb(0x3D5, crtc[i]);
-    }
-    
-    // 4. Limpieza de pantalla con color seguro
-    uint16_t* vga = (uint16_t*)0xB8000;
-    for(int i = 0; i < 80*25; i++) {
-        vga[i] = 0x0720; // Gris sobre negro
-    }
-    
-    // 5. Forzar refresco en VirtualBox
-    for(int i = 0; i < 10; i++) {
-        inb(0x3DA); outb(0x3C0, 0x20);
-    }
-}
-
-void Graphics::DrawRect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t color)
-{
-    for(int i = y; i < y + height; i++) {
-        for(int j = x; j < x + width; j++) {
-            put_pixel(j, i, color);
+    while (true) {
+        gfx_put_pixel(x0, y0, color);
+        if (x0 == x1 && y0 == y1) break;
+        
+        int e2 = 2 * err;
+        if (e2 >= dy) {
+            err += dy;
+            x0 += sx;
+        }
+        if (e2 <= dx) {
+            err += dx;
+            y0 += sy;
         }
     }
 }
+
+void gfx_draw_rect(int x, int y, int w, int h, uint8_t color) {
+    gfx_draw_line(x, y, x + w, y, color);
+    gfx_draw_line(x + w, y, x + w, y + h, color);
+    gfx_draw_line(x + w, y + h, x, y + h, color);
+    gfx_draw_line(x, y + h, x, y, color);
+}
+
+void gfx_fill_rect(int x, int y, int w, int h, uint8_t color) {
+    for (int dy = 0; dy < h; dy++) {
+        for (int dx = 0; dx < w; dx++) {
+            gfx_put_pixel(x + dx, y + dy, color);
+        }
+    }
+}
+
+void gfx_draw_circle(int cx, int cy, int r, uint8_t color) {
+    int x = r;
+    int y = 0;
+    int decision = 1 - x;
+    
+    while (x >= y) {
+        gfx_put_pixel(cx + x, cy + y, color);
+        gfx_put_pixel(cx - x, cy + y, color);
+        gfx_put_pixel(cx + x, cy - y, color);
+        gfx_put_pixel(cx - x, cy - y, color);
+        gfx_put_pixel(cx + y, cy + x, color);
+        gfx_put_pixel(cx - y, cy + x, color);
+        gfx_put_pixel(cx + y, cy - x, color);
+        gfx_put_pixel(cx - y, cy - x, color);
+        
+        y++;
+        if (decision <= 0) {
+            decision += 2 * y + 1;
+        } else {
+            x--;
+            decision += 2 * (y - x) + 1;
+        }
+    }
+}
+
+void gfx_fill_circle(int cx, int cy, int r, uint8_t color) {
+    for (int y = -r; y <= r; y++) {
+        for (int x = -r; x <= r; x++) {
+            if (x*x + y*y <= r*r) {
+                gfx_put_pixel(cx + x, cy + y, color);
+            }
+        }
+    }
+}
+/*
+// ================== GRÁFICOS 3D ==================
+static float projection_matrix[4][4] = {{0}};
+static float camera_matrix[4][4] = {{0}};
+
+void gfx_set_projection(float fov, float aspect, float near, float far) {
+    float f = 1.0f / tanf(fov / 2.0f);
+    
+    projection_matrix[0][0] = f / aspect;
+    projection_matrix[1][1] = f;
+    projection_matrix[2][2] = (far + near) / (near - far);
+    projection_matrix[2][3] = -1.0f;
+    projection_matrix[3][2] = (2.0f * far * near) / (near - far);
+}
+
+void gfx_set_camera(float x, float y, float z, float rx, float ry, float rz) {
+    // Implementación básica (sin rotaciones)
+    camera_matrix[3][0] = -x;
+    camera_matrix[3][1] = -y;
+    camera_matrix[3][2] = -z;
+}
+
+static Vec3 transform_point(const Vec3& point) {
+    // Aplicar transformaciones de cámara
+    Vec3 transformed = {
+        point.x + camera_matrix[3][0],
+        point.y + camera_matrix[3][1],
+        point.z + camera_matrix[3][2]
+    };
+    
+    // Aplicar proyección
+    float w = projection_matrix[3][2] / transformed.z;
+    Vec3 projected = {
+        transformed.x * w * projection_matrix[0][0],
+        transformed.y * w * projection_matrix[1][1],
+        transformed.z
+    };
+    
+    // Convertir a coordenadas de pantalla
+    Vec3 screen = {
+        (projected.x + 1.0f) * 0.5f * SCREEN_WIDTH,
+        (1.0f - projected.y) * 0.5f * SCREEN_HEIGHT,
+        projected.z
+    };
+    
+    return screen;
+}
+
+void gfx_draw_triangle(const Triangle& tri) {
+    Vec3 v0 = transform_point(tri.v0);
+    Vec3 v1 = transform_point(tri.v1);
+    Vec3 v2 = transform_point(tri.v2);
+    
+    // Dibujar líneas del triángulo
+    gfx_draw_line((int)v0.x, (int)v0.y, (int)v1.x, (int)v1.y, tri.color);
+    gfx_draw_line((int)v1.x, (int)v1.y, (int)v2.x, (int)v2.y, tri.color);
+    gfx_draw_line((int)v2.x, (int)v2.y, (int)v0.x, (int)v0.y, tri.color);
+}
+
+void gfx_draw_mesh(const Triangle* triangles, int count) {
+    for (int i = 0; i < count; i++) {
+        gfx_draw_triangle(triangles[i]);
+    }
+}
+
+// ================== THREADS ==================
+struct Thread {
+    void* stack;
+    void* stack_ptr;
+    bool active;
+};
+
+#define MAX_THREADS 8
+static Thread threads[MAX_THREADS];
+static int current_thread = 0;
+
+// Interrupt handler para cambio de contexto
+extern "C" void thread_switch_asm(void** old_sp, void* new_sp);
+
+int thread_create(ThreadFunc func, void* arg) {
+    for (int i = 0; i < MAX_THREADS; i++) {
+        if (!threads[i].active) {
+            // Crear pila de 4KB
+            threads[i].stack = new uint8_t[4096];
+            threads[i].stack_ptr = (void*)((uint8_t*)threads[i].stack + 4096 - 16);
+            
+            // Configurar contexto inicial
+            uint32_t* stack = (uint32_t*)threads[i].stack_ptr;
+            *(--stack) = (uint32_t)arg;  // Argumento
+            *(--stack) = 0;              // Registro EBP
+            *(--stack) = 0;              // Registro EBX
+            *(--stack) = 0;              // Registro ESI
+            *(--stack) = 0;              // Registro EDI
+            *(--stack) = (uint32_t)func; // Dirección de retorno (punto de entrada)
+            
+            threads[i].stack_ptr = stack;
+            threads[i].active = true;
+            return i;
+        }
+    }
+    return -1;
+}
+
+void thread_yield() {
+    int next_thread = (current_thread + 1) % MAX_THREADS;
+    while (!threads[next_thread].active) {
+        next_thread = (next_thread + 1) % MAX_THREADS;
+    }
+    
+    void* old_sp;
+    asm volatile("mov %%esp, %0" : "=r"(old_sp));
+    
+    threads[current_thread].stack_ptr = old_sp;
+    current_thread = next_thread;
+    
+    thread_switch_asm(&old_sp, threads[current_thread].stack_ptr);
+}
+
+void thread_sleep(int ms) {
+    // Implementación básica con busy-wait
+    // (En un sistema real usaríamos el PIT)
+    volatile int count = ms * 10000;
+    while (count-- > 0) {
+        asm volatile("pause");
+    }
+}
+
+// Implementación de funciones trigonométricas básicas
+static float sinf(float x) {
+    // Aproximación con serie de Taylor
+    float result = x;
+    float term = x;
+    float x2 = x * x;
+    for (int n = 1; n < 5; n++) {
+        term *= -x2 / ((2*n) * (2*n+1));
+        result += term;
+    }
+    return result;
+}
+
+static float cosf(float x) {
+    // Aproximación con serie de Taylor
+    float result = 1.0f;
+    float term = 1.0f;
+    float x2 = x * x;
+    for (int n = 1; n < 5; n++) {
+        term *= -x2 / ((2*n-1) * (2*n));
+        result += term;
+    }
+    return result;
+}
+
+float tanf(float x) {
+    float c = cosf(x);
+    return (c != 0) ? sinf(x)/c : 0; // Evitar división por cero
+}*/
