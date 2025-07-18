@@ -169,7 +169,7 @@ void gfx_fill_circle(int cx, int cy, int r, uint8_t color) {
         }
     }
 }
-/*
+
 // ================== GRÁFICOS 3D ==================
 static float projection_matrix[4][4] = {{0}};
 static float camera_matrix[4][4] = {{0}};
@@ -235,7 +235,7 @@ void gfx_draw_mesh(const Triangle* triangles, int count) {
 }
 
 // ================== THREADS ==================
-struct Thread {
+/*struct Thread {
     void* stack;
     void* stack_ptr;
     bool active;
@@ -294,7 +294,7 @@ void thread_sleep(int ms) {
     while (count-- > 0) {
         asm volatile("pause");
     }
-}
+}*/
 
 // Implementación de funciones trigonométricas básicas
 static float sinf(float x) {
@@ -324,4 +324,4 @@ static float cosf(float x) {
 float tanf(float x) {
     float c = cosf(x);
     return (c != 0) ? sinf(x)/c : 0; // Evitar división por cero
-}*/
+}

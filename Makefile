@@ -36,8 +36,7 @@ CPP_SRCS := kernel/kernel.cpp \
 	kernel/fat32.cpp \
 	kernel/disk.cpp \
 	kernel/floppy.cpp \
-	kernel/Graphics.cpp \
-	kenrel/Font.c
+	kernel/Graphics.cpp
 
 CPP_OBJS := kernel.o \
 	console.o \
@@ -45,8 +44,7 @@ CPP_OBJS := kernel.o \
 	fat32.o \
 	disk.o \
 	floppy.o \
-	Graphics.o \
-	Font.o
+	Graphics.o
 
 LDSCRIPT := kernel/linker.ld
 
@@ -92,8 +90,8 @@ floppy.o: kernel/floppy.cpp kernel/floppy.h
 Graphics.o: kernel/Graphics.cpp kernel/Graphics.h kernel/multiboot.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Font.o: kernel/Font.c kernel/Font.h
-	$(C) $(CFLAGS) -c $< -o $@
+#Font.o: kernel/Font.cpp kernel/Font.h
+#	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # --------------------------------------------------------
 # 3) Linkear kernel ELF

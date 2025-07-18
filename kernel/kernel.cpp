@@ -371,6 +371,106 @@ multiboot_info_t* mbi;
 #define KEY_BACKSPACE  0x0E
 #define KEY_ENTER      0x1C
 
+static float sinf(float x) {
+    // Aproximación con serie de Taylor
+    float result = x;
+    float term = x;
+    float x2 = x * x;
+    for (int n = 1; n < 5; n++) {
+        term *= -x2 / ((2*n) * (2*n+1));
+        result += term;
+    }
+    return result;
+}
+
+static float cosf(float x) {
+    // Aproximación con serie de Taylor
+    float result = 1.0f;
+    float term = 1.0f;
+    float x2 = x * x;
+    for (int n = 1; n < 5; n++) {
+        term *= -x2 / ((2*n-1) * (2*n));
+        result += term;
+    }
+    return result;
+}
+
+static float rotation_x = 0.0f;
+static float rotation_y = 0.0f;
+static float rotation_z = 0.0f;
+
+// Función para rotar un vértice alrededor del origen
+static void rotate_vertex(Vec3* vertex, float angle_x, float angle_y, float angle_z) {
+    // Rotación en X
+    float cos_x = cosf(angle_x);
+    float sin_x = sinf(angle_x);
+    float y = vertex->y * cos_x - vertex->z * sin_x;
+    float z = vertex->y * sin_x + vertex->z * cos_x;
+    vertex->y = y;
+    vertex->z = z;
+
+    // Rotación en Y
+    float cos_y = cosf(angle_y);
+    float sin_y = sinf(angle_y);
+    float x = vertex->x * cos_y + vertex->z * sin_y;
+    z = -vertex->x * sin_y + vertex->z * cos_y;
+    vertex->x = x;
+    vertex->z = z;
+
+    // Rotación en Z (opcional)
+    float cos_z = cosf(angle_z);
+    float sin_z = sinf(angle_z);
+    x = vertex->x * cos_z - vertex->y * sin_z;
+    y = vertex->x * sin_z + vertex->y * cos_z;
+    vertex->x = x;
+    vertex->y = y;
+}
+
+// Definir los 12 triángulos de un cubo (2 por cara)
+static Triangle cube[12] = {
+    // Cara frontal (rojo)
+    {{-1, -1, 1}, {1, -1, 1}, {1, 1, 1}, 0x04},
+    {{-1, -1, 1}, {1, 1, 1}, {-1, 1, 1}, 0x04},
+    // Cara derecha (verde)
+    {{1, -1, 1}, {1, -1, -1}, {1, 1, -1}, 0x02},
+    {{1, -1, 1}, {1, 1, -1}, {1, 1, 1}, 0x02},
+    // Cara trasera (azul)
+    {{-1, -1, -1}, {1, -1, -1}, {1, 1, -1}, 0x01},
+    {{-1, -1, -1}, {1, 1, -1}, {-1, 1, -1}, 0x01},
+    // Cara izquierda (amarillo)
+    {{-1, -1, 1}, {-1, -1, -1}, {-1, 1, -1}, 0x0E},
+    {{-1, -1, 1}, {-1, 1, -1}, {-1, 1, 1}, 0x0E},
+    // Cara superior (magenta)
+    {{-1, 1, 1}, {1, 1, 1}, {1, 1, -1}, 0x05},
+    {{-1, 1, 1}, {1, 1, -1}, {-1, 1, -1}, 0x05},
+    // Cara inferior (cyan)
+    {{-1, -1, 1}, {1, -1, 1}, {1, -1, -1}, 0x03},
+    {{-1, -1, 1}, {1, -1, -1}, {-1, -1, -1}, 0x03}
+};
+
+// Función para dibujar el cubo rotando
+void draw_rotating_cube() {
+    while (1) {
+        gfx_clear_screen(0x00);  // Borrar pantalla (fondo negro)
+
+        // Rotar todos los vértices del cubo
+        for (int i = 0; i < 12; i++) {
+            rotate_vertex(&cube[i].v0, rotation_x, rotation_y, rotation_z);
+            rotate_vertex(&cube[i].v1, rotation_x, rotation_y, rotation_z);
+            rotate_vertex(&cube[i].v2, rotation_x, rotation_y, rotation_z);
+        }
+
+        // Dibujar todos los triángulos
+        gfx_draw_mesh(cube, 12);
+
+        // Actualizar ángulos de rotación
+        rotation_x += 0.02f;
+        rotation_y += 0.01f;
+
+        wait_ms(100);
+    }
+}
+
 void runcommand(char* s, bool auth) {	
 	if(!strcmp(s, "help")) {
 		Console::write("RanaOS - Help\n");
@@ -553,6 +653,12 @@ void runcommand(char* s, bool auth) {
         // Exit the game
         while (inb(0x64) & 0x02);
         outb(0x64, 0xFE);
+    } else if(!strcmp(s, "3d")) {    
+        gfx_init();  // Configurar modo VGA/gráfico
+        float aspect = 120 / (float)80;
+        gfx_set_projection(3.141592f / 3.0f, aspect, 0.1f, 100.0f);  // FOV=60°
+        gfx_set_camera(0.0f, 0.0f, -5.0f, 0.0f, 0.0f, 0.0f);  // Cámara en (0,0,-5)
+        draw_rotating_cube();  // Iniciar animación
     } else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}

@@ -2,7 +2,7 @@
 #define GRAPHICS_H
 
 #include <stdint.h>
-#include "Font.h"
+//#include "Font.h"
 
 // Colores VGA estándar
 enum {
@@ -29,14 +29,14 @@ enum {
 #define DEG_TO_RAD (PI / 180.0f)
 
 // Estructuras para gráficos 3D
-/*struct Vec3 {
+typedef struct {
     float x, y, z;
-};
+} Vec3;
 
-struct Triangle {
+typedef struct {
     Vec3 v0, v1, v2;
     uint8_t color;
-};*/
+} Triangle;
 
 // Funciones básicas
 void gfx_init();
@@ -63,12 +63,12 @@ void gfx_fill_circle(int cx, int cy, int r, uint8_t color);
 // Texto
 /*void gfx_set_font(uint8_t* font_data);
 void gfx_draw_char(int x, int y, char c, uint8_t color);
-void gfx_draw_string(int x, int y, const char* str, uint8_t color);
+void gfx_draw_string(int x, int y, const char* str, uint8_t color);*/
 
 // Funciones 3D
-/*void gfx_draw_triangle(const Triangle& tri);
+void gfx_draw_triangle(const Triangle& tri);
 void gfx_draw_mesh(const Triangle* triangles, int count);
-void gfx_set_projection(float fov, float aspect, float near, float far);*/
+void gfx_set_projection(float fov, float aspect, float near, float far);
 void gfx_set_camera(float x, float y, float z, float rx, float ry, float rz);
 
 // Threads (sistema básico de multitarea)
