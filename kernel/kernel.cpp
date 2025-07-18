@@ -539,7 +539,9 @@ void runcommand(char* s, bool auth) {
             }
         }
 
-        Graphics::switch_to_text_mode();
+        // Exit the game
+        while (inb(0x64) & 0x02);
+        outb(0x64, 0xFE);
     } else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}
@@ -611,7 +613,6 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
 
     Console::write("[ SUCCESS ] ", 9);
     Console::println("MBI information moved successfully");
-
 
     Console::write("[ INFO ]    ", VGA_COLOR_LIGHT_BLUE);
     Console::println("Entering RanaOS in 1500 ms");
