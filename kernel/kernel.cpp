@@ -493,42 +493,53 @@ void runcommand(char* s, bool auth) {
 
         int points = 0;
 
-        bool playing = true;
-
-        while(playing)
+        while(true)
         {
             gfx_clear_screen(COLOR_BLUE); // Clear screen
 
             gfx_fill_rect(x, y, 10, 10, 0x04); // Draw player
 
-            gfx_fill_rect(fruitX, fruitY, 10, 10, 0x06); // Draw fruit
+            gfx_fill_circle(fruitX + 5, fruitY + 5, 5, 0x06); // Draw fruit
 
             // Draw points
             for (int i = 0; i < points; i++) 
             {
-                gfx_fill_rect(2 + 4 * i, 2, 4, 4, 0x06);
+                gfx_fill_rect(2 + 4 * i, 2, 2, 4, 0x06);
             }
 
             // Move the player on key
             bool tr = false;
             char answer = Console::getKey(tr);
 
-            if(answer == KEY_RIGHT && x + 10 != 300)
+            if(answer == KEY_RIGHT)
             {
-                x += 10;
+                if(x + 10 != 310)
+                {
+                    x += 10;
+                }
                 
-            } else if(answer == KEY_LEFT && x - 10 != 0) 
+            } else if(answer == KEY_LEFT) 
             {
-                x -= 10;
-            } else if(answer == KEY_UP && y - 10 != 0)
+                if(x - 10 != 0)
+                {
+                    x -= 10;
+                }
+            } else if(answer == KEY_UP)
             {
-                y -= 10;
-            } else if(answer == KEY_DOWN && y + 10 != 200) 
+                if(y - 10 != 0)
+                {
+                    y -= 10;
+                }
+
+            } else if(answer == KEY_DOWN) 
             {
-                y += 10;
+                if(y + 10 != 190)
+                {
+                    y += 10;
+                }
             } else 
             {
-                playing = false;
+                break;
             }
 
             // Chekc collision between player and fruit
