@@ -26,6 +26,9 @@ The bootloader (i'm not sure if it's being used) is coded in assembly. The kerne
 
 On my Ubuntu WSL I have instaled `qemu`, `nasm`, `xorriso`, `grub_mkrescue`, `binutils`, `mtools` and `g++`. (maybe some are missing)
 
+## Credits
+- I have used code from [dhepper/font8x8](https://github.com/dhepper/font8x8) (public domain) in Font.c file for adding fonts to graphical mode, thanks!
+
 ## License
 
 License (GNU GPLv3) available at `LICENSE` file.
