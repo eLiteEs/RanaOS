@@ -488,6 +488,7 @@ void runcommand(char* s, bool auth) {
         Console::write("  reboot >> Reboot the computer.\n");
 	    Console::write("      ... /y >> Reboot the computer without asking.\n");
         Console::write("  jogo >> Play a game on graphical mode.\n");
+        Console::write("  3d >> Shooow a rotating 3d cube on the screen.\n");
     } else if(!strcmp(s, "version")) {
 		Console::write("eLite Systems RanaOS beta 2\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
@@ -691,7 +692,7 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
     Console::write("[ TASK ]    ", 3);
     Console::println("Gathering CPU speed...");
 
-    //g_cycles_per_ms = measure_cpu_frequency();
+    g_cycles_per_ms = measure_cpu_frequency();
 
     Console::write("[ SUCCESS ] ", 2);
     Console::println("CPU Speed saved succesfully!");
@@ -757,10 +758,10 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
 
     Console::println(format_wth_0(getHour()), ":", format_wth_0(getMinute()), "  ", substr(get_weekday_name(), 0, 3), ", ", format_wth_0(getDay()), "/", format_wth_0(getMonth()), "/", getYear(), "\n");
 
-	Console::println("Use 'help' for getting a list of commands.\n");
+	Console::println("Use \"help\" for getting a list of commands.\n");
 
 	while (1) {
-		Console::write("$- ");
+		Console::write("> ");
 		char* s = Console::readLine(linebuf, sizeof(linebuf));
 		
 		runcommand(s, true);		
