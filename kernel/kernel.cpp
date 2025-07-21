@@ -1,17 +1,27 @@
-#include "Console.h"
-#include "io.h"
-#include "floppy.h"
-#include "fatnenuphar.h"
-#include <stdint.h>
-#include "parrot.cpp"
-#include "ata_detect.cpp"
-#include "fat32.h"
-#include "multiboot.h"
-#include "Graphics.h"
+//
+// eLite Systems RanaOS
+// (c) 2025 Blas Fernández
+// 32-bit OS coded with C++
+// ns como puede ser que esto funcione
+//
 
+// Incluir funciones de otros archivos
+#include "Console.h" // I/O Texto
+#include "io.h" // I/O Archivos
+#include "floppy.h" // cosas de disquetes
+#include "fatnenuphar.h" // Filesystem de FatNenuphar
+#include <stdint.h> // Algo de C++ que si esta en freestanding
+#include "parrot.cpp" // Frames de un pajaro
+#include "ata_detect.cpp" // Cosas para detectar discos
+#include "fat32.h" // Funciones para el Fat32
+#include "multiboot.h" // Funciones para cosas del GRUB
+#include "Graphics.h" // Graficos en VGA 13h
+
+// Algo del filesystem
 #define DISK_SIZE_BYTES (128 * 1024)
 #define MAX_FILE_SIZE   2048
 
+// Cosas del PIT
 #define PIT_CHANNEL0 0x40
 #define PIT_COMMAND  0x43
 #define PIT_FREQUENCY 1193182
@@ -37,6 +47,7 @@
 // Cosas del parrot
 uint64_t rdtsc();
 
+// Posicionar el cursor en row y col (esta en Console.h tmb)
 void set_cursor(uint8_t row, uint8_t col) {
     uint16_t pos = row * 80 + col;
 
@@ -46,6 +57,7 @@ void set_cursor(uint8_t row, uint8_t col) {
     outb(0x3D5, (uint8_t)((pos >> 8) & 0xFF));
 }
 
+// Mas cosas del PIT
 void pit_init(uint32_t frequency) {
     uint16_t divisor = (uint16_t)(PIT_FREQUENCY / frequency);
 
@@ -64,20 +76,23 @@ void pit_set_frequency(uint32_t freq) {
     outb(PIT_CHANNEL0, (divisor >> 8) & 0xFF); // high byte
 }
 
-uint64_t g_cycles_per_ms = 0;
+uint64_t g_cycles_per_ms = 0; // Ciclos de la CPU
 
+// Delay usando la CPU
 void delay_ms(uint32_t ms) {
     uint64_t start = rdtsc();
     uint64_t end = start + g_cycles_per_ms * ms;
     while (rdtsc() < end);
 }
 
+// en verdad no se que es esto
 uint64_t rdtsc() {
     uint32_t lo, hi;
     __asm__ volatile ("rdtsc" : "=a"(lo), "=d"(hi));
     return ((uint64_t)hi << 32) | lo;
 }
 
+// esto tampoco se que es
 void io_wait() {
     outb(0x80, 0);
 }
@@ -94,6 +109,7 @@ void pit_wait_ticks(uint32_t ticks) {
     }
 }
 
+// Para calcular la frequencia de la CPU (va raro)
 uint32_t measure_cpu_frequency() {
 	pit_init(100); // 100 Hz = 10 ms tick
 
@@ -105,7 +121,7 @@ uint32_t measure_cpu_frequency() {
 	return cycles / 100;
 }
 
-
+// Funciones que estan redifinidas
 int keyboard_key_available() {
     return inb(0x64) & 1;
 }
@@ -114,6 +130,7 @@ uint8_t keyboard_read_scancode() {
     return inb(0x60);
 }
 
+// Funcion para comprobar si c fue pulsada
 bool was_c_pressed() {
     if (!keyboard_key_available())
         return false;
@@ -127,18 +144,22 @@ bool was_c_pressed() {
     return sc == 0x2E;
 }
 
+// Cosas para las fechas
 #define CMOS_ADDRESS 0x70
 #define CMOS_DATA    0x71
 
+// Leer datos del CMOS
 uint8_t read_cmos(uint8_t reg) {
     outb(CMOS_ADDRESS, reg);
     return inb(CMOS_DATA);
 }
 
+// Transformar bdc a binario
 uint8_t bcd_to_bin(uint8_t val) {
     return (val & 0x0F) + ((val >> 4) * 10);
 }
 
+// Funciones para las horas
 uint8_t getSecond() {
     return bcd_to_bin(read_cmos(0x00));
 }
@@ -151,6 +172,7 @@ uint8_t getHour() {
     return bcd_to_bin(read_cmos(0x04));
 }
 
+// Funciones para las fechas
 uint8_t getDay() {
     return bcd_to_bin(read_cmos(0x07));
 }
@@ -162,6 +184,8 @@ uint8_t getMonth() {
 uint8_t getYear() {
     return bcd_to_bin(read_cmos(0x09)); // Solo últimos dos dígitos
 }
+
+// Funcion para obtener el nombre del dia de hoy
 const char* get_weekday_name() {
     int day = getDay();
     int month = getMonth();
@@ -182,7 +206,6 @@ const char* get_weekday_name() {
 
     return weekdays[h];
 }
-
 
 // Funciones útiles para no usar libc
 int strcmp(const char* a, const char* b) {
@@ -361,9 +384,10 @@ int32_t rand_range(int32_t min, int32_t max) {
     return min + rand_val;
 }
 
-static char linebuf[256];
-multiboot_info_t* mbi;
+static char linebuf[256]; // Algo para la consola
+multiboot_info_t* mbi; // var global Mulitboot Info
 
+// Codigos de flechas
 #define KEY_LEFT       0x4B
 #define KEY_RIGHT      0x4D
 #define KEY_UP         0x48
@@ -371,6 +395,7 @@ multiboot_info_t* mbi;
 #define KEY_BACKSPACE  0x0E
 #define KEY_ENTER      0x1C
 
+// Matematicas confusas
 static float sinf(float x) {
     // Aproximación con serie de Taylor
     float result = x;
@@ -395,6 +420,7 @@ static float cosf(float x) {
     return result;
 }
 
+// Cosas para el cubo que gira
 static float rotation_x = 0.0f;
 static float rotation_y = 0.0f;
 static float rotation_z = 0.0f;
@@ -471,6 +497,7 @@ void draw_rotating_cube() {
     }
 }
 
+// Ejecutar comandos
 void runcommand(char* s, bool auth) {	
 	if(!strcmp(s, "help")) {
 		Console::write("RanaOS - Help\n");
@@ -497,7 +524,7 @@ void runcommand(char* s, bool auth) {
 	} else if(!strcmp(s, "clear") || !strcmp(s, "cls")) {
 		Console::clearScreen();
 	} else if(!strcmp(s, "time")) {
-		Console::println(getHour(), ":", format_wth_0(getMinute()));
+		Console::println(getHour(), ":", format_wth_0(getMinute()), ".", getSecond());
 	} else if(!strcmp(s, "date")) {
 		Console::println(getDay(), "/", format_wth_0(getMonth()), "/", getYear());
 	} else if(!strcmp(s, "di") || !strcmp(s, "disks")) {
@@ -717,7 +744,7 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
         Console::println("Press any key to exit RanaOS...");
 
         bool b = false;
-        char c = Console::getKey(b);
+        Console::getKey(b);
         return;
     }
     Console::write("[ SUCCESS ] ", VGA_COLOR_GREEN);
@@ -756,7 +783,7 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
 
 	Console::write("\n\n");
 
-    Console::println(format_wth_0(getHour()), ":", format_wth_0(getMinute()), "  ", substr(get_weekday_name(), 0, 3), ", ", format_wth_0(getDay()), "/", format_wth_0(getMonth()), "/", getYear(), "\n");
+    Console::println(substr(get_weekday_name(), 0, 3), ", ", format_wth_0(getDay()), "/", format_wth_0(getMonth()), "/", getYear(), "\n");
 
 	Console::println("Use \"help\" for getting a list of commands.\n");
 
