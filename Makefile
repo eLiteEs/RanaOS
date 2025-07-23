@@ -11,7 +11,7 @@ QEMU		  := qemu-system-i386
 CXXFLAGS := -m32 -ffreestanding -O2 -Wall -Wextra \
 	-fno-exceptions -fno-rtti -fno-pie -fno-pic \
 	-std=gnu++17 -Ikernel
-LDFLAGS := -m elf_i386 -nostdlib -L/usr/lib/gcc/x86_64-linux-gnu/11/32 -lgcc
+LDFLAGS := -m elf_i386 -nostdlib -L/usr/lib/gcc/x86_64-linux-gnu/11/32
 CFLAGS   := -m32 -ffreestanding -O2 -Wall -Wextra \
 	-fno-pie -fno-pic \
 	-std=gnu17 -Ikernel
