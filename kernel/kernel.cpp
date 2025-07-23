@@ -8,14 +8,14 @@
 // Incluir funciones de otros archivos
 #include "Console.h" // I/O Texto
 #include "io.h" // I/O Archivos
-#include "floppy.h" // cosas de disquetes
-#include "fatnenuphar.h" // Filesystem de FatNenuphar
 #include <stdint.h> // Algo de C++ que si esta en freestanding
 #include "parrot.cpp" // Frames de un pajaro
-#include "ata_detect.cpp" // Cosas para detectar discos
-#include "fat32.h" // Funciones para el Fat32
 #include "multiboot.h" // Funciones para cosas del GRUB
 #include "Graphics.h" // Graficos en VGA 13h
+#include "filesystem.hpp" // Cosas del nuevo filesystem
+#include "disk.hpp" // Cosas del nuevo disco
+#include "string.h" // ns
+#include "math.hpp"
 
 // Algo del filesystem
 #define DISK_SIZE_BYTES (128 * 1024)
@@ -291,32 +291,6 @@ void wait(int secs) {
 	while(getSecond() != now + secs) {}
 }
 
-void wait_ms(uint32_t ms) {
-    if (ms == 0) return;
-
-    // Each iteration is limited to 54.925 ms (maximum divisor = 65535)
-    while (ms > 0) {
-        uint32_t chunk = (ms > 54) ? 54 : ms;
-        ms -= chunk;
-
-        uint16_t divisor = (uint16_t)(1193182 / 1000 * chunk); // = 1193 * chunk
-
-        // Set PIT channel 0 to mode 0 (one-shot), binary counting
-        outb(PIT_COMMAND, 0b00110100); // channel 0, access lobyte/hibyte, mode 0
-
-        // Load divisor
-        outb(PIT_CHANNEL0, divisor & 0xFF);        // low byte
-        outb(PIT_CHANNEL0, (divisor >> 8) & 0xFF); // high byte
-
-        // Wait until the countdown is done (OUT == 1)
-        while (true) {
-            outb(PIT_COMMAND, 0xE2); // latch status of channel 0
-            uint8_t status = inb(PIT_CHANNEL0);
-            if (status & (1 << 7)) break; // OUT = 1, finished
-        }
-    }
-}
-
 char* int_to_str(int value) {
     static char buffer[12];
     char* ptr = buffer + sizeof(buffer) - 1;
@@ -386,6 +360,7 @@ int32_t rand_range(int32_t min, int32_t max) {
 
 static char linebuf[256]; // Algo para la consola
 multiboot_info_t* mbi; // var global Mulitboot Info
+bool shownModulesExplanation = false; // Flag para saber si se explico los modulos de GRUB en la sesion actual
 
 // Codigos de flechas
 #define KEY_LEFT       0x4B
@@ -497,6 +472,264 @@ void draw_rotating_cube() {
     }
 }
 
+bool is_text_file(const char* filename);
+void show_file_content(const char* filename);
+
+/**
+ * Obtiene un archivo cargado por GRUB como módulo
+ * @param filename Nombre del archivo (sin el '/' inicial)
+ * @param out_size [opcional] Tamaño del archivo en bytes
+ * @return Puntero al contenido o nullptr si hay error
+ */
+void* get_file(const char* filename, size_t* out_size) {
+    if (!(mbi->flags & 0x8)) {
+        Console::println("Error: No hay módulos cargados");
+        return nullptr;
+    }
+
+    multiboot_module_t* modules = (multiboot_module_t*)mbi->mods_addr;
+    
+    for (uint32_t i = 0; i < mbi->mods_count; i++) {
+        const char* module_path = (const char*)modules[i].cmdline;
+        
+        // 1. Ignorar el '/' inicial que añade GRUB
+        if (module_path[0] != '/') continue;  // No es un módulo válido
+        const char* module_name = module_path + 1;  // Saltar el '/'
+        
+        // 2. Buscar solo hasta el primer espacio (por si hay parámetros)
+        const char* space = strchr(module_name, ' ');
+        size_t compare_length = space ? (size_t)(space - module_name) : strlen(module_name);
+        
+        // 3. Comparar solo la parte relevante del nombre
+        if (strncmp(module_name, filename, compare_length) == 0) {
+            if (out_size) *out_size = modules[i].mod_end - modules[i].mod_start;
+            return (void*)modules[i].mod_start;
+        }
+        
+        // Debug: Mostrar nombres reales de módulos
+        Console::write("Módulo ");
+        Console::write((long long unsigned)i);
+        Console::write(": '");
+        Console::write(module_name);
+        Console::println("'");
+    }
+
+    Console::write("Archivo '");
+    Console::write(filename);
+    Console::println("' no encontrado en módulos");
+    return nullptr;
+}
+void show_file_content(const char* filename) {
+    size_t size;
+    void* data = get_file(filename, &size);
+    
+    if (!data) {
+        Console::write("Archivo '");
+        Console::write(filename);
+        Console::println("' no encontrado");
+        return;
+    }
+
+    Console::write("Contenido de '");
+    Console::write(filename);
+    Console::write("' (");
+    Console::write((long long unsigned)size);
+    Console::println(" bytes):");
+
+    // Para archivos de texto
+    if (is_text_file(filename)) {
+        // Añadir terminador nulo temporal (sin modificar el buffer original)
+        char* temp = new char[size + 1];
+        String::memcpy(temp, data, size);
+        temp[size] = '\0';
+        
+        Console::println(temp);
+        delete[] temp;
+    } 
+    // Para archivos binarios
+    else {
+        // Mostrar hexdump de los primeros 128 bytes
+        uint8_t* bytes = (uint8_t*)data;
+        size_t display_size = (size > 128) ? 128 : size;
+        
+        for (size_t i = 0; i < display_size; i++) {
+            Console::println(bytes[i], 2);
+            Console::write(" ");
+            
+            if ((i + 1) % 16 == 0) Console::println("");
+        }
+    }
+}
+
+bool is_text_file(const char* filename) {
+    // Lista de extensiones de texto
+    const char* text_extensions[] = {".txt", ".cfg", ".json", nullptr};
+    
+    const char* ext = strrchr(filename, '.');
+    if (!ext) return false;
+    
+    for (int i = 0; text_extensions[i]; i++) {
+        if (strcmp(ext, text_extensions[i]) == 0) return true;
+    }
+    return false;
+}
+void list_modules() {
+    if (!mbi || !(mbi->flags & 0x8)) {
+        Console::println("No modules were loaded");
+        return;
+    }
+
+    multiboot_module_t* mods = (multiboot_module_t*)mbi->mods_addr;
+    Console::println("Loaded modules:");
+    
+    for (uint32_t i = 0; i < mbi->mods_count; i++) {
+        Console::write("  ");
+        Console::write((const char*)mods[i].cmdline);
+        Console::write(" (");
+        Console::write((long long unsigned)mods[i].mod_end - mods[i].mod_start);
+        Console::println(" bytes)");
+        
+        // Mostrar preview del contenido
+        uint8_t* content = (uint8_t*)mods[i].mod_start;
+        size_t size = mods[i].mod_end - mods[i].mod_start;
+        
+        Console::println("  First 16 bytes:");
+        for (size_t j = 0; j < 16 && j < size; j++) {
+            Console::println(content[j], 2);
+            Console::write(" ");
+        }
+        Console::println("\n");
+    }
+}
+void debug_grub_modules() {
+    if (!mbi || !(mbi->flags & 0x8)) {
+        Console::println("No Multiboot Info available");
+        return;
+    }
+
+    multiboot_module_t* mods = (multiboot_module_t*)mbi->mods_addr;
+    Console::println("Loaded Modules:");
+
+    for (uint32_t i = 0; i < mbi->mods_count; i++) {
+        Console::write("- Module ");
+        Console::write((long long unsigned)i);
+        Console::write(": ");
+
+        // Versión segura para mostrar el nombre
+        const char* name_ptr = (const char*)mods[i].cmdline;
+        if ((uint32_t)name_ptr < 0x100000) { // Verificar dirección válida
+        } else {
+            // Mostrar hasta 50 caracteres o hasta encontrar null
+            for (int j = 0; j < 50; j++) {
+                char c = name_ptr[j];
+                if (c == '\0') break;
+                Console::write(c);
+            }
+        }
+
+        Console::write("\n  Address: ");
+        Console::printHex(mods[i].mod_start);
+        Console::write(" - ");
+        Console::printHex(mods[i].mod_end);
+        Console::write(" (");
+        Console::write((long long unsigned)mods[i].mod_end - mods[i].mod_start);
+        Console::println(" bytes)");
+    }
+}
+/**
+ * Lee una cadena desde una dirección de memoria
+ * @param start_addr Dirección de inicio (ej: 0x00100000)
+ * @param max_len Longitud máxima a leer (evita desbordamientos)
+ * @return Puntero a cadena terminada en null (o nullptr si falla)
+ */
+const char* read_string_from_memory(uint32_t start_addr, size_t max_len = 1024) {
+    // 1. Verificación básica de dirección
+    if (start_addr < 0x100000 || start_addr > 0xC0000000) {
+        Console::println("Error: Dirección de memoria inválida");
+        return nullptr;
+    }
+
+    // 2. Buffer estático para seguridad (evita allocs dinámicos)
+    static char buffer[1025]; // +1 para el null terminator
+    const char* src = (const char*)start_addr;
+
+    // 3. Copia caracteres hasta encontrar null o exceder max_len
+    size_t i;
+    for (i = 0; i < max_len && i < sizeof(buffer) - 1; i++) {
+        // Verifica cada byte antes de copiar
+        if ((uint32_t)(src + i) >= 0xC0000000) break; // Evita accesos peligrosos
+        
+        buffer[i] = src[i];
+        if (src[i] == '\0') break; // Fin de cadena
+    }
+
+    // 4. Asegura terminación nula
+    buffer[i] = '\0';
+
+    // 5. Verifica si la cadena es válida
+    if (i == 0 || buffer[0] == '\0') {
+        return nullptr;
+    }
+
+    return buffer;
+}
+
+const char* read_file_from_meta(char* name) {
+    multiboot_module_t* mods = (multiboot_module_t*)mbi->mods_addr;
+
+    for (uint32_t i = 0; i < mbi->mods_count; i++) 
+    {
+        int start = mods[i].mod_start;
+
+        // Check if isn't a valid module
+        if(strcmp(read_string_from_memory(start, 2), "n:")) {
+            continue;
+        }
+
+        // Check if the module has the name we're searching
+        if(strcmp(read_string_from_memory(start, 2 + String::strlen(name)), concat("n:", name))) {
+            continue;
+        }
+
+        int lengthStart = 5 + String::strlen(name) + start;
+        int length;
+
+        // Get the size of the file
+        int j = 0;
+        bool finished = false;
+        char* rawResult = "";
+
+        while(!finished) {
+            const char* c = read_string_from_memory(lengthStart + j, 1); // Get the char
+
+            if(!strcmp(c, "b")) {
+                finished = true;
+            } else {
+                if(isNumber(c)) {
+                    char* temp = rawResult;
+                    rawResult = concat(temp, c);
+                } else {
+                    finished = true;
+                }
+            }
+
+            j++;
+        }
+
+        // Parse the file length
+        length = stoi(rawResult) + 1;
+
+        // Get the content start
+        int contentStart = lengthStart + String::strlen(rawResult) + 2;
+
+        // Return the actual content
+        return read_string_from_memory(contentStart, length);
+    }
+
+    Console::write("File not found", VGA_COLOR_RED);
+    return nullptr;
+}
+
 // Ejecutar comandos
 void runcommand(char* s, bool auth) {	
 	if(!strcmp(s, "help")) {
@@ -516,11 +749,15 @@ void runcommand(char* s, bool auth) {
 	    Console::write("      ... /y >> Reboot the computer without asking.\n");
         Console::write("  jogo >> Play a game on graphical mode.\n");
         Console::write("  3d >> Shooow a rotating 3d cube on the screen.\n");
+        Console::write("  auth >> Prints yes if the command was runned authenticated.\n");
+        Console::write("  lsmods >> List all modules.\n");
+        Console::write("  lsmodsc >> List all modules and its contents.\n");
+        Console::write("  hex [hexadecimal] >> Shows the decimal value of a hexadecimal string.\n");
+        Console::write("  read [filename] >> Read the contents of a module in a better way.\n");
     } else if(!strcmp(s, "version")) {
 		Console::write("eLite Systems RanaOS beta 2\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
-		Console::write(substr(s, 5));
-		Console::putChar('\n');
+		Console::println(substr(s, 5));
 	} else if(!strcmp(s, "clear") || !strcmp(s, "cls")) {
 		Console::clearScreen();
 	} else if(!strcmp(s, "time")) {
@@ -528,8 +765,9 @@ void runcommand(char* s, bool auth) {
 	} else if(!strcmp(s, "date")) {
 		Console::println(getDay(), "/", format_wth_0(getMonth()), "/", getYear());
 	} else if(!strcmp(s, "di") || !strcmp(s, "disks")) {
-        	detect_disks();
-	} else if(!strcmp(s, "parrot")) {
+        //detect_disks();
+        Console::println("Removed temporalily.");
+    } else if(!strcmp(s, "parrot")) {
     	int i = 0;
 
 		while(true) {
@@ -583,8 +821,6 @@ void runcommand(char* s, bool auth) {
         } else {
             Console::write("The introduced delay isn't a number.\n");
         }
-    } else if(!strcmp(s, "ls")) {
-        ls_fat32('C');
     } else if(!strcmp(s, "shutdwn /y") || !strcmp(s, "shutdown /y")) {
         if(auth) {
             outw(0xB004, 0x2000);
@@ -687,6 +923,25 @@ void runcommand(char* s, bool auth) {
         gfx_set_projection(3.141592f / 3.0f, aspect, 0.1f, 100.0f);  // FOV=60°
         gfx_set_camera(0.0f, 0.0f, -5.0f, 0.0f, 0.0f, 0.0f);  // Cámara en (0,0,-5)
         draw_rotating_cube();  // Iniciar animación
+    } else if(!strcmp(substr(s, 0, 5), "read ")) {
+        char* name = substr(s, 5);
+
+        Console::println(read_file_from_meta(name));
+    } else if(!strcmp(s, "lsmods")) {
+        debug_grub_modules();
+    } else if(!strcmp(s, "lsmodsc")) {
+        list_modules();
+    } else if(!strcmp(s, "auth")) {
+        if(auth) {
+            Console::println("yes");
+        } else {
+            Console::println("no");
+        }
+    } else if(!strcmp(substr(s, 0, 4), "hex ")) {
+        char* hex = substr(s, 4);
+
+        Console::println("Decimal: ", (long long unsigned) hex_to_dec(hex));
+        Console::println("Char: ", (char) ((long long unsigned) hex_to_dec(hex)));
     } else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}
@@ -750,7 +1005,7 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
     Console::write("[ SUCCESS ] ", VGA_COLOR_GREEN);
     Console::println("Magic nuber value correct");
 
-    // Move mbi to local mbi
+    // Move local mbi to global mbi
     Console::write("[ TASK ]    ", VGA_COLOR_CYAN);
     Console::println("Move MBI information...");
 
@@ -762,7 +1017,7 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
     Console::write("[ INFO ]    ", VGA_COLOR_LIGHT_BLUE);
     Console::println("Entering RanaOS in 1500 ms");
 
-    wait_ms(1500);
+    wait_ms(4000);
 
 	// OG Loading
     Console::clearScreen();

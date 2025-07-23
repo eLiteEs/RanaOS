@@ -32,6 +32,8 @@ public:
     static void write(unsigned long long value);
 
     static int getKey(bool& shift);
+
+    static void printHex(uint32_t value, uint8_t width = 8);
 private:
     static const uint16_t VGA_WIDTH  = 80;
     static const uint16_t VGA_HEIGHT = 25;

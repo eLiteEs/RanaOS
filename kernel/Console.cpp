@@ -323,3 +323,15 @@ void Console::itoa(int value, char* str, int base) {
     }
 }
 
+void Console::printHex(uint32_t value, uint8_t width) {
+    static const char* digits = "0123456789ABCDEF";
+    char buf[10];
+    buf[width] = '\0';
+        
+    for (uint8_t i = 0; i < width; i++) {
+        buf[width - 1 - i] = digits[(value >> (i * 4)) & 0xF];
+    }
+        
+    if (width == 8) write("0x");
+    write(buf);
+}
