@@ -39,7 +39,7 @@ CPP_OBJS := $(patsubst kernel/%.cpp, %.o, $(CPP_SRCS))
 
 LDSCRIPT := kernel/linker.ld
 
-MODULES = files/text.txt kernel/ata_detect.cpp kernel/Console.cpp kernel/Console.h kernel/disk.cpp kernel/disk.hpp kernel/fat32.cpp
+MODULES = files/text.txt files/bg.pim files/tux.pim
 MODULES_DIR  := $(ISO_DIR)/files
 
 # Salidas
@@ -101,3 +101,6 @@ clean:
 # --------------------------------------------------------
 fat_tool:
 	$(CXX) -std=c++17 -O2 tools/fat_tool.cpp -o fat_tool
+
+vga_paint:
+	java PIMConverter.java

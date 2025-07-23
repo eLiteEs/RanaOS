@@ -1,6 +1,8 @@
 #include "Graphics.h"
 #include "io.h"
 #include "Font.h"
+#include "math.hpp"
+#include "string.h"
 #include <stdbool.h>
 
 #define SCREEN_WIDTH 320
@@ -166,6 +168,54 @@ void gfx_fill_circle(int cx, int cy, int r, uint8_t color) {
             if (x*x + y*y <= r*r) {
                 gfx_put_pixel(cx + x, cy + y, color);
             }
+        }
+    }
+}
+void gfx_put_image(int dx, int dy, const char* img_data) {
+    int x = dx;
+    int y = dy;
+    const int max_width = 320;
+    const int max_height = 200;
+    bool rendering = true;
+
+    while (rendering && y < max_height) {
+        char c = *img_data++;
+        
+        switch (c) {
+            case 'n': case 'b': case 'g': case 'c': 
+            case 'r': case 'm': case 'l': case 'y': case 'w':
+                if (x < max_width && y >= 0 && y < max_height) {
+                    uint8_t color;
+                    switch (c) {
+                        case 'n': color = COLOR_BLACK; break;
+                        case 'b': color = COLOR_BLUE; break;
+                        case 'g': color = COLOR_GREEN; break;
+                        case 'c': color = COLOR_CYAN; break;
+                        case 'r': color = COLOR_RED; break;
+                        case 'm': color = COLOR_MAGENTA; break;
+                        case 'l': color = COLOR_BROWN; break;
+                        case 'y': color = COLOR_YELLOW; break;
+                        case 'w': color = COLOR_WHITE; break;
+                    }
+                    gfx_put_pixel(x, y, color);
+                }
+                x++;
+                break;
+            
+            case '\n':
+                x = dx;
+                y++;
+                break;
+            
+            case 'q':
+            case '\0':
+                rendering = false;
+                break;
+                
+            default:
+                gfx_put_pixel(x, y, COLOR_RED);
+                x++;
+                break;
         }
     }
 }

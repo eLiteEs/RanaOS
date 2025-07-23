@@ -53,12 +53,26 @@ void gfx_put_pixel(int x, int y, uint8_t color);
 #endif
 void gfx_clear_screen(uint8_t color);
 
+// Estructura para un color RGB (6 bits por componente)
+struct vga_color {
+    uint8_t r, g, b;
+};
+
 // Formas 2D
 void gfx_draw_line(int x0, int y0, int x1, int y1, uint8_t color);
 void gfx_draw_rect(int x, int y, int w, int h, uint8_t color);
 void gfx_fill_rect(int x, int y, int w, int h, uint8_t color);
 void gfx_draw_circle(int cx, int cy, int r, uint8_t color);
 void gfx_fill_circle(int cx, int cy, int r, uint8_t color);
+
+// Imagenes
+void gfx_put_image(int dx, int dy, const char* img_data);
+void init_vga_palette();
+void vga_adjust_palette_intensity(float factor);
+void vga_init_palette();
+vga_color vga_get_palette_color(uint8_t index);
+void vga_set_palette_color(uint8_t index, vga_color color);
+
 
 // Texto
 /*void gfx_set_font(uint8_t* font_data);

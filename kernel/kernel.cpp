@@ -674,6 +674,74 @@ const char* read_string_from_memory(uint32_t start_addr, size_t max_len = 1024) 
     return buffer;
 }
 
+/**
+ * Lee una cadena desde memoria con control preciso del tamaño máximo
+ * @param start_addr Dirección de memoria inicial
+ * @param max_bytes Máximo de bytes a leer (0 para automático hasta null terminator)
+ * @return Puntero a la cadena leída o NULL en error
+ */
+const char* read_large_memory_string(uint32_t start_addr, size_t max_bytes) {
+    // Límites de seguridad ajustados para tu SO
+    const uint32_t MIN_ADDR = 0x100000;
+    const uint32_t MAX_ADDR = 0xC0000000;
+    const size_t STATIC_BUFFER_SIZE = 1.5 * 1024 * 1024; // 1.5MB buffer estático
+    
+    // 1. Verificación básica de dirección
+    if (start_addr < MIN_ADDR || start_addr >= MAX_ADDR) {
+        Console::println("Error: Dirección de memoria inválida");
+        return nullptr;
+    }
+
+    // 2. Determinar tamaño máximo real a leer
+    size_t safe_max_bytes;
+    if (max_bytes == 0) {
+        // Modo automático: leer hasta encontrar null terminator
+        safe_max_bytes = STATIC_BUFFER_SIZE - 1;
+    } else {
+        // Asegurar que no excedamos nuestro buffer estático
+        safe_max_bytes = (max_bytes < STATIC_BUFFER_SIZE) ? max_bytes : STATIC_BUFFER_SIZE - 1;
+        
+        // Verificar que no intentamos leer más allá de la memoria permitida
+        if (start_addr + safe_max_bytes >= MAX_ADDR) {
+            safe_max_bytes = MAX_ADDR - start_addr - 1;
+        }
+    }
+
+    // 3. Buffer estático ampliado (1.5MB)
+    static char buffer[STATIC_BUFFER_SIZE];
+    
+    // 4. Copia segura byte por byte
+    size_t bytes_read = 0;
+    const char* src = (const char*)start_addr;
+    
+    while (bytes_read < safe_max_bytes) {
+        // Verificación de acceso para cada byte (conservador)
+        if ((uint32_t)(src + bytes_read) >= MAX_ADDR) {
+            break;
+        }
+        
+        buffer[bytes_read] = src[bytes_read];
+        
+        // Terminar si encontramos null terminator (excepto si max_bytes > 0)
+        if (buffer[bytes_read] == '\0' && max_bytes == 0) {
+            break;
+        }
+        
+        bytes_read++;
+    }
+
+    // 5. Garantizar terminación nula
+    buffer[bytes_read < safe_max_bytes ? bytes_read : safe_max_bytes] = '\0';
+    
+    return (bytes_read > 0) ? buffer : nullptr;
+}
+
+// Función auxiliar para verificar regiones de memoria (implementar según tu SO)
+bool memory_region_is_safe(uint32_t addr, uint32_t size) {
+    // Implementación básica - ajustar según tu sistema
+    return (addr >= 0x100000 && (addr + size) <= 0xC0000000);
+}
+
 const char* read_file_from_meta(char* name) {
     multiboot_module_t* mods = (multiboot_module_t*)mbi->mods_addr;
 
@@ -723,7 +791,7 @@ const char* read_file_from_meta(char* name) {
         int contentStart = lengthStart + String::strlen(rawResult) + 2;
 
         // Return the actual content
-        return read_string_from_memory(contentStart, length);
+        return read_large_memory_string(contentStart, length);
     }
 
     Console::write("File not found", VGA_COLOR_RED);
@@ -942,6 +1010,18 @@ void runcommand(char* s, bool auth) {
 
         Console::println("Decimal: ", (long long unsigned) hex_to_dec(hex));
         Console::println("Char: ", (char) ((long long unsigned) hex_to_dec(hex)));
+    } else if(!strcmp(s, "image")) {
+        const char* imageContent = read_file_from_meta("tux.pim");
+
+        Console::clearScreen();
+
+        gfx_init();
+        gfx_clear_screen(COLOR_WHITE);
+
+        gfx_put_image(0,0, imageContent);
+
+        while(true) {}
+
     } else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}
@@ -1017,7 +1097,7 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
     Console::write("[ INFO ]    ", VGA_COLOR_LIGHT_BLUE);
     Console::println("Entering RanaOS in 1500 ms");
 
-    wait_ms(4000);
+    wait_ms(1500);
 
 	// OG Loading
     Console::clearScreen();
@@ -1049,4 +1129,3 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
 		runcommand(s, true);		
 	}
 }
-
