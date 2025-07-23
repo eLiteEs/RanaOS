@@ -24,7 +24,9 @@ jobs:
           g++ \
           grub-pc-bin \
           xorriso \
-          mtools
+          mtools \
+          gcc-multilib \
+          g++-multilib
 
     - name: Build ISO image
       run: make
