@@ -15,7 +15,7 @@
 #include "filesystem.hpp" // Cosas del nuevo filesystem
 #include "disk.hpp" // Cosas del nuevo disco
 #include "string.h" // ns
-#include "math.hpp"
+#include "math.hpp" // Math operations
 
 // Algo del filesystem
 #define DISK_SIZE_BYTES (128 * 1024)
@@ -749,7 +749,7 @@ const char* read_file_from_meta(char* name) {
     {
         int start = mods[i].mod_start;
 
-        // Check if isn't a valid module
+        // Check if it isn't a valid module
         if(strcmp(read_string_from_memory(start, 2), "n:")) {
             continue;
         }
@@ -763,9 +763,8 @@ const char* read_file_from_meta(char* name) {
         int length;
 
         // Get the size of the file
-        int j = 0;
         bool finished = false;
-        char* rawResult = "";
+	char* rawResult = "";
 
         while(!finished) {
             const char* c = read_string_from_memory(lengthStart + j, 1); // Get the char
