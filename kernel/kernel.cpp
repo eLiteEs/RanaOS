@@ -12,10 +12,13 @@
 #include "parrot.cpp" // Frames de un pajaro
 #include "multiboot.h" // Funciones para cosas del GRUB
 #include "Graphics.h" // Graficos en VGA 13h
-#include "filesystem.hpp" // Cosas del nuevo filesystem
 #include "disk.hpp" // Cosas del nuevo disco
 #include "string.h" // ns
 #include "math.hpp" // Math operations
+#include "string.hpp"
+#include "vesa.h" // VESA Graphic mode
+#include "idt.h"
+#include "vgraphics.h"
 
 // Algo del filesystem
 #define DISK_SIZE_BYTES (128 * 1024)
@@ -472,170 +475,6 @@ void draw_rotating_cube() {
     }
 }
 
-bool is_text_file(const char* filename);
-void show_file_content(const char* filename);
-
-/**
- * Obtiene un archivo cargado por GRUB como módulo
- * @param filename Nombre del archivo (sin el '/' inicial)
- * @param out_size [opcional] Tamaño del archivo en bytes
- * @return Puntero al contenido o nullptr si hay error
- */
-void* get_file(const char* filename, size_t* out_size) {
-    if (!(mbi->flags & 0x8)) {
-        Console::println("Error: No hay módulos cargados");
-        return nullptr;
-    }
-
-    multiboot_module_t* modules = (multiboot_module_t*)mbi->mods_addr;
-    
-    for (uint32_t i = 0; i < mbi->mods_count; i++) {
-        const char* module_path = (const char*)modules[i].cmdline;
-        
-        // 1. Ignorar el '/' inicial que añade GRUB
-        if (module_path[0] != '/') continue;  // No es un módulo válido
-        const char* module_name = module_path + 1;  // Saltar el '/'
-        
-        // 2. Buscar solo hasta el primer espacio (por si hay parámetros)
-        const char* space = strchr(module_name, ' ');
-        size_t compare_length = space ? (size_t)(space - module_name) : strlen(module_name);
-        
-        // 3. Comparar solo la parte relevante del nombre
-        if (strncmp(module_name, filename, compare_length) == 0) {
-            if (out_size) *out_size = modules[i].mod_end - modules[i].mod_start;
-            return (void*)modules[i].mod_start;
-        }
-        
-        // Debug: Mostrar nombres reales de módulos
-        Console::write("Módulo ");
-        Console::write((long long unsigned)i);
-        Console::write(": '");
-        Console::write(module_name);
-        Console::println("'");
-    }
-
-    Console::write("Archivo '");
-    Console::write(filename);
-    Console::println("' no encontrado en módulos");
-    return nullptr;
-}
-void show_file_content(const char* filename) {
-    size_t size;
-    void* data = get_file(filename, &size);
-    
-    if (!data) {
-        Console::write("Archivo '");
-        Console::write(filename);
-        Console::println("' no encontrado");
-        return;
-    }
-
-    Console::write("Contenido de '");
-    Console::write(filename);
-    Console::write("' (");
-    Console::write((long long unsigned)size);
-    Console::println(" bytes):");
-
-    // Para archivos de texto
-    if (is_text_file(filename)) {
-        // Añadir terminador nulo temporal (sin modificar el buffer original)
-        char* temp = new char[size + 1];
-        String::memcpy(temp, data, size);
-        temp[size] = '\0';
-        
-        Console::println(temp);
-        delete[] temp;
-    } 
-    // Para archivos binarios
-    else {
-        // Mostrar hexdump de los primeros 128 bytes
-        uint8_t* bytes = (uint8_t*)data;
-        size_t display_size = (size > 128) ? 128 : size;
-        
-        for (size_t i = 0; i < display_size; i++) {
-            Console::println(bytes[i], 2);
-            Console::write(" ");
-            
-            if ((i + 1) % 16 == 0) Console::println("");
-        }
-    }
-}
-
-bool is_text_file(const char* filename) {
-    // Lista de extensiones de texto
-    const char* text_extensions[] = {".txt", ".cfg", ".json", nullptr};
-    
-    const char* ext = strrchr(filename, '.');
-    if (!ext) return false;
-    
-    for (int i = 0; text_extensions[i]; i++) {
-        if (strcmp(ext, text_extensions[i]) == 0) return true;
-    }
-    return false;
-}
-void list_modules() {
-    if (!mbi || !(mbi->flags & 0x8)) {
-        Console::println("No modules were loaded");
-        return;
-    }
-
-    multiboot_module_t* mods = (multiboot_module_t*)mbi->mods_addr;
-    Console::println("Loaded modules:");
-    
-    for (uint32_t i = 0; i < mbi->mods_count; i++) {
-        Console::write("  ");
-        Console::write((const char*)mods[i].cmdline);
-        Console::write(" (");
-        Console::write((long long unsigned)mods[i].mod_end - mods[i].mod_start);
-        Console::println(" bytes)");
-        
-        // Mostrar preview del contenido
-        uint8_t* content = (uint8_t*)mods[i].mod_start;
-        size_t size = mods[i].mod_end - mods[i].mod_start;
-        
-        Console::println("  First 16 bytes:");
-        for (size_t j = 0; j < 16 && j < size; j++) {
-            Console::println(content[j], 2);
-            Console::write(" ");
-        }
-        Console::println("\n");
-    }
-}
-void debug_grub_modules() {
-    if (!mbi || !(mbi->flags & 0x8)) {
-        Console::println("No Multiboot Info available");
-        return;
-    }
-
-    multiboot_module_t* mods = (multiboot_module_t*)mbi->mods_addr;
-    Console::println("Loaded Modules:");
-
-    for (uint32_t i = 0; i < mbi->mods_count; i++) {
-        Console::write("- Module ");
-        Console::write((long long unsigned)i);
-        Console::write(": ");
-
-        // Versión segura para mostrar el nombre
-        const char* name_ptr = (const char*)mods[i].cmdline;
-        if ((uint32_t)name_ptr < 0x100000) { // Verificar dirección válida
-        } else {
-            // Mostrar hasta 50 caracteres o hasta encontrar null
-            for (int j = 0; j < 50; j++) {
-                char c = name_ptr[j];
-                if (c == '\0') break;
-                Console::write(c);
-            }
-        }
-
-        Console::write("\n  Address: ");
-        Console::printHex(mods[i].mod_start);
-        Console::write(" - ");
-        Console::printHex(mods[i].mod_end);
-        Console::write(" (");
-        Console::write((long long unsigned)mods[i].mod_end - mods[i].mod_start);
-        Console::println(" bytes)");
-    }
-}
 /**
  * Lee una cadena desde una dirección de memoria
  * @param start_addr Dirección de inicio (ej: 0x00100000)
@@ -763,8 +602,9 @@ const char* read_file_from_meta(char* name) {
         int length;
 
         // Get the size of the file
+        int j = 0;
         bool finished = false;
-	char* rawResult = "";
+        char* rawResult = "";
 
         while(!finished) {
             const char* c = read_string_from_memory(lengthStart + j, 1); // Get the char
@@ -817,8 +657,6 @@ void runcommand(char* s, bool auth) {
         Console::write("  jogo >> Play a game on graphical mode.\n");
         Console::write("  3d >> Shooow a rotating 3d cube on the screen.\n");
         Console::write("  auth >> Prints yes if the command was runned authenticated.\n");
-        Console::write("  lsmods >> List all modules.\n");
-        Console::write("  lsmodsc >> List all modules and its contents.\n");
         Console::write("  hex [hexadecimal] >> Shows the decimal value of a hexadecimal string.\n");
         Console::write("  read [filename] >> Read the contents of a module in a better way.\n");
     } else if(!strcmp(s, "version")) {
@@ -994,10 +832,6 @@ void runcommand(char* s, bool auth) {
         char* name = substr(s, 5);
 
         Console::println(read_file_from_meta(name));
-    } else if(!strcmp(s, "lsmods")) {
-        debug_grub_modules();
-    } else if(!strcmp(s, "lsmodsc")) {
-        list_modules();
     } else if(!strcmp(s, "auth")) {
         if(auth) {
             Console::println("yes");
@@ -1021,6 +855,13 @@ void runcommand(char* s, bool auth) {
 
         while(true) {}
 
+    } else if(!strcmp(s, "vesa")) {
+        // Inicializar modo gráfico
+        init_graphics(mbi);
+        
+        gclear_screen(0xffffff);
+
+        while(1) {}
     } else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}
@@ -1033,7 +874,44 @@ void enable_cursor_blink() {
     outb(0x3D5, val);
 }
 
+void init_pic() {
+    // ICW1: Inicialización
+    outb(0x20, 0x11);
+    outb(0xA0, 0x11);
+    
+    // ICW2: Vector offset
+    outb(0x21, 0x20); // IRQ 0-7 mapeado a 0x20-0x27
+    outb(0xA1, 0x28); // IRQ 8-15 mapeado a 0x28-0x2F
+    
+    // ICW3: Conexión master-slave
+    outb(0x21, 0x04); // Slave en IRQ2
+    outb(0xA1, 0x02);
+    
+    // ICW4: Modo 8086
+    outb(0x21, 0x01);
+    outb(0xA1, 0x01);
+    
+    // Enmascarar todas las interrupciones
+    outb(0x21, 0xFF);
+    outb(0xA1, 0xFF);
+}
+
 extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
+    /*Console::initFramebuffer(
+            (uint32_t*)mbi->framebuffer_addr,
+            mbi->framebuffer_width,
+            mbi->framebuffer_height,
+            mbi->framebuffer_pitch
+        );
+
+    // Dibujar fondo azul (prueba)
+    for (uint32_t y = 0; y < Console::screen_width; y++) {
+        for (uint32_t x = 0; x < Console::screen_height; x++) {
+            draw_pixel(x, y, 0xFF0000FF); // ARGB: Azul sólido
+        }
+    }*/
+
+
     // Arch-like startup
     Console::clearScreen();
     Console::println("Starting RanaOS...");
@@ -1057,6 +935,25 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
 
     Console::write("[ SUCCESS ] ", 2);
     Console::println("CPU Speed saved succesfully!");
+
+    // Init IDT
+    Console::write("[ TASK ]    ", 3);
+    Console::println("Starting IDT...");
+
+    idt_init();
+
+    Console::write("[ SUCCESS ] ", 2);
+    Console::println("IDT started succesfully!");
+
+    // Init PIC
+    Console::write("[ TASK ]    ", 3);
+    Console::println("Starting PIC...");
+
+    init_pic();
+    asm volatile("sti");
+
+    Console::write("[ SUCCESS ] ", 2);
+    Console::println("PIC started succesfully!");
     
     // Enable cursor
     Console::write("[ TASK ]    ", VGA_COLOR_CYAN);
@@ -1083,6 +980,33 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
     }
     Console::write("[ SUCCESS ] ", VGA_COLOR_GREEN);
     Console::println("Magic nuber value correct");
+
+    FramebufferInfo fbInfo;
+    
+    if (mbi->flags & (1 << 12)) { // Bit 12 indica información de framebuffer
+        fbInfo.address = (void*)(uintptr_t)mbi->framebuffer_addr;
+        fbInfo.width = mbi->framebuffer_width;
+        fbInfo.height = mbi->framebuffer_height;
+        fbInfo.pitch = mbi->framebuffer_pitch;
+        fbInfo.bpp = mbi->framebuffer_bpp;
+        fbInfo.memory_model = mbi->framebuffer_type;
+        
+        Console::println("1.");
+
+        VGraphics::initialize(&fbInfo);
+        Console::println("2.");
+        
+        Console::println("3.");
+        // Ejemplo: dibujar algo
+        Color white = {255, 255, 255, 0};
+        Color black = {0, 0, 0, 0};
+        VGraphics::drawString(100, 100, "RanaOS en modo grafico!", white, black);
+        Console::println("4.");
+    } else {
+        // Modo texto de emergencia
+        Console::clearScreen();
+        Console::write("Error: No se pudo inicializar el modo grafico");
+    }
 
     // Move local mbi to global mbi
     Console::write("[ TASK ]    ", VGA_COLOR_CYAN);

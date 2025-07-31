@@ -1,11 +1,21 @@
 #include "Console.h"
 #include "io.h"
+#include "string.h"
+#include "vgraphics.h"
+
 #define VGA_ADDRESS 0xB8000
 
 uint16_t  Console::cursorPos    = 0;
 uint8_t   Console::color        = 0x07;
 uint16_t* Console::vgaBuffer    = (uint16_t*)VGA_ADDRESS;
 char      Console::lineBuffer[] = {0};
+
+static uint32_t cursorX = 0;
+static uint32_t cursorY = 0;
+static Color textColor = {255, 255, 255, 0};  // Blanco por defecto
+static Color bgColor = {0, 0, 0, 0};          // Negro por defecto
+
+bool Console::graphics = false;
 
 extern "C" {
 
@@ -38,14 +48,16 @@ unsigned long long __umoddi3(unsigned long long n, unsigned long long d) {
 
 }
 
-
 void Console::clearScreen() {
-    uint16_t blank = (color << 8) | ' ';
-    for (int i = 0; i < VGA_WIDTH * VGA_HEIGHT; ++i)
-        vgaBuffer[i] = blank;
+    if(!Console::graphics) {
+        uint16_t blank = (color << 8) | ' ';
+        for (int i = 0; i < VGA_WIDTH * VGA_HEIGHT; ++i)
+            vgaBuffer[i] = blank;
 
-    cursorPos = 0;
-    updateCursor();
+        cursorPos = 0;
+        updateCursor();
+    } else {
+    }
 }
 
 void Console::setColor(uint8_t newColor) {
@@ -68,19 +80,62 @@ void Console::set_cursor(uint16_t pos) {
 }
 
 void Console::putChar(char c) {
-    if (c == '\n') {
-        cursorPos += VGA_WIDTH - (cursorPos % VGA_WIDTH);
-    } else if (c == '\r') {
-        cursorPos -= cursorPos % VGA_WIDTH;
+    if(!Console::graphics) {
+        if (c == '\n') {
+            cursorPos += VGA_WIDTH - (cursorPos % VGA_WIDTH);
+        } else if (c == '\r') {
+            cursorPos -= cursorPos % VGA_WIDTH;
+        } else {
+            vgaBuffer[cursorPos++] = (color << 8) | c;
+        }
+
+        if (cursorPos >= VGA_WIDTH * VGA_HEIGHT) {
+            scroll();
+        }
+
+        set_cursor(cursorPos);
     } else {
-        vgaBuffer[cursorPos++] = (color << 8) | c;
-    }
+        if (c == '\n') {
+            cursorX = 0;
+            cursorY += 16;
+        } else if (c == '\r') {
+            cursorX = 0;
+        } else if (c == '\t') {
+            cursorX = (cursorX + 8*4) & ~(8*4 - 1);
+        } else {
+            // Dibujar el carácter
+            VGraphics::drawChar(cursorX, cursorY, c, textColor, bgColor);
+            cursorX += 8;
+        }
 
-    if (cursorPos >= VGA_WIDTH * VGA_HEIGHT) {
-        scroll();
-    }
+        // Manejar salto de línea y scroll
+        if (cursorX >= VGraphics::getWidth()) {
+            cursorX = 0;
+            cursorY += 16;
+        }
 
-    set_cursor(cursorPos);
+        if (cursorY + 16 >= VGraphics::getHeight()) {
+            scrollGraphics();
+            cursorY -= 16;
+        }
+    }
+}
+
+void Console::scrollGraphics() {
+    // Mover todas las líneas hacia arriba
+    uint32_t bytesPerLine = VGraphics::getPitch();
+    uint32_t scrollHeight = VGraphics::getHeight() - 16;
+    uint8_t* fb = (uint8_t*)VGraphics::getFramebuffer();
+
+    // Copiar líneas (memmove es seguro para overlapped regions)
+    memmove(fb, fb + bytesPerLine * 16, bytesPerLine * scrollHeight);
+
+    // Limpiar la última línea
+    for (uint32_t y = scrollHeight; y < VGraphics::getHeight(); y++) {
+        for (uint32_t x = 0; x < VGraphics::getWidth(); x++) {
+            VGraphics::putPixel(x, y, bgColor);
+        }
+    }
 }
 
 void Console::write(const char* str) {
@@ -334,4 +389,8 @@ void Console::printHex(uint32_t value, uint8_t width) {
         
     if (width == 8) write("0x");
     write(buf);
+}
+
+void Console::setGraphics(bool f) {
+    Console::graphics = f;
 }

@@ -3,6 +3,7 @@
 # Herramientas
 NASM		  := nasm
 CXX		   := g++
+CC			:= gcc
 LD			:= ld
 GRUB_MKRESCUE := grub-mkrescue
 QEMU		  := qemu-system-i386
@@ -22,7 +23,7 @@ BOOT_DIR  := $(ISO_DIR)/boot
 GRUB_DIR  := $(BOOT_DIR)/grub
 
 # Fuentes
-ASM_SRCS := boot.asm threads.asm
+ASM_SRCS := boot.asm threads.asm kernel/exceptions.asm
 ASM_OBJS := $(patsubst %.asm, %.o, $(ASM_SRCS))
 
 CPP_SRCS := kernel/kernel.cpp \
@@ -33,9 +34,14 @@ CPP_SRCS := kernel/kernel.cpp \
 	kernel/Graphics.cpp \
 	kernel/string.cpp \
 	kernel/memory.cpp \
-	kernel/math.cpp
-
+	kernel/math.cpp \
+	kernel/idt.cpp \
+	kernel/vesa.cpp \
+	kernel/vgraphics.cpp
 CPP_OBJS := $(patsubst kernel/%.cpp, %.o, $(CPP_SRCS))
+
+#C_SRCS := kernel/vesa.c
+#C_OBJS := $(patsubst kernel/%.c, %.o, $(C_SRCS))
 
 LDSCRIPT := kernel/linker.ld
 
@@ -46,7 +52,7 @@ MODULES_DIR  := $(ISO_DIR)/files
 KERNEL_ELF := kernel.elf
 ISO_IMG	:= RanaOS.iso
 
-.PHONY: all clean iso run
+.PHONY: all clear clean iso run
 
 all: iso
 
@@ -66,9 +72,15 @@ clear:
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # --------------------------------------------------------
+# 2.1) Compilar C (usando gcc en lugar de g++)
+# --------------------------------------------------------
+#%.o: kernel/%.c
+#	$(CC) $(CFLAGS) -c $< -o $@
+
+# --------------------------------------------------------
 # 3) Linkear kernel ELF
 # --------------------------------------------------------
-$(KERNEL_ELF): $(ASM_OBJS) $(CPP_OBJS) $(LDSCRIPT)
+$(KERNEL_ELF): $(ASM_OBJS) $(CPP_OBJS) $(C_OBJS) $(LDSCRIPT)
 	$(LD) $(LDFLAGS) -T $(LDSCRIPT) -o $@ $(ASM_OBJS) $(CPP_OBJS) -lgcc
 
 # --------------------------------------------------------
@@ -86,21 +98,16 @@ iso: $(KERNEL_ELF)
 # --------------------------------------------------------
 # 5) Ejecutar en QEMU
 # --------------------------------------------------------
-run: iso
+run: 
 	$(QEMU) -cdrom $(ISO_IMG) -m 512M -vga std -serial stdio
+
+krun: 
+	$(QEMU) -kernel $(KERNEL_ELF) -m 512M -vga std -serial stdio
+
 
 # --------------------------------------------------------
 # 6) Limpiar
 # --------------------------------------------------------
 clean:
-	@rm -f $(ASM_OBJS) $(CPP_OBJS) $(KERNEL_ELF) $(ISO_IMG)
+	@rm -f $(ASM_OBJS) $(CPP_OBJS) $(C_OBJS) $(KERNEL_ELF) $(ISO_IMG)
 	@rm -rf $(ISO_DIR)
-
-# --------------------------------------------------------
-# 7) Herramienta para crear discos FAT32
-# --------------------------------------------------------
-fat_tool:
-	$(CXX) -std=c++17 -O2 tools/fat_tool.cpp -o fat_tool
-
-vga_paint:
-	java PIMConverter.java

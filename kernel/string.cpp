@@ -40,3 +40,26 @@ char* strrchr(const char* s, int c) {
     }
     return (char*)last;
 }
+
+void* memmove(void* dst, const void* src, size_t n) {
+    unsigned char* d = (unsigned char*)dst;
+    const unsigned char* s = (const unsigned char*)src;
+    
+    if (d == s) return dst;
+    
+    // Si las regiones se solapan y dst está después de src, copiamos de atrás hacia adelante
+    if (d > s && d < s + n) {
+        d += n;
+        s += n;
+        while (n--) {
+            *--d = *--s;
+        }
+    } else {
+        // Copia normal de adelante hacia atrás
+        while (n--) {
+            *d++ = *s++;
+        }
+    }
+    
+    return dst;
+}

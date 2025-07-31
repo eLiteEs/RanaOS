@@ -34,6 +34,9 @@ public:
     static int getKey(bool& shift);
 
     static void printHex(uint32_t value, uint8_t width = 8);
+
+    static void setGraphics(bool f);
+    static void scrollGraphics();
 private:
     static const uint16_t VGA_WIDTH  = 80;
     static const uint16_t VGA_HEIGHT = 25;
@@ -47,7 +50,9 @@ private:
     static void updateCursor();
     static void scroll();
 
-    static void itoa(int value, char* str, int base); // 👈 añade esta
+    static void itoa(int value, char* str, int base);
+
+    static bool graphics;
 };
 
 // Implementación de la plantilla en el header
@@ -58,4 +63,3 @@ void Console::println(T first, Args... rest) {
 }
 
 #endif // CONSOLE_H
-
