@@ -37,7 +37,8 @@ CPP_SRCS := kernel/kernel.cpp \
 	kernel/math.cpp \
 	kernel/idt.cpp \
 	kernel/vesa.cpp \
-	kernel/vgraphics.cpp
+	kernel/vgraphics.cpp \
+	kernel/Debug.cpp
 CPP_OBJS := $(patsubst kernel/%.cpp, %.o, $(CPP_SRCS))
 
 #C_SRCS := kernel/vesa.c

@@ -10,6 +10,8 @@ uint8_t   Console::color        = 0x07;
 uint16_t* Console::vgaBuffer    = (uint16_t*)VGA_ADDRESS;
 char      Console::lineBuffer[] = {0};
 
+uint32_t Console::gcolor = 0xFFFFFF; // Color por defecto en modo gráfico
+
 static uint32_t cursorX = 0;
 static uint32_t cursorY = 0;
 static Color textColor = {255, 255, 255, 0};  // Blanco por defecto
@@ -49,7 +51,7 @@ unsigned long long __umoddi3(unsigned long long n, unsigned long long d) {
 }
 
 void Console::clearScreen() {
-    if(!Console::graphics) {
+    if(!graphics) {
         uint16_t blank = (color << 8) | ' ';
         for (int i = 0; i < VGA_WIDTH * VGA_HEIGHT; ++i)
             vgaBuffer[i] = blank;
@@ -57,11 +59,17 @@ void Console::clearScreen() {
         cursorPos = 0;
         updateCursor();
     } else {
+        VGraphics::clearScreen();
+        cursorX = 0;
+        cursorY = 0;
     }
 }
 
 void Console::setColor(uint8_t newColor) {
     color = newColor;
+}
+void Console::setColor(uint32_t newColor) {   
+    gcolor = newColor;
 }
 
 void Console::enable_cursor(uint8_t start, uint8_t end) {
@@ -80,7 +88,7 @@ void Console::set_cursor(uint16_t pos) {
 }
 
 void Console::putChar(char c) {
-    if(!Console::graphics) {
+    if(!graphics) {
         if (c == '\n') {
             cursorPos += VGA_WIDTH - (cursorPos % VGA_WIDTH);
         } else if (c == '\r') {
@@ -95,45 +103,17 @@ void Console::putChar(char c) {
 
         set_cursor(cursorPos);
     } else {
-        if (c == '\n') {
+        switch (c)
+        {
+        case '\n':
+            cursorY++;
             cursorX = 0;
-            cursorY += 16;
-        } else if (c == '\r') {
-            cursorX = 0;
-        } else if (c == '\t') {
-            cursorX = (cursorX + 8*4) & ~(8*4 - 1);
-        } else {
-            // Dibujar el carácter
-            VGraphics::drawChar(cursorX, cursorY, c, textColor, bgColor);
-            cursorX += 8;
-        }
-
-        // Manejar salto de línea y scroll
-        if (cursorX >= VGraphics::getWidth()) {
-            cursorX = 0;
-            cursorY += 16;
-        }
-
-        if (cursorY + 16 >= VGraphics::getHeight()) {
-            scrollGraphics();
-            cursorY -= 16;
-        }
-    }
-}
-
-void Console::scrollGraphics() {
-    // Mover todas las líneas hacia arriba
-    uint32_t bytesPerLine = VGraphics::getPitch();
-    uint32_t scrollHeight = VGraphics::getHeight() - 16;
-    uint8_t* fb = (uint8_t*)VGraphics::getFramebuffer();
-
-    // Copiar líneas (memmove es seguro para overlapped regions)
-    memmove(fb, fb + bytesPerLine * 16, bytesPerLine * scrollHeight);
-
-    // Limpiar la última línea
-    for (uint32_t y = scrollHeight; y < VGraphics::getHeight(); y++) {
-        for (uint32_t x = 0; x < VGraphics::getWidth(); x++) {
-            VGraphics::putPixel(x, y, bgColor);
+            break;
+        
+        default:
+            VGraphics::drawChar(cursorX * 8, cursorY * 16, c, gcolor);
+            cursorX++;
+            break;
         }
     }
 }

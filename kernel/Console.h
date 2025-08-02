@@ -7,6 +7,7 @@ class Console {
 public:
     static void clearScreen();
     static void setColor(uint8_t newColor);
+    static void setColor(uint32_t newColor);
     static void putChar(char c);
     static void write(const char* str);
     static void write(char c);
@@ -53,6 +54,8 @@ private:
     static void itoa(int value, char* str, int base);
 
     static bool graphics;
+
+    static uint32_t gcolor; // Color por defecto en modo gráfico
 };
 
 // Implementación de la plantilla en el header

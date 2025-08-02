@@ -19,6 +19,7 @@
 #include "vesa.h" // VESA Graphic mode
 #include "idt.h"
 #include "vgraphics.h"
+#include "Debug.h" // Debugging functions
 
 // Algo del filesystem
 #define DISK_SIZE_BYTES (128 * 1024)
@@ -897,80 +898,9 @@ void init_pic() {
 }
 
 extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
-    /*Console::initFramebuffer(
-            (uint32_t*)mbi->framebuffer_addr,
-            mbi->framebuffer_width,
-            mbi->framebuffer_height,
-            mbi->framebuffer_pitch
-        );
-
-    // Dibujar fondo azul (prueba)
-    for (uint32_t y = 0; y < Console::screen_width; y++) {
-        for (uint32_t x = 0; x < Console::screen_height; x++) {
-            draw_pixel(x, y, 0xFF0000FF); // ARGB: Azul sólido
-        }
-    }*/
-
-
-    // Arch-like startup
-    Console::clearScreen();
-    Console::println("Starting RanaOS...");
-
-    // Init PIT
-    Console::write("[ TASK ]    ", 3);
-    Console::println("Starting PIT...");
-    Console::write("[ INFO ]    ", 9);
-    Console::println("Using default configuration (1 tick = 1 millisecond)");
-
-    pit_init(1000);
-
-    Console::write("[ SUCCESS ] ", 2);
-    Console::println("PIT Started successfully!");
-
-    // Save CPU speed
-    Console::write("[ TASK ]    ", 3);
-    Console::println("Gathering CPU speed...");
-
-    g_cycles_per_ms = measure_cpu_frequency();
-
-    Console::write("[ SUCCESS ] ", 2);
-    Console::println("CPU Speed saved succesfully!");
-
-    // Init IDT
-    Console::write("[ TASK ]    ", 3);
-    Console::println("Starting IDT...");
-
-    idt_init();
-
-    Console::write("[ SUCCESS ] ", 2);
-    Console::println("IDT started succesfully!");
-
-    // Init PIC
-    Console::write("[ TASK ]    ", 3);
-    Console::println("Starting PIC...");
-
-    init_pic();
-    asm volatile("sti");
-
-    Console::write("[ SUCCESS ] ", 2);
-    Console::println("PIC started succesfully!");
-    
-    // Enable cursor
-    Console::write("[ TASK ]    ", VGA_COLOR_CYAN);
-    Console::println("Enabling cursor...");
-
-    enable_cursor_blink();
-    Console::enable_cursor(0, 15);
-    Console::set_cursor(0);
-
-    Console::write("[ SUCCESS ] ", 2);
-    Console::println("Cursor enabled!");
-
-    // Check Multiboot header
-    Console::write("[ TASK ]    ", VGA_COLOR_CYAN);
-    Console::println("Checking GRUB multiboot header magic number...");
-    if (magic != 0x2BADB002) {  // Magic number for Multiboot-compliant bootloader
-        Console::write("[ FATAL ERROR ] ", VGA_COLOR_RED);
+    // First of all, check if the magic number is correct
+    if (magic != 0x36D76289) {  // Magic number for Multiboot-compliant bootloader
+        Console::write("[FATAL ERROR] ", VGA_COLOR_RED);
         Console::println("Magic number not maching expected value, can't load RanaOS.");
         Console::println("Press any key to exit RanaOS...");
 
@@ -978,46 +908,112 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
         Console::getKey(b);
         return;
     }
-    Console::write("[ SUCCESS ] ", VGA_COLOR_GREEN);
-    Console::println("Magic nuber value correct");
+    mbi = mbi2; // Set global MBI pointer
 
-    FramebufferInfo fbInfo;
-    
-    if (mbi->flags & (1 << 12)) { // Bit 12 indica información de framebuffer
-        fbInfo.address = (void*)(uintptr_t)mbi->framebuffer_addr;
-        fbInfo.width = mbi->framebuffer_width;
-        fbInfo.height = mbi->framebuffer_height;
-        fbInfo.pitch = mbi->framebuffer_pitch;
-        fbInfo.bpp = mbi->framebuffer_bpp;
-        fbInfo.memory_model = mbi->framebuffer_type;
-        
-        Console::println("1.");
+    FBInfo fb = {};
+    uint8_t* ptr = (uint8_t*)mbi2;
+    ptr += 8; // skip total_size and reserved
 
-        VGraphics::initialize(&fbInfo);
-        Console::println("2.");
-        
-        Console::println("3.");
-        // Ejemplo: dibujar algo
-        Color white = {255, 255, 255, 0};
-        Color black = {0, 0, 0, 0};
-        VGraphics::drawString(100, 100, "RanaOS en modo grafico!", white, black);
-        Console::println("4.");
-    } else {
-        // Modo texto de emergencia
-        Console::clearScreen();
-        Console::write("Error: No se pudo inicializar el modo grafico");
+    while (true) {
+        uint32_t type = *(uint32_t*)(ptr);
+        uint32_t size = *(uint32_t*)(ptr + 4);
+
+        if (type == 0) break;
+
+        if (type == 8) {
+            fb.address = (uint32_t*)(*(uint64_t*)(ptr + 8));
+            fb.pitch   = *(uint32_t*)(ptr + 16);
+            fb.width   = *(uint32_t*)(ptr + 20);
+            fb.height  = *(uint32_t*)(ptr + 24);
+            fb.bpp     = *(uint8_t*)(ptr + 28);
+
+            VGraphics::init(fb.width, fb.height, fb.pitch, fb.bpp, reinterpret_cast<uintptr_t>(fb.address));
+            break;
+        }
+
+        ptr += (size + 7) & ~7;
     }
 
+    Console::setGraphics(true); // Set graphics mode
+
+    // Arch-like startup
+    Console::clearScreen();
+    Console::println("Starting RanaOS...");
+
+    // Start Debug serial port COM1
+    Console::setColor((uint32_t)0x0000ff);
+    Console::write("[TASK]    ");
+    Console::setColor((uint32_t)0xffffff);
+    Console::println("Starting Debug serial port COM1...");
+
+    Debug::Init();
+    Debug::Print("Debug port started.\n");
+
+    Console::write("[SUCCESS] ", 2);
+    Console::println("Debug port started succesfully!");
+
+    // Init PIT
+    Console::write("[TASK]    ", 3);
+    Console::println("Starting PIT...");
+    Console::write("[INFO]    ", 9);
+    Console::println("Using default configuration (1 tick = 1 millisecond)");
+
+    pit_init(1000);
+
+    Console::write("[SUCCESS] ", 2);
+    Console::println("PIT Started successfully!");
+
+    // Save CPU speed
+    Console::write("[TASK]    ", 3);
+    Console::println("Gathering CPU speed...");
+
+    g_cycles_per_ms = measure_cpu_frequency();
+
+    Console::write("[SUCCESS] ", 2);
+    Console::println("CPU Speed saved succesfully!");
+
+    // Init IDT
+    Console::write("[TASK]    ", 3);
+    Console::println("Starting IDT...");
+
+    idt_init();
+
+    Console::write("[SUCCESS] ", 2);
+    Console::println("IDT started succesfully!");
+
+    // Init PIC
+    Console::write("[TASK]    ", 3);
+    Console::println("Starting PIC...");
+
+    init_pic();
+    asm volatile("sti");
+
+    Console::write("[SUCCESS] ", 2);
+    Console::println("PIC started succesfully!");
+    
+    // Enable cursor
+    Console::write("[TASK]    ", VGA_COLOR_CYAN);
+    Console::println("Enabling cursor...");
+
+    enable_cursor_blink();
+    Console::enable_cursor(0, 15);
+    Console::set_cursor(0);
+
+    Console::write("[SUCCESS] ", 2);
+    Console::println("Cursor enabled!");
+
+text_mode:
+
     // Move local mbi to global mbi
-    Console::write("[ TASK ]    ", VGA_COLOR_CYAN);
+    Console::write("[TASK]    ", VGA_COLOR_CYAN);
     Console::println("Move MBI information...");
 
     mbi = mbi2;
 
-    Console::write("[ SUCCESS ] ", 9);
+    Console::write("[SUCCESS] ", 9);
     Console::println("MBI information moved successfully");
 
-    Console::write("[ INFO ]    ", VGA_COLOR_LIGHT_BLUE);
+    Console::write("[INFO]    ", VGA_COLOR_LIGHT_BLUE);
     Console::println("Entering RanaOS in 1500 ms");
 
     wait_ms(1500);
