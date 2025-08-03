@@ -63,3 +63,10 @@ void* memmove(void* dst, const void* src, size_t n) {
     
     return dst;
 }
+
+void strncpy(char* dest, const char* src, int maxLen) {
+    int i = 0;
+    for (; i < maxLen - 1 && src[i]; ++i)
+        dest[i] = src[i];
+    dest[i] = 0;
+}

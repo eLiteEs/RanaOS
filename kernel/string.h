@@ -14,6 +14,7 @@ size_t strlen(const char* s);
 char* strchr(const char* s, int c);
 char* strrchr(const char* s, int c);
 void* memmove(void* dst, const void* src, size_t n);
+void strncpy(char* dest, const char* src, int maxLen);
 
 #ifdef __cplusplus
 } // extern "C"

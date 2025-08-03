@@ -1023,11 +1023,11 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
     Console::println(substr(get_weekday_name(), 0, 3), ", ", format_wth_0(getDay()), "/", format_wth_0(getMonth()), "/", getYear(), "\n");
 
 	Console::println("Use \"help\" for getting a list of commands.\n");
+    Console::println("To enter graphical mode, use the command \"start\".\n");
 
 	while (1) {
 		Console::write("> ");
-		//char* s = Console::readLine(linebuf, sizeof(linebuf));
-        char* s = Console::readText(Console::cursorX * 8, Console::cursorY * 16, 80, 0xffffff);
+        char* s = Console::readLine(linebuf, sizeof(linebuf));
 		
 		runcommand(s, true);		
 	}

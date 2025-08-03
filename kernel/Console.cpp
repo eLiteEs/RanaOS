@@ -2,6 +2,7 @@
 #include "io.h"
 #include "string.h"
 #include "vgraphics.h"
+#include "Debug.h"
 
 #define VGA_ADDRESS 0xB8000
 
@@ -12,6 +13,8 @@ char      Console::lineBuffer[] = {0};
 
 #define FB_WIDTH 128
 #define FB_HEIGHT 48
+
+static char textBuffer[FB_HEIGHT][FB_WIDTH];
 
 uint32_t Console::gcolor = 0xFFFFFF; // Color por defecto en modo gráfico
 uint32_t Console::bcolor = 0x000000; // Color de fondo por defecto en modo gráfico
@@ -131,6 +134,7 @@ void Console::putChar(char c) {
                     VGraphics::scroll();
                 }
                 VGraphics::drawChar(cursorX * 8, cursorY * 16, c, gcolor, bcolor);
+                textBuffer[cursorY][cursorX] = c;
                 cursorX++;
                 break;
         }
@@ -229,7 +233,16 @@ void Console::write(bool value) {
 }
 
 void Console::println() {
-    putChar('\n');
+    if(!graphics) {
+        putChar('\n');
+    } else {
+        cursorX = 0;
+        cursorY++;
+        if(cursorY >= FB_HEIGHT) {
+            VGraphics::scroll();
+            cursorY--;
+        }
+    }
 }
 
 void Console::scroll() {
@@ -343,53 +356,57 @@ char* Console::readLine(char* buffer, int maxLength) {
         buffer[length] = 0;
         return buffer;
     } else {
+        char* result = readText(cursorX * 8, cursorY * 16, maxLength, gcolor);
+        return result;
     }
 }
 
 char* Console::readText(int x, int y, int maxLen, uint32_t color) {
-	static char buffer[256]; // límite arbitrario
-	int len = 0, cursor = 0;
-	bool shift = false;
+    static char buffer[256];
+    int len = 0, cursor = 0;
+    bool shift = false;
 
-	while (true) {
-		int sc = getKey(shift);
-		if (sc == KEY_ENTER) break;
+    // Copia el contenido gráfico actual desde el buffer lógico
+    strncpy(buffer, textBuffer[y], maxLen - 1);
+    buffer[maxLen - 1] = 0;
+    len = strlen(buffer);
+    cursor = len;
 
-		if (sc == KEY_BACKSPACE && cursor > 0) {
-			for (int i = cursor - 1; i < len - 1; ++i)
-				buffer[i] = buffer[i + 1];
-			len--; cursor--;
+    while (true) {
+        int sc = getKey(shift);
+        if (sc == KEY_ENTER) break;
 
-		} else if (sc == KEY_LEFT && cursor > 0) {
-			cursor--;
+        if (sc == KEY_BACKSPACE && cursor > 0) {
+            for (int i = cursor - 1; i < len - 1; ++i)
+                buffer[i] = buffer[i + 1];
+            len--; cursor--;
+        } else if (sc == KEY_LEFT && cursor > 0) cursor--;
+        else if (sc == KEY_RIGHT && cursor < len) cursor++;
+        else {
+            char c = scancodeToAscii(sc, shift);
+            if (c && c >= 32 && c <= 126 && len < maxLen - 1) {
+                for (int i = len; i > cursor; --i)
+                    buffer[i] = buffer[i - 1];
+                buffer[cursor] = c;
+                len++; cursor++;
+            }
+        }
 
-		} else if (sc == KEY_RIGHT && cursor < len) {
-			cursor++;
+        buffer[len] = 0;
 
-		} else {
-			char c = scancodeToAscii(sc, shift);
-			if (c && c >= 32 && c <= 126 && len < maxLen - 1) {
-				for (int i = len; i > cursor; --i)
-					buffer[i] = buffer[i - 1];
-				buffer[cursor] = c;
-				len++; cursor++;
-			}
-		}
+        VGraphics::fillRect(x, y, 8 * 128 - x * 8, 16, bcolor);
+        VGraphics::drawString(x, y, buffer, gcolor);
+        VGraphics::drawChar('_', x + cursor * 8, y, gcolor);
 
-		buffer[len] = 0;
+        // Guardar nuevo estado en buffer lógico
+        strncpy(textBuffer[y], buffer, maxLen);
+    }
 
-		// Redibujar línea completa
-		VGraphics::fillRect(x, y, 8 * maxLen, 16, bcolor);
-		VGraphics::drawString(x, y, buffer, gcolor);
-		VGraphics::drawChar('_', x + cursor * 8, y, gcolor); // cursor visible
-	}
-
-	buffer[len] = 0;
+    buffer[len] = 0;
     cursorX = 0;
     cursorY++;
-	return buffer;
+    return buffer;
 }
-
 
 void Console::itoa(int value, char* str, int base) {
     char* ptr = str;
