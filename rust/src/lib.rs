@@ -115,11 +115,11 @@ impl DateTime {
         write_two(&mut buf, 0, DateTime::hours());
         buf[2] = b':';
         write_two(&mut buf, 3, DateTime::minutes());
-        buf[8] = b' ';
-        buf[9] = b'-';
-        buf[10] = b' ';
+        buf[7] = b' ';
+        buf[8] = b'-';
+        buf[9] = b' ';
         write_two(&mut buf, 11, DateTime::day());
-        buf[13] = b'/';
+        buf[1] = b'/';
         write_two(&mut buf, 14, DateTime::month());
         buf[16] = b'/';
         buf[17] = b'2';
@@ -260,7 +260,7 @@ pub extern "C" fn start_so() {
 
     // Draw toolbar
     Graphics::draw_rect(0, 0, Graphics::width(), 20, 0x000000);
-    Graphics::draw_string(2, 2, "RanaOS beta 2", 0xffffff, 0x000000);
+    Graphics::draw_string(2, 2, "RanaOS beta 2 | Press \'r\' for opening launch dialog", 0xffffff, 0x000000);
 
     // Display datetime in toolbar (right-aligned)
     let datetime = DateTime;
@@ -288,11 +288,7 @@ pub extern "C" fn start_so() {
 
         Graphics::draw_string(Graphics::width() / 2 - time_width / 2, 2, time_str, 0xffffff, 0x0);
 
-        let mx: u32 = mouse.x as u32;
-        let my: u32 = mouse.y as u32;
-        Graphics::draw_rect(mx, my, 100, 100, 0x0);
-
-        unsafe { wait_ms(250); }
+        
     }
 }
 

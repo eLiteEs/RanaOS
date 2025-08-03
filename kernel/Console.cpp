@@ -11,8 +11,8 @@ uint8_t   Console::color        = 0x07;
 uint16_t* Console::vgaBuffer    = (uint16_t*)VGA_ADDRESS;
 char      Console::lineBuffer[] = {0};
 
-#define FB_WIDTH 128
-#define FB_HEIGHT 48
+#define FB_WIDTH 240
+#define FB_HEIGHT 67
 
 static char textBuffer[FB_HEIGHT][FB_WIDTH];
 
