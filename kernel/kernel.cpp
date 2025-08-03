@@ -20,6 +20,7 @@
 #include "idt.h"
 #include "vgraphics.h"
 #include "Debug.h" // Debugging functions
+#include "date.h"
 
 // Algo del filesystem
 #define DISK_SIZE_BYTES (128 * 1024)
@@ -146,69 +147,6 @@ bool was_c_pressed() {
 
     // Código 0x2E = tecla 'C' (scancode set 1)
     return sc == 0x2E;
-}
-
-// Cosas para las fechas
-#define CMOS_ADDRESS 0x70
-#define CMOS_DATA    0x71
-
-// Leer datos del CMOS
-uint8_t read_cmos(uint8_t reg) {
-    outb(CMOS_ADDRESS, reg);
-    return inb(CMOS_DATA);
-}
-
-// Transformar bdc a binario
-uint8_t bcd_to_bin(uint8_t val) {
-    return (val & 0x0F) + ((val >> 4) * 10);
-}
-
-// Funciones para las horas
-uint8_t getSecond() {
-    return bcd_to_bin(read_cmos(0x00));
-}
-
-uint8_t getMinute() {
-    return bcd_to_bin(read_cmos(0x02));
-}
-
-uint8_t getHour() {
-    return bcd_to_bin(read_cmos(0x04));
-}
-
-// Funciones para las fechas
-uint8_t getDay() {
-    return bcd_to_bin(read_cmos(0x07));
-}
-
-uint8_t getMonth() {
-    return bcd_to_bin(read_cmos(0x08));
-}
-
-uint8_t getYear() {
-    return bcd_to_bin(read_cmos(0x09)); // Solo últimos dos dígitos
-}
-
-// Funcion para obtener el nombre del dia de hoy
-const char* get_weekday_name() {
-    int day = getDay();
-    int month = getMonth();
-    int year = getYear() + 2000;
-    static const char* weekdays[] = {
-        "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"
-	};
-
-    if (month < 3) {
-        month += 12;
-        year -= 1;
-    }
-
-    int k = year % 100;
-    int j = year / 100;
-
-    int h = (day + 13*(month + 1)/5 + k + k/4 + j/4 + 5*j) % 7;
-
-    return weekdays[h];
 }
 
 // Funciones útiles para no usar libc
@@ -638,6 +576,8 @@ const char* read_file_from_meta(char* name) {
     return nullptr;
 }
 
+extern "C" void start_so();
+
 // Ejecutar comandos
 void runcommand(char* s, bool auth) {	
 	if(!strcmp(s, "help")) {
@@ -660,6 +600,7 @@ void runcommand(char* s, bool auth) {
         Console::write("  auth >> Prints yes if the command was runned authenticated.\n");
         Console::write("  hex [hexadecimal] >> Shows the decimal value of a hexadecimal string.\n");
         Console::write("  read [filename] >> Read the contents of a module in a better way.\n");
+        Console::write("  start >> Start Os in graphical mode.\n");
     } else if(!strcmp(s, "version")) {
 		Console::write("eLite Systems RanaOS beta 2\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
@@ -863,6 +804,8 @@ void runcommand(char* s, bool auth) {
         gclear_screen(0xffffff);
 
         while(1) {}
+    } else if(!strcmp(s, "start")) {
+        start_so(); // Llamar a la función de inicio del SO
     } else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}
@@ -941,7 +884,7 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
     Console::println("Starting RanaOS...");
 
     // Start Debug serial port COM1
-    Console::setColor((uint32_t)0x0000ff);
+    Console::setColor((uint32_t)0x4287f5);
     Console::write("[TASK]    ");
     Console::setColor((uint32_t)0xffffff);
     Console::println("Starting Debug serial port COM1...");
@@ -949,91 +892,131 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
     Debug::Init();
     Debug::Print("Debug port started.\n");
 
+    Console::setColor((uint32_t)0x2bbf1b);
     Console::write("[SUCCESS] ", 2);
+    Console::setColor((uint32_t)0xffffff);
     Console::println("Debug port started succesfully!");
 
     // Init PIT
-    Console::write("[TASK]    ", 3);
+    Console::setColor((uint32_t)0x4287f5);
+    Console::write("[TASK]    ");
+    Console::setColor((uint32_t)0xffffff);
     Console::println("Starting PIT...");
+
+    Console::setColor((uint32_t)0x1b9ebf);
     Console::write("[INFO]    ", 9);
+    Console::setColor((uint32_t)0xffffff);
     Console::println("Using default configuration (1 tick = 1 millisecond)");
 
     pit_init(1000);
 
+    Console::setColor((uint32_t)0x2bbf1b);
     Console::write("[SUCCESS] ", 2);
+    Console::setColor((uint32_t)0xffffff);
     Console::println("PIT Started successfully!");
 
     // Save CPU speed
-    Console::write("[TASK]    ", 3);
+    Console::setColor((uint32_t)0x4287f5);
+    Console::write("[TASK]    ");
+    Console::setColor((uint32_t)0xffffff);
     Console::println("Gathering CPU speed...");
 
     g_cycles_per_ms = measure_cpu_frequency();
 
+    Console::setColor((uint32_t)0x2bbf1b);
     Console::write("[SUCCESS] ", 2);
+    Console::setColor((uint32_t)0xffffff);
     Console::println("CPU Speed saved succesfully!");
 
     // Init IDT
-    Console::write("[TASK]    ", 3);
+    Console::setColor((uint32_t)0x4287f5);
+    Console::write("[TASK]    ");
+    Console::setColor((uint32_t)0xffffff);
     Console::println("Starting IDT...");
 
     idt_init();
 
+    Console::setColor((uint32_t)0x2bbf1b);
     Console::write("[SUCCESS] ", 2);
+    Console::setColor((uint32_t)0xffffff);
     Console::println("IDT started succesfully!");
 
     // Init PIC
-    Console::write("[TASK]    ", 3);
+    Console::setColor((uint32_t)0x4287f5);
+    Console::write("[TASK]    ");
+    Console::setColor((uint32_t)0xffffff);
     Console::println("Starting PIC...");
 
     init_pic();
     asm volatile("sti");
 
+    Console::setColor((uint32_t)0x2bbf1b);
     Console::write("[SUCCESS] ", 2);
+    Console::setColor((uint32_t)0xffffff);
     Console::println("PIC started succesfully!");
     
     // Enable cursor
-    Console::write("[TASK]    ", VGA_COLOR_CYAN);
+    Console::setColor((uint32_t)0x4287f5);
+    Console::write("[TASK]    ");
+    Console::setColor((uint32_t)0xffffff);
     Console::println("Enabling cursor...");
 
     enable_cursor_blink();
     Console::enable_cursor(0, 15);
     Console::set_cursor(0);
 
+    Console::setColor((uint32_t)0x2bbf1b);
     Console::write("[SUCCESS] ", 2);
+    Console::setColor((uint32_t)0xffffff);
     Console::println("Cursor enabled!");
 
-text_mode:
-
     // Move local mbi to global mbi
-    Console::write("[TASK]    ", VGA_COLOR_CYAN);
+    Console::setColor((uint32_t)0x4287f5);
+    Console::write("[TASK]    ");
+    Console::setColor((uint32_t)0xffffff);
     Console::println("Move MBI information...");
 
     mbi = mbi2;
 
-    Console::write("[SUCCESS] ", 9);
+    Console::setColor((uint32_t)0x2bbf1b);
+    Console::write("[SUCCESS] ", 2);
+    Console::setColor((uint32_t)0xffffff);
     Console::println("MBI information moved successfully");
 
-    Console::write("[INFO]    ", VGA_COLOR_LIGHT_BLUE);
+    Console::setColor((uint32_t)0x1b9ebf);
+    Console::write("[INFO]    ", 9);
+    Console::setColor((uint32_t)0xffffff);
     Console::println("Entering RanaOS in 1500 ms");
 
     wait_ms(1500);
 
 	// OG Loading
     Console::clearScreen();
-    Console::write(" eLite      ", 0, 4);
+    Console::setColors((uint32_t)0x000000, (uint32_t)0xff0000); // White text on black background
+    Console::write(" eLite      ");
     wait_ms(500);
-    Console::write(" Systems    ", 0, 2);
+    Console::setColors((uint32_t)0x000000, (uint32_t)0x00ff00);
+    Console::write(" Systems    ");
     wait_ms(500);
-    Console::write(" RanaOS     ", 0, 3);
+    Console::setColors((uint32_t)0x000000, (uint32_t)0x4287f5);
+    Console::write(" RanaOS     ");
     wait_ms(500);
-    Console::write(" beta 2     ", 0, 14);
+    Console::setColors((uint32_t)0x000000, (uint32_t)0xffff00);
+    Console::write(" beta 2     ");
+    Console::setColors((uint32_t)0xffffff, (uint32_t)0x0); // Reset colors
 
     wait_ms(250);
 
 	Console::write("\n\n");
 
 	Console::write("eLite Systems ");
+    
+    Console::setbColor(0x00ff00); // Green background
+    Console::setColor((uint32_t)0x000000); // Black text
 	Console::write(" RanaOS beta 2 ", 0, 2);
+    Console::setbColor(0x000000); // Reset background
+    Console::setColor((uint32_t)0xffffff); // Reset text color
+
 
 	Console::write("\n\n");
 
@@ -1043,7 +1026,8 @@ text_mode:
 
 	while (1) {
 		Console::write("> ");
-		char* s = Console::readLine(linebuf, sizeof(linebuf));
+		//char* s = Console::readLine(linebuf, sizeof(linebuf));
+        char* s = Console::readText(Console::cursorX * 8, Console::cursorY * 16, 80, 0xffffff);
 		
 		runcommand(s, true);		
 	}

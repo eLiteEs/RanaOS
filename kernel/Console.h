@@ -38,6 +38,14 @@ public:
 
     static void setGraphics(bool f);
     static void scrollGraphics();
+
+    static void setbColor(uint32_t newColor);
+    static void setColors(uint32_t fg, uint32_t bg);
+
+    static char* readText(int x, int y, int maxLen, uint32_t color);
+
+    static uint32_t cursorX; // Posición del cursor en X (modo gráfico)
+    static uint32_t cursorY; // Posición del cursor en Y (modo gráfico)
 private:
     static const uint16_t VGA_WIDTH  = 80;
     static const uint16_t VGA_HEIGHT = 25;
@@ -56,6 +64,7 @@ private:
     static bool graphics;
 
     static uint32_t gcolor; // Color por defecto en modo gráfico
+    static uint32_t bcolor; // Color por defecto en modo gráfico
 };
 
 // Implementación de la plantilla en el header
