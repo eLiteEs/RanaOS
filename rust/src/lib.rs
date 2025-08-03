@@ -11,8 +11,6 @@ extern "C" {
     fn vgraphics_clear_screen();
     fn vgraphics_get_width() -> u32;
     fn vgraphics_get_height() -> u32;
-    fn vgraphics_draw_string(x: u32, y: u32, s: *const u8, fg: u32, bg: u32);
-
     // Date and time functions
     fn get_second() -> u32;
     fn get_minute() -> u32;
@@ -58,8 +56,15 @@ impl Graphics {
     }
 
     pub fn draw_string(x: u32, y: u32, s: &str, fg: u32, bg: u32) {
-        let c_str = s.as_bytes();
-        unsafe { vgraphics_draw_string(x, y, c_str.as_ptr(), fg, bg) }
+        for (i, c) in s.chars().enumerate() {
+            if c == '\n' {
+                continue; // Skip newlines
+            }
+            if i >= 128 { // Limit to 128 characters
+                break;
+            }
+            unsafe { vgraphics_draw_char(x + i as u32 * 8, y, c as u8, fg, bg); }
+        }
     }
 
     pub fn draw_rect(x: u32, y: u32, width: u32, height: u32, color: u32) {
