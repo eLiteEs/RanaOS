@@ -99,33 +99,34 @@ impl DateTime {
     pub fn year() -> u32 {
         return unsafe { get_year() };
     }
-
-    pub fn format(&self) -> [u8; 20] {
-        let mut buf = [b' '; 20]; // Initialize with spaces
-        
-        // Helper to safely write two digits
+    
+    pub fn format(&self) -> [u8; 21] {
+        let mut buf = [b' '; 21];
+    
         let write_two = |buf: &mut [u8], pos: usize, n: u32| {
-            if pos + 1 < buf.len() {
-                buf[pos] = b'0' + (n / 10) as u8;
-                buf[pos + 1] = b'0' + (n % 10) as u8;
-            }
+            buf[pos] = b'0' + ((n / 10) % 10) as u8;
+            buf[pos + 1] = b'0' + (n % 10) as u8;
         };
-
-        // Format: HH:MM:SS - DD/MM/20YY
-        write_two(&mut buf, 0, DateTime::hours());
+    
+        write_two(&mut buf, 0, DateTime::hours() + 2);
         buf[2] = b':';
         write_two(&mut buf, 3, DateTime::minutes());
-        buf[7] = b' ';
-        buf[8] = b'-';
-        buf[9] = b' ';
+        buf[5] = b':';
+        write_two(&mut buf, 6, DateTime::seconds());
+        buf[8] = b' ';
+        buf[9] = b'-';
+        buf[10] = b' ';
         write_two(&mut buf, 11, DateTime::day());
-        buf[1] = b'/';
+        buf[13] = b'/';
         write_two(&mut buf, 14, DateTime::month());
         buf[16] = b'/';
+    
+        let year = DateTime::year(); // full year
         buf[17] = b'2';
         buf[18] = b'0';
-        write_two(&mut buf, 19, DateTime::year() % 100);
-
+        buf[19] = b'0' + ((year / 10) % 10) as u8;
+        buf[20] = b'0' + (year % 10) as u8;
+    
         buf
     }
 }

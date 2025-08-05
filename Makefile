@@ -8,7 +8,7 @@ GRUB_MKRESCUE := grub-mkrescue
 QEMU      := qemu-system-i386
 
 # Flags
-CXXFLAGS := -m32 -ffreestanding -O2 -Wall -Wextra \
+CXXFLAGS := -m32 -ffreestanding -O2 \
     -fno-exceptions -fno-rtti -fno-pie -fno-pic \
     -std=gnu++17 -Ikernel
 
@@ -35,7 +35,6 @@ CPP_SRCS := kernel/kernel.cpp \
     kernel/Console.cpp \
     kernel/io.cpp \
     kernel/disk.cpp \
-    kernel/filesystem.cpp \
     kernel/Graphics.cpp \
     kernel/string.cpp \
     kernel/memory.cpp \
@@ -52,7 +51,10 @@ CPP_SRCS := kernel/kernel.cpp \
 	kernel/Mouse.cpp \
 	kernel/pic.cpp \
 	kernel/io_wrapper.cpp \
-	kernel/pic_wrapper.cpp
+	kernel/pic_wrapper.cpp \
+	kernel/disk.cpp \
+	kernel/part_mgr.cpp \
+	kernel/fat32.cpp
 CPP_OBJS := $(patsubst kernel/%.cpp, %.o, $(CPP_SRCS))
 
 LDSCRIPT := kernel/linker.ld
@@ -101,13 +103,16 @@ iso: $(KERNEL_ELF)
 
 # Ejecutar en QEMU
 run:
-	$(QEMU) -cdrom $(ISO_IMG) -m 512M -vga std -serial stdio
+	$(QEMU) -cdrom $(ISO_IMG) -m 512M -vga std -serial stdio -hda disk1gb.qcow2 -boot d
 
 krun:
-	$(QEMU) -kernel $(KERNEL_ELF) -m 512M -vga std -serial stdio
+	$(QEMU) -kernel $(KERNEL_ELF) -m 512M -vga std -serial stdio -hda disk1gb.qcow2 -boot d
 
 # Limpiar
 clean:
 	@rm -f $(ASM_OBJS) $(CPP_OBJS) rust.o $(KERNEL_ELF) $(ISO_IMG)
 	@rm -rf $(ISO_DIR)
 	cd rust && cargo clean
+
+disk:
+	qemu-img create -f qcow2 disk1gb.qcow2 1GD

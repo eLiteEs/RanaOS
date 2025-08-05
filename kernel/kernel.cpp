@@ -12,7 +12,6 @@
 #include "parrot.cpp" // Frames de un pajaro
 #include "multiboot.h" // Funciones para cosas del GRUB
 #include "Graphics.h" // Graficos en VGA 13h
-#include "disk.hpp" // Cosas del nuevo disco
 #include "string.h" // ns
 #include "math.hpp" // Math operations
 #include "string.hpp"
@@ -21,6 +20,8 @@
 #include "vgraphics.h"
 #include "Debug.h" // Debugging functions
 #include "date.h"
+#include "part_mgr.h"
+#include "fat32.h"
 
 // Algo del filesystem
 #define DISK_SIZE_BYTES (128 * 1024)
@@ -48,6 +49,32 @@
 #define VGA_COLOR_LIGHT_MAGENTA 13
 #define VGA_COLOR_YELLOW        14
 #define VGA_COLOR_WHITE         15
+
+void wait_ms(uint32_t ms) {
+    if (ms == 0) return;
+
+    // Each iteration is limited to 54.925 ms (maximum divisor = 65535)
+    while (ms > 0) {
+        uint32_t chunk = (ms > 54) ? 54 : ms;
+        ms -= chunk;
+
+        uint16_t divisor = (uint16_t)(1193182 / 1000 * chunk); // = 1193 * chunk
+
+        // Set PIT channel 0 to mode 0 (one-shot), binary counting
+        outb(PIT_COMMAND, 0b00110100); // channel 0, access lobyte/hibyte, mode 0
+
+        // Load divisor
+        outb(PIT_CHANNEL0, divisor & 0xFF);        // low byte
+        outb(PIT_CHANNEL0, (divisor >> 8) & 0xFF); // high byte
+
+        // Wait until the countdown is done (OUT == 1)
+        while (true) {
+            outb(PIT_COMMAND, 0xE2); // latch status of channel 0
+            uint8_t status = inb(PIT_CHANNEL0);
+            if (status & (1 << 7)) break; // OUT = 1, finished
+        }
+    }
+}
 
 // Cosas del parrot
 uint64_t rdtsc();
@@ -805,6 +832,39 @@ void runcommand(char* s, bool auth) {
         while(1) {}
     } else if(!strcmp(s, "start")) {
         start_so(); // Llamar a la función de inicio del SO
+    } else if(!strcmp(s, "fdisk")) {
+        DiskInfo disks[1];
+        int disk_count;
+        if (!detect_disks(disks, 1, &disk_count)) {
+            Console::println("Error: No se detectaron discos\n");
+            return;
+        }
+        Console::println("Disco detectado:", disks[0].model, ", Sectores totales: ", (long long unsigned) disks[0].total_sectors, '\n');
+        Console::write("Usar este disco? (y=yes, else=no): ");
+        bool tr = false;
+        char answer = Console::getKey(tr);
+
+        if(answer != 0x15) {
+            Console::println("Operación cancelada.");
+            return;
+        }
+        
+        // Crear partición que ocupe todo el disco (ajusta el LBA según tu disco)
+        uint32_t partition_start = 2048;  // Offset estándar para MBR (1MB)
+        uint32_t total_sectors = disks[0].total_sectors - partition_start;
+
+        if (!create_partition(0, 0, PARTITION_FAT32_LBA, partition_start, total_sectors)) {
+            Console::println("Error al crear partición");
+            return;
+        }
+
+        // Formatear como FAT32
+        FAT32 fs;
+        if (!fs.format(total_sectors)) {
+            Console::println("Error al formatear");
+            return;
+        }
+        Console::println("Partición FAT32 creada y formateada\n");
     } else {
 		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
 	}
