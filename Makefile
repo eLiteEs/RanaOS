@@ -115,4 +115,5 @@ clean:
 	cd rust && cargo clean
 
 disk:
-	qemu-img create -f qcow2 disk1gb.qcow2 1GD
+	qemu-img create -f qcow2 disk1gb.qcow2 1G
+	
