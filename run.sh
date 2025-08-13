@@ -1,1 +1,1 @@
-clear; make full-clean; clear; make; make run; make clean
+clear; make full-clean; clear; make; make run; make clean; 
