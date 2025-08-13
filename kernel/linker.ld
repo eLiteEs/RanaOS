@@ -4,11 +4,11 @@ SECTIONS {
     . = 1M;
 
     .text : {
-        *(.multiboot)
+        KEEP(*(.multiboot2))   /* Header Multiboot2 debe ir primero */
         *(.text*)
-        *(.iplt*)       /* Algunas versiones de g++ agregan esto */
-        *(.eh_frame)    /* Mismo caso, necesario para algunos entornos */
-        *(.rel.dyn)     /* A veces aparece, lo metemos por seguridad */
+        *(.iplt*)              
+        *(.eh_frame)           
+        *(.rel.dyn)
     } :text
 
     .rodata : {
@@ -28,8 +28,7 @@ SECTIONS {
 }
 
 PHDRS {
-    text PT_LOAD FLAGS(5);  /* R + X == 0x1 | 0x4 = 0x5 */
-    data PT_LOAD FLAGS(6);  /* R + W == 0x2 | 0x4 = 0x6 */
-    nobits PT_LOAD FLAGS(6);
+    text PT_LOAD FLAGS(5);   /* RX */
+    data PT_LOAD FLAGS(6);   /* RW */
+    nobits PT_LOAD FLAGS(6); /* RW, BSS */
 }
-

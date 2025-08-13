@@ -7,6 +7,7 @@ class Console {
 public:
     static void clearScreen();
     static void setColor(uint8_t newColor);
+    static void setColor(uint32_t newColor);
     static void putChar(char c);
     static void write(const char* str);
     static void write(char c);
@@ -34,6 +35,17 @@ public:
     static int getKey(bool& shift);
 
     static void printHex(uint32_t value, uint8_t width = 8);
+
+    static void setGraphics(bool f);
+    static void scrollGraphics();
+
+    static void setbColor(uint32_t newColor);
+    static void setColors(uint32_t fg, uint32_t bg);
+
+    static char* readText(int x, int y, int maxLen, uint32_t color);
+
+    static uint32_t cursorX; // Posición del cursor en X (modo gráfico)
+    static uint32_t cursorY; // Posición del cursor en Y (modo gráfico)
 private:
     static const uint16_t VGA_WIDTH  = 80;
     static const uint16_t VGA_HEIGHT = 25;
@@ -47,7 +59,12 @@ private:
     static void updateCursor();
     static void scroll();
 
-    static void itoa(int value, char* str, int base); // 👈 añade esta
+    static void itoa(int value, char* str, int base);
+
+    static bool graphics;
+
+    static uint32_t gcolor; // Color por defecto en modo gráfico
+    static uint32_t bcolor; // Color por defecto en modo gráfico
 };
 
 // Implementación de la plantilla en el header
@@ -58,4 +75,3 @@ void Console::println(T first, Args... rest) {
 }
 
 #endif // CONSOLE_H
-

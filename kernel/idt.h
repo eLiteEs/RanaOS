@@ -1,34 +1,42 @@
+// idt.h - Definiciones para la Interrupt Descriptor Table
 #ifndef IDT_H
 #define IDT_H
 
 #include <stdint.h>
 
-// Estructura para una entrada de la IDT (interrupt gate)
+// Estructura de una entrada IDT
 struct IDTEntry {
-    uint16_t offset_low;   // bits 0–15 de la dirección del handler
-    uint16_t selector;     // selector de segmento de código (p.ej. 0x08)
-    uint8_t  zero;         // debe ser cero
-    uint8_t  flags;        // tipo y atributos (p.e. 0x8E)
-    uint16_t offset_high;  // bits 16–31 de la dirección
+    uint16_t offset_low;    // bits 0-15 del offset
+    uint16_t selector;      // selector de segmento de código
+    uint8_t zero;           // siempre 0
+    uint8_t type_attr;      // atributos (P, DPL, tipo)
+    uint16_t offset_high;   // bits 16-31 del offset
 } __attribute__((packed));
 
-// Puntero que usa la instrucción lidt
+// Estructura del puntero IDT para LIDT
 struct IDTPtr {
     uint16_t limit;
     uint32_t base;
 } __attribute__((packed));
 
-// Carga la IDT usando lidt(ptr)
-extern "C" void load_idt(uint32_t idt_ptr_address);
+// Registros guardados durante una interrupción
+struct Registers {
+    uint32_t ds;                 // Segmento de datos
+    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; // Registros pusha
+    uint32_t int_no, err_code;   // Número de interrupción y código de error
+    uint32_t eip, cs, eflags, useresp, ss; // Automáticamente pusheados por el CPU
+};
 
-/**
- * Instalación de una entrada de interrupción en el vector 'num'.
- *  - num: número de vector (0–255)
- *  - base: dirección de la función handler
- *  - sel: selector de segmento de código (0x08)
- *  - flags: atributos (0x8E para interrupt gate)
- */
-void set_idt_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags);
+// Tipo para manejadores de interrupción
+typedef void (*ISRHandler)(Registers*);
+
+// Funciones públicas
+extern "C" {
+    void idt_init();
+    void idt_set_gate(uint8_t num, uint32_t handler, uint8_t flags);
+    void register_interrupt_handler(uint8_t n, ISRHandler handler);
+
+    extern uint32_t isr_stub_table[];  // Declaración de la tabla de stubs
+}
 
 #endif // IDT_H
-

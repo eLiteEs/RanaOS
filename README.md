@@ -28,6 +28,7 @@ On my Ubuntu WSL I have instaled `qemu`, `nasm`, `xorriso`, `grub_mkrescue`, `bi
 
 ## Credits
 - I have used code from [dhepper/font8x8](https://github.com/dhepper/font8x8) (public domain) in Font.c file for adding fonts to graphical mode, thanks!
+- Also I have used code from [hubenchang0515/font8x16](https://github.com/hubenchang0515/font8x16) (MIT License) in CGraphics for adding fonts to graphical console mode, thanks!
 
 ## License
 

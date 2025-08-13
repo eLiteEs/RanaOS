@@ -1,0 +1,10 @@
+[package]
+name = "ranaos-gui"
+version = "0.2.0"
+edition = "2021"
+
+[lib]
+name = "graphicsm"
+crate-type = ["staticlib"]
+
+[dependencies]

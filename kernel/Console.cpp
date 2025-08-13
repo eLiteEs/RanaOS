@@ -1,11 +1,30 @@
 #include "Console.h"
 #include "io.h"
+#include "string.h"
+#include "vgraphics.h"
+#include "Debug.h"
+
 #define VGA_ADDRESS 0xB8000
 
 uint16_t  Console::cursorPos    = 0;
 uint8_t   Console::color        = 0x07;
 uint16_t* Console::vgaBuffer    = (uint16_t*)VGA_ADDRESS;
 char      Console::lineBuffer[] = {0};
+
+#define FB_WIDTH 240
+#define FB_HEIGHT 67
+
+static char textBuffer[FB_HEIGHT][FB_WIDTH];
+
+uint32_t Console::gcolor = 0xFFFFFF; // Color por defecto en modo gráfico
+uint32_t Console::bcolor = 0x000000; // Color de fondo por defecto en modo gráfico
+
+uint32_t Console::cursorX = 0;
+uint32_t Console::cursorY = 0;
+static Color textColor = {255, 255, 255, 0};  // Blanco por defecto
+static Color bgColor = {0, 0, 0, 0};          // Negro por defecto
+
+bool Console::graphics = false;
 
 extern "C" {
 
@@ -38,18 +57,33 @@ unsigned long long __umoddi3(unsigned long long n, unsigned long long d) {
 
 }
 
-
 void Console::clearScreen() {
-    uint16_t blank = (color << 8) | ' ';
-    for (int i = 0; i < VGA_WIDTH * VGA_HEIGHT; ++i)
-        vgaBuffer[i] = blank;
+    if(!graphics) {
+        uint16_t blank = (color << 8) | ' ';
+        for (int i = 0; i < VGA_WIDTH * VGA_HEIGHT; ++i)
+            vgaBuffer[i] = blank;
 
-    cursorPos = 0;
-    updateCursor();
+        cursorPos = 0;
+        updateCursor();
+    } else {
+        VGraphics::clearScreen();
+        cursorX = 0;
+        cursorY = 0;
+    }
 }
 
 void Console::setColor(uint8_t newColor) {
     color = newColor;
+}
+void Console::setColor(uint32_t newColor) {   
+    gcolor = newColor;
+}
+void Console::setbColor(uint32_t newColor) {   
+    bcolor = newColor;
+}
+void Console::setColors(uint32_t fg, uint32_t bg) {   
+    bcolor = bg;
+    gcolor = fg;
 }
 
 void Console::enable_cursor(uint8_t start, uint8_t end) {
@@ -68,19 +102,43 @@ void Console::set_cursor(uint16_t pos) {
 }
 
 void Console::putChar(char c) {
-    if (c == '\n') {
-        cursorPos += VGA_WIDTH - (cursorPos % VGA_WIDTH);
-    } else if (c == '\r') {
-        cursorPos -= cursorPos % VGA_WIDTH;
+    if(!graphics) {
+        if (c == '\n') {
+            cursorPos += VGA_WIDTH - (cursorPos % VGA_WIDTH);
+        } else if (c == '\r') {
+            cursorPos -= cursorPos % VGA_WIDTH;
+        } else {
+            vgaBuffer[cursorPos++] = (color << 8) | c;
+        }
+
+        if (cursorPos >= VGA_WIDTH * VGA_HEIGHT) {
+            scroll();
+        }
+
+        set_cursor(cursorPos);
     } else {
-        vgaBuffer[cursorPos++] = (color << 8) | c;
-    }
+        switch (c)
+        {
+            case '\n':
+                cursorY++;
+                cursorX = 0;
+                break;
+            
+            default:
+                if(VGraphics::getWidth() / 16 <= cursorX) {
+                    cursorX = 0;
+                    cursorY++;
+                }
 
-    if (cursorPos >= VGA_WIDTH * VGA_HEIGHT) {
-        scroll();
+                if(cursorX * cursorY >= FB_WIDTH * FB_HEIGHT) {
+                    VGraphics::scroll();
+                }
+                VGraphics::drawChar(cursorX * 8, cursorY * 16, c, gcolor, bcolor);
+                textBuffer[cursorY][cursorX] = c;
+                cursorX++;
+                break;
+        }
     }
-
-    set_cursor(cursorPos);
 }
 
 void Console::write(const char* str) {
@@ -175,7 +233,16 @@ void Console::write(bool value) {
 }
 
 void Console::println() {
-    putChar('\n');
+    if(!graphics) {
+        putChar('\n');
+    } else {
+        cursorX = 0;
+        cursorY++;
+        if(cursorY >= FB_HEIGHT) {
+            VGraphics::scroll();
+            cursorY--;
+        }
+    }
 }
 
 void Console::scroll() {
@@ -238,54 +305,106 @@ char scancodeToAscii(uint8_t sc, bool shift) {
 }
 
 char* Console::readLine(char* buffer, int maxLength) {
-    int length = 0, cursor = 0, startPos = cursorPos;
+    if(!graphics) {
+        int length = 0, cursor = 0, startPos = cursorPos;
+        bool shift = false;
+
+        while (true) {
+            int sc = getKey(shift);
+
+            if (sc == KEY_ENTER) {
+                putChar('\n');
+                break;
+            }
+
+            if (sc == KEY_BACKSPACE) {
+                if (cursor > 0) {
+                    for (int i = cursor - 1; i < length - 1; ++i)
+                        buffer[i] = buffer[i + 1];
+                    length--; cursor--;
+                    for (int i = cursor; i < length; ++i)
+                        vgaBuffer[startPos + i] = (color << 8) | buffer[i];
+                    vgaBuffer[startPos + length] = (color << 8) | ' ';
+                    cursorPos = startPos + cursor;
+                    updateCursor();
+                }
+            }
+
+            else if (sc == KEY_LEFT && cursor > 0) {
+                cursor--; cursorPos--; updateCursor();
+            }
+
+            else if (sc == KEY_RIGHT && cursor < length) {
+                cursor++; cursorPos++; updateCursor();
+            }
+
+            else {
+                char c = scancodeToAscii(sc, shift);
+                if (c && c >= 32 && c <= 126 && length < maxLength - 1) {
+                    for (int i = length; i > cursor; --i)
+                        buffer[i] = buffer[i - 1];
+                    buffer[cursor] = c;
+                    length++; cursor++;
+                    for (int i = cursor - 1; i < length; ++i)
+                        vgaBuffer[startPos + i] = (color << 8) | buffer[i];
+                    cursorPos = startPos + cursor;
+                    updateCursor();
+                }
+            }
+        }
+
+        buffer[length] = 0;
+        return buffer;
+    } else {
+        char* result = readText(cursorX * 8, cursorY * 16, maxLength, gcolor);
+        return result;
+    }
+}
+
+char* Console::readText(int x, int y, int maxLen, uint32_t color) {
+    static char buffer[256];
+    int len = 0, cursor = 0;
     bool shift = false;
+
+    // Copia el contenido gráfico actual desde el buffer lógico
+    strncpy(buffer, textBuffer[y], maxLen - 1);
+    buffer[maxLen - 1] = 0;
+    len = strlen(buffer);
+    cursor = len;
 
     while (true) {
         int sc = getKey(shift);
+        if (sc == KEY_ENTER) break;
 
-        if (sc == KEY_ENTER) {
-            putChar('\n');
-            break;
-        }
-
-        if (sc == KEY_BACKSPACE) {
-            if (cursor > 0) {
-                for (int i = cursor - 1; i < length - 1; ++i)
-                    buffer[i] = buffer[i + 1];
-                length--; cursor--;
-                for (int i = cursor; i < length; ++i)
-                    vgaBuffer[startPos + i] = (color << 8) | buffer[i];
-                vgaBuffer[startPos + length] = (color << 8) | ' ';
-                cursorPos = startPos + cursor;
-                updateCursor();
-            }
-        }
-
-        else if (sc == KEY_LEFT && cursor > 0) {
-            cursor--; cursorPos--; updateCursor();
-        }
-
-        else if (sc == KEY_RIGHT && cursor < length) {
-            cursor++; cursorPos++; updateCursor();
-        }
-
+        if (sc == KEY_BACKSPACE && cursor > 0) {
+            for (int i = cursor - 1; i < len - 1; ++i)
+                buffer[i] = buffer[i + 1];
+            len--; cursor--;
+        } else if (sc == KEY_LEFT && cursor > 0) cursor--;
+        else if (sc == KEY_RIGHT && cursor < len) cursor++;
         else {
             char c = scancodeToAscii(sc, shift);
-            if (c && c >= 32 && c <= 126 && length < maxLength - 1) {
-                for (int i = length; i > cursor; --i)
+            if (c && c >= 32 && c <= 126 && len < maxLen - 1) {
+                for (int i = len; i > cursor; --i)
                     buffer[i] = buffer[i - 1];
                 buffer[cursor] = c;
-                length++; cursor++;
-                for (int i = cursor - 1; i < length; ++i)
-                    vgaBuffer[startPos + i] = (color << 8) | buffer[i];
-                cursorPos = startPos + cursor;
-                updateCursor();
+                len++; cursor++;
             }
         }
+
+        buffer[len] = 0;
+
+        VGraphics::fillRect(x, y, 8 * 128 - x * 8, 16, bcolor);
+        VGraphics::drawString(x, y, buffer, gcolor);
+        VGraphics::drawChar('_', x + cursor * 8, y, gcolor);
+
+        // Guardar nuevo estado en buffer lógico
+        strncpy(textBuffer[y], buffer, maxLen);
     }
 
-    buffer[length] = 0;
+    buffer[len] = 0;
+    cursorX = 0;
+    cursorY++;
     return buffer;
 }
 
@@ -334,4 +453,8 @@ void Console::printHex(uint32_t value, uint8_t width) {
         
     if (width == 8) write("0x");
     write(buf);
+}
+
+void Console::setGraphics(bool f) {
+    Console::graphics = f;
 }

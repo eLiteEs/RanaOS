@@ -1,20 +1,26 @@
-# Makefile para RanaOS bootable ISO
-
 # Herramientas
-NASM		  := nasm
-CXX		   := g++
-LD			:= ld
+NASM      := nasm
+CXX       := g++
+CC        := gcc
+LD        := ld
+CARGO     := cargo
 GRUB_MKRESCUE := grub-mkrescue
-QEMU		  := qemu-system-i386
+QEMU      := qemu-system-i386
 
 # Flags
-CXXFLAGS := -m32 -ffreestanding -O2 -Wall -Wextra \
-	-fno-exceptions -fno-rtti -fno-pie -fno-pic \
-	-std=gnu++17 -Ikernel
-LDFLAGS := -m elf_i386 -nostdlib -L/usr/lib/gcc/x86_64-linux-gnu/11/32
+CXXFLAGS := -m32 -ffreestanding -O2 \
+    -fno-exceptions -fno-rtti -fno-pie -fno-pic \
+    -std=gnu++17 -Ikernel
+
 CFLAGS   := -m32 -ffreestanding -O2 -Wall -Wextra \
-	-fno-pie -fno-pic \
-	-std=gnu17 -Ikernel
+    -fno-pie -fno-pic \
+    -std=gnu17 -Ikernel
+
+RUST_TARGET := i686-unknown-linux-gnu
+RUST_LIB := rust/target/$(RUST_TARGET)/release/libgraphicsm.a
+RUSTFLAGS := -C opt-level=2 -C panic=abort -C link-arg=-nostartfiles
+
+LDFLAGS := -m elf_i386 -nostdlib -L/usr/lib/gcc/x86_64-linux-gnu/11/32
 
 # Directorios
 ISO_DIR   := isodir
@@ -22,19 +28,33 @@ BOOT_DIR  := $(ISO_DIR)/boot
 GRUB_DIR  := $(BOOT_DIR)/grub
 
 # Fuentes
-ASM_SRCS := boot.asm threads.asm
+ASM_SRCS := boot.asm threads.asm kernel/exceptions.asm
 ASM_OBJS := $(patsubst %.asm, %.o, $(ASM_SRCS))
 
 CPP_SRCS := kernel/kernel.cpp \
-	kernel/Console.cpp \
-	kernel/io.cpp \
+    kernel/Console.cpp \
+    kernel/io.cpp \
+    kernel/disk.cpp \
+    kernel/Graphics.cpp \
+    kernel/string.cpp \
+    kernel/memory.cpp \
+    kernel/math.cpp \
+    kernel/idt.cpp \
+    kernel/vesa.cpp \
+    kernel/vgraphics.cpp \
+    kernel/Debug.cpp \
+    kernel/vgraphics_wrapper.cpp \
+	kernel/date_wrapper.cpp \
+	kernel/date.cpp \
+	kernel/mouse_wrapper.cpp \
+	kernel/wait_wrapper.cpp \
+	kernel/Mouse.cpp \
+	kernel/pic.cpp \
+	kernel/io_wrapper.cpp \
+	kernel/pic_wrapper.cpp \
 	kernel/disk.cpp \
-	kernel/filesystem.cpp \
-	kernel/Graphics.cpp \
-	kernel/string.cpp \
-	kernel/memory.cpp \
-	kernel/math.cpp
-
+	kernel/part_mgr.cpp \
+	kernel/fat32.cpp
 CPP_OBJS := $(patsubst kernel/%.cpp, %.o, $(CPP_SRCS))
 
 LDSCRIPT := kernel/linker.ld
@@ -44,36 +64,34 @@ MODULES_DIR  := $(ISO_DIR)/files
 
 # Salidas
 KERNEL_ELF := kernel.elf
-ISO_IMG	:= RanaOS.iso
+ISO_IMG    := RanaOS.iso
 
-.PHONY: all clean iso run
+.PHONY: all clean iso run krun
 
 all: iso
 
-clear:
-	@clear
-
-# --------------------------------------------------------
-# 1) Ensamblar ASM
-# --------------------------------------------------------
+# Ensamblar ASM
 %.o: %.asm
 	$(NASM) -f elf32 $< -o $@
 
-# --------------------------------------------------------
-# 2) Compilar C++
-# --------------------------------------------------------
+# Compilar C++
 %.o: kernel/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# --------------------------------------------------------
-# 3) Linkear kernel ELF
-# --------------------------------------------------------
-$(KERNEL_ELF): $(ASM_OBJS) $(CPP_OBJS) $(LDSCRIPT)
-	$(LD) $(LDFLAGS) -T $(LDSCRIPT) -o $@ $(ASM_OBJS) $(CPP_OBJS) -lgcc
+graphicm.o: rust/src/lib.rs
+	rustc --target=i686-unknown-linux-gnu \
+	      -C opt-level=2 \
+	      -C panic=abort \
+	      -C link-arg=-m32 \
+	      --emit=obj \
+	      -o $@ \
+	      $<
 
-# --------------------------------------------------------
-# 4) Generar ISO booteable
-# --------------------------------------------------------
+# Linkear kernel ELF
+$(KERNEL_ELF): $(ASM_OBJS) $(CPP_OBJS) graphicm.o
+	$(LD) $(LDFLAGS) -T $(LDSCRIPT) -o $@ $^ -lgcc
+
+# Generar ISO booteable
 iso: $(KERNEL_ELF)
 	@mkdir -p $(GRUB_DIR)
 	@mkdir -p $(MODULES_DIR)
@@ -83,24 +101,19 @@ iso: $(KERNEL_ELF)
 	@$(GRUB_MKRESCUE) -o $(ISO_IMG) $(ISO_DIR) --modules="multiboot part_msdos fat"
 	@echo ">>> ISO generada: $(ISO_IMG)"
 
-# --------------------------------------------------------
-# 5) Ejecutar en QEMU
-# --------------------------------------------------------
-run: iso
-	$(QEMU) -cdrom $(ISO_IMG) -m 512M -vga std -serial stdio
+# Ejecutar en QEMU
+run:
+	$(QEMU) -cdrom $(ISO_IMG) -m 512M -vga std -serial stdio -hda disk1gb.qcow2 -boot d
 
-# --------------------------------------------------------
-# 6) Limpiar
-# --------------------------------------------------------
+krun:
+	$(QEMU) -kernel $(KERNEL_ELF) -m 512M -vga std -serial stdio -hda disk1gb.qcow2 -boot d
+
+# Limpiar
 clean:
-	@rm -f $(ASM_OBJS) $(CPP_OBJS) $(KERNEL_ELF) $(ISO_IMG)
+	@rm -f $(ASM_OBJS) $(CPP_OBJS) rust.o $(KERNEL_ELF) $(ISO_IMG)
 	@rm -rf $(ISO_DIR)
+	cd rust && cargo clean
 
-# --------------------------------------------------------
-# 7) Herramienta para crear discos FAT32
-# --------------------------------------------------------
-fat_tool:
-	$(CXX) -std=c++17 -O2 tools/fat_tool.cpp -o fat_tool
-
-vga_paint:
-	java PIMConverter.java
+disk:
+	qemu-img create -f qcow2 disk1gb.qcow2 1G
+	
