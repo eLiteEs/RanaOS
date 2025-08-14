@@ -19,8 +19,7 @@ CFLAGS   := -m32 -ffreestanding -O2 -Wall -Wextra \
 RUST_TARGET := i686-unknown-linux-gnu
 RUST_LIB := rust/target/$(RUST_TARGET)/release/libgraphicsm.a
 RUSTFLAGS := -C opt-level=2 -C panic=abort -C link-arg=-nostartfiles
-
-LDFLAGS := -m elf_i386 -nostdlib -L/usr/lib/gcc/x86_64-linux-gnu/11/32
+LDFLAGS := -m elf_i386 -nostdlib -L$(shell dirname $$(gcc -m32 -print-libgcc-file-name))
 
 # Directorios
 ISO_DIR   := isodir
