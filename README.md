@@ -1,3 +1,5 @@
+[![Build RanaOS ISO](https://github.com/eLiteEs/RanaOS/actions/workflows/build.yml/badge.svg)](https://github.com/eLiteEs/RanaOS/actions/workflows/build.yml)
+
 # RanaOS
 32-bit OS made using C++, C and Assembly
 
@@ -6,7 +8,7 @@
 Simply run `make` on a Linux machine (I'm adding support to windows later) and that compiles all sources into a booteable `.iso`.
 
 For running it, I recommend using VirtualBox, although there's and option in `make run` for using qemu which is easier.
-The VM should have recommended 64 MB of RAM, 9 MB of video and 1 CPU.
+The VM should have recommended 512 MB of RAM, 256 MB of video and 1 CPU.
 
 I'm working on FATnenuphar, the custom file system of RanaOS. Soon I'll make a binary for generating `.vdi`s of FATnenuphar.
 
@@ -20,14 +22,13 @@ Yeah, although it isn't very commented and some parts are in Spanish, you can fo
 
 ## What languages does it use?
 
-The bootloader (i'm not sure if it's being used) is coded in assembly. The kernel and command line are coded in a raw C++ which I made somw functions for it looking like C#. Most of the functions are using C++, C and Assembly for low-level tools.
+The bootloader is coded in assembly. The kernel and command line are coded in a raw C++ which I made somw functions for it looking like C#. Most of the functions are using C++, C and Assembly for low-level tools.
 
 ## Recommended tools to have instaled
 
 On my Ubuntu WSL I have instaled `qemu`, `nasm`, `xorriso`, `grub_mkrescue`, `binutils`, `mtools` and `g++`. (maybe some are missing)
 
 ## Credits
-- I have used code from [dhepper/font8x8](https://github.com/dhepper/font8x8) (public domain) in Font.c file for adding fonts to graphical mode, thanks!
 - Also I have used code from [hubenchang0515/font8x16](https://github.com/hubenchang0515/font8x16) (MIT License) in CGraphics for adding fonts to graphical console mode, thanks!
 
 ## License

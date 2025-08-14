@@ -27,6 +27,7 @@ jobs:
           mtools \
           gcc-multilib \
           g++-multilib
+        rustup target add i686-unknown-linux-gnu
 
     - name: Build ISO image
       run: make
