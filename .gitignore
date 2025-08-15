@@ -3,3 +3,4 @@
 *.img
 *.elf
 isodir/
+rust/target/

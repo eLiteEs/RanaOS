@@ -366,6 +366,8 @@ char* Console::readText(int x, int y, int maxLen, uint32_t color) {
     int len = 0, cursor = 0;
     bool shift = false;
 
+    VGraphics::drawChar(x + cursor * 8 + 1, y, '_', gcolor);
+
     // Copia el contenido gráfico actual desde el buffer lógico
     strncpy(buffer, textBuffer[y], maxLen - 1);
     buffer[maxLen - 1] = 0;
@@ -396,11 +398,13 @@ char* Console::readText(int x, int y, int maxLen, uint32_t color) {
 
         VGraphics::fillRect(x, y, 8 * 128 - x * 8, 16, bcolor);
         VGraphics::drawString(x, y, buffer, gcolor);
-        VGraphics::drawChar('_', x + cursor * 8, y, gcolor);
+        VGraphics::drawChar(x + cursor * 8 + 1, y, '_', gcolor);
 
         // Guardar nuevo estado en buffer lógico
         strncpy(textBuffer[y], buffer, maxLen);
     }
+
+    VGraphics::drawChar(x + cursor * 8 + 1, y, '_', bcolor);
 
     buffer[len] = 0;
     cursorX = 0;
