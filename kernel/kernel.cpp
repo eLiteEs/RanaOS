@@ -617,7 +617,6 @@ void runcommand(char* s, bool auth) {
 		Console::write("  date >> Show current date.\n");
 		Console::write("  parrot >> Dancing parrot animation from ascii.live.\n");
 		Console::write("  day >> Get the weekday name.\n");
-		Console::write("  di || disks >> Get the available disks.\n");
         Console::write("  shutdwn || shutdown >> Power off the computer.\n");
         Console::write("      ... /y >> Power off the computer without asking.\n");
         Console::write("  reboot >> Reboot the computer.\n");
@@ -866,7 +865,7 @@ void runcommand(char* s, bool auth) {
         }
         Console::println("Partición FAT32 creada y formateada\n");
     } else {
-		Console::write("Unknown Command. Use 'help' to get a list of commands.\n");
+		Console::write("Unknown Command. Use \"help\" to get a list of commands.\n");
 	}
 }
 
@@ -1013,21 +1012,6 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
     Console::write("[SUCCESS] ", 2);
     Console::setColor((uint32_t)0xffffff);
     Console::println("PIC started succesfully!");
-    
-    // Enable cursor
-    Console::setColor((uint32_t)0x4287f5);
-    Console::write("[TASK]    ");
-    Console::setColor((uint32_t)0xffffff);
-    Console::println("Enabling cursor...");
-
-    enable_cursor_blink();
-    Console::enable_cursor(0, 15);
-    Console::set_cursor(0);
-
-    Console::setColor((uint32_t)0x2bbf1b);
-    Console::write("[SUCCESS] ", 2);
-    Console::setColor((uint32_t)0xffffff);
-    Console::println("Cursor enabled!");
 
     // Move local mbi to global mbi
     Console::setColor((uint32_t)0x4287f5);
