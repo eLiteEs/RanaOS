@@ -1,5 +1,12 @@
 {
     "files.associations": {
         "ostream": "cpp"
-    }
+    },
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/blas/RanaOS",
+            "binaryPath": "/home/blas/RanaOS/kernel.elf",
+            "binaryArgs": []
+        }
+    ]
 }

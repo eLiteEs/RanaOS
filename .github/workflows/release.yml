@@ -1,0 +1,55 @@
+name: Build and Publish RanaOS
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - '*'
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            binutils \
+            nasm \
+            g++ \
+            grub-pc-bin \
+            xorriso \
+            mtools \
+            gcc-multilib \
+            g++-multilib
+          rustup default nightly
+          rustup target add i686-unknown-linux-gnu
+
+      - name: Build ISO image
+        run: make
+
+      - name: Generate checksum
+        run: sha256sum RanaOS.iso > RanaOS.sha256
+
+      - name: Prepare artifact for Pages
+        run: |
+          mkdir public
+          cp RanaOS.iso public/
+          cp RanaOS.sha256 public/
+          if [[ "${GITHUB_REF_TYPE}" == "branch" && "${GITHUB_REF_NAME}" == "main" ]]; then
+            echo "nightly" > public/version.txt
+          else
+            echo "${GITHUB_REF_NAME}" > public/version.txt
+          fi
+
+      - name: Upload to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          keep_files: true
