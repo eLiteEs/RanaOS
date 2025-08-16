@@ -628,7 +628,7 @@ void runcommand(char* s, bool auth) {
         Console::write("  read [filename] >> Read the contents of a module in a better way.\n");
         Console::write("  start >> Start Os in graphical mode.\n");
     } else if(!strcmp(s, "version")) {
-		Console::write("eLite Systems RanaOS beta 2\nLicensed with GNU GPL v3.\n");
+		Console::write("eLite Systems RanaOS beta 3\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
 		Console::println(substr(s, 5));
 	} else if(!strcmp(s, "clear") || !strcmp(s, "cls")) {
@@ -1045,7 +1045,7 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
     Console::write(" RanaOS     ");
     wait_ms(500);
     Console::setColors((uint32_t)0x000000, (uint32_t)0xffff00);
-    Console::write(" beta 2     ");
+    Console::write(" beta 3     ");
     Console::setColors((uint32_t)0xffffff, (uint32_t)0x0); // Reset colors
 
     wait_ms(250);
@@ -1056,7 +1056,7 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
     
     Console::setbColor(0x00ff00); // Green background
     Console::setColor((uint32_t)0x000000); // Black text
-	Console::write(" RanaOS beta 2 ", 0, 2);
+	Console::write(" RanaOS beta 3 ", 0, 2);
     Console::setbColor(0x000000); // Reset background
     Console::setColor((uint32_t)0xffffff); // Reset text color
 
