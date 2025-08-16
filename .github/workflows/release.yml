@@ -3,8 +3,6 @@ name: Build and Publish RanaOS
 on:
   push:
     branches: [ main ]
-    tags:
-      - '*'
   release:
     types: [published]
 
@@ -29,7 +27,8 @@ jobs:
             xorriso \
             mtools \
             gcc-multilib \
-            g++-multilib
+            g++-multilib \
+            jq
           rustup default nightly
           rustup target add i686-unknown-linux-gnu
 
@@ -41,14 +40,36 @@ jobs:
 
       - name: Prepare artifact for Pages
         run: |
-          mkdir public
-          cp RanaOS.iso public/
-          cp RanaOS.sha256 public/
+          mkdir -p public
+          VERSION=""
           if [[ "${GITHUB_REF_TYPE}" == "branch" && "${GITHUB_REF_NAME}" == "main" ]]; then
-            echo "nightly" > public/version.txt
+            VERSION="nightly"
+            mkdir -p public/nightly
+            cp RanaOS.iso public/nightly/
+            cp RanaOS.sha256 public/nightly/
           else
-            echo "${GITHUB_REF_NAME}" > public/version.txt
+            VERSION="${GITHUB_REF_NAME}"
+            mkdir -p public/${VERSION}
+            cp RanaOS.iso public/${VERSION}/
+            cp RanaOS.sha256 public/${VERSION}/
           fi
+
+          # Copiar manifest si existe
+          if [ -f manifest.json ]; then
+            cp manifest.json public/
+          elif [ -f public/manifest.json ]; then
+            cp public/manifest.json .
+          else
+            echo '{"versions":[]}' > public/manifest.json
+          fi
+
+          # Actualizar manifest.json
+          MANIFEST="public/manifest.json"
+          URL_BASE="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY}"
+
+          jq --arg ver "$VERSION" --arg base "$URL_BASE" \
+             '.versions |= [ .[] | select(.version != $ver) ] + [{version:$ver, iso:($base + "/" + $ver + "/RanaOS.iso"), sha256:($base + "/" + $ver + "/RanaOS.sha256")}]' \
+             "$MANIFEST" > manifest.tmp && mv manifest.tmp "$MANIFEST"
 
       - name: Upload to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
