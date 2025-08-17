@@ -5,12 +5,9 @@
 
 ## How to generate a .iso
 
-Simply run `make` on a Linux machine (I'm adding support to windows later) and that compiles all sources into a booteable `.iso`.
+Simply run `make` on a Ubuntu Linux machine (I'm adding support to Windows later) and that compiles all sources into a booteable `.iso`.
 
-For running it, I recommend using VirtualBox, although there's and option in `make run` for using qemu which is easier.
-The VM should have recommended 512 MB of RAM, 256 MB of video and 1 CPU.
-
-I'm working on FATnenuphar, the custom file system of RanaOS. Soon I'll make a binary for generating `.vdi`s of FATnenuphar.
+For running the `.iso`, you can run `make run`, it uses qemu.
 
 ## Can I collaborate?
 
@@ -22,11 +19,13 @@ Yeah, although it isn't very commented and some parts are in Spanish, you can fo
 
 ## What languages does it use?
 
-The bootloader is coded in assembly. The kernel and command line are coded in a raw C++ which I made somw functions for it looking like C#. Most of the functions are using C++, C and Assembly for low-level tools.
+The bootloader is coded in assembly. The kernel and command line are coded in a raw C++ which I made some functions for it looking like C#. Most of the functions are using C++, C and Assembly for low-level tools.
+
+The UI it's going to be made with Rust and other programs and tools maybe are written in Go, Fortan or COBOL.
 
 ## Recommended tools to have instaled
 
-On my Ubuntu WSL I have instaled `qemu`, `nasm`, `xorriso`, `grub_mkrescue`, `binutils`, `mtools` and `g++`. (maybe some are missing)
+On my Ubuntu WSL I have instaled `qemu`, `nasm`, `xorriso`, `grub_mkrescue`, `binutils`, `mtools`, rust and `g++`. (maybe some are missing)
 
 ## Credits
 - Also I have used code from [hubenchang0515/font8x16](https://github.com/hubenchang0515/font8x16) (MIT License) in CGraphics for adding fonts to graphical console mode, thanks!

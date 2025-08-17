@@ -1,0 +1,806 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+-target	Makefile	/^	rustc --target=i686-unknown-linux-gnu \\$/;"	m
+ASM_OBJS	Makefile	/^ASM_OBJS := $(patsubst %.asm, %.o, $(ASM_SRCS))$/;"	m
+ASM_SRCS	Makefile	/^ASM_SRCS := boot.asm threads.asm kernel\/exceptions.asm$/;"	m
+ATA	kernel/disk.h	/^class ATA {$/;"	c
+ATTR_ARCHIVE	kernel/fat32.h	71;"	d
+ATTR_DIRECTORY	kernel/fat32.h	70;"	d
+ATTR_HIDDEN	kernel/fat32.h	67;"	d
+ATTR_LONG_NAME	kernel/fat32.h	72;"	d
+ATTR_READ_ONLY	kernel/fat32.h	66;"	d
+ATTR_SYSTEM	kernel/fat32.h	68;"	d
+ATTR_VOLUME_ID	kernel/fat32.h	69;"	d
+BOOT_DIR	Makefile	/^BOOT_DIR  := $(ISO_DIR)\/boot$/;"	m
+CARGO	Makefile	/^CARGO     := cargo$/;"	m
+CC	Makefile	/^CC        := gcc$/;"	m
+CFLAGS	Makefile	/^CFLAGS   := -m32 -ffreestanding -O2 -Wall -Wextra \\$/;"	m
+CMOS_ADDRESS	kernel/date.cpp	7;"	d	file:
+CMOS_DATA	kernel/date.cpp	8;"	d	file:
+COLOR_BLACK	kernel/Graphics.h	/^    COLOR_BLACK,$/;"	e	enum:__anon2
+COLOR_BLUE	kernel/Graphics.h	/^    COLOR_BLUE,$/;"	e	enum:__anon2
+COLOR_BROWN	kernel/Graphics.h	/^    COLOR_BROWN,$/;"	e	enum:__anon2
+COLOR_CHARS	PIMConverter.java	/^    private static final char[] COLOR_CHARS = {'n', 'b', 'g', 'c', 'r', 'm', 'l', 'y', 'w'};$/;"	f	class:PIMConverter	file:
+COLOR_CYAN	kernel/Graphics.h	/^    COLOR_CYAN,$/;"	e	enum:__anon2
+COLOR_DARK_GRAY	kernel/Graphics.h	/^    COLOR_DARK_GRAY,$/;"	e	enum:__anon2
+COLOR_GREEN	kernel/Graphics.h	/^    COLOR_GREEN,$/;"	e	enum:__anon2
+COLOR_LIGHT_BLUE	kernel/Graphics.h	/^    COLOR_LIGHT_BLUE,$/;"	e	enum:__anon2
+COLOR_LIGHT_CYAN	kernel/Graphics.h	/^    COLOR_LIGHT_CYAN,$/;"	e	enum:__anon2
+COLOR_LIGHT_GRAY	kernel/Graphics.h	/^    COLOR_LIGHT_GRAY,$/;"	e	enum:__anon2
+COLOR_LIGHT_GREEN	kernel/Graphics.h	/^    COLOR_LIGHT_GREEN,$/;"	e	enum:__anon2
+COLOR_LIGHT_MAGENTA	kernel/Graphics.h	/^    COLOR_LIGHT_MAGENTA,$/;"	e	enum:__anon2
+COLOR_LIGHT_RED	kernel/Graphics.h	/^    COLOR_LIGHT_RED,$/;"	e	enum:__anon2
+COLOR_MAGENTA	kernel/Graphics.h	/^    COLOR_MAGENTA,$/;"	e	enum:__anon2
+COLOR_RED	kernel/Graphics.h	/^    COLOR_RED,$/;"	e	enum:__anon2
+COLOR_WHITE	kernel/Graphics.h	/^    COLOR_WHITE$/;"	e	enum:__anon2
+COLOR_YELLOW	kernel/Graphics.h	/^    COLOR_YELLOW,$/;"	e	enum:__anon2
+COM1	kernel/Debug.cpp	/^    constexpr uint16_t COM1 = 0x3F8;$/;"	m	namespace:Debug	file:
+CONSOLE_H	kernel/Console.h	2;"	d
+CPP_OBJS	Makefile	/^CPP_OBJS := $(patsubst kernel\/%.cpp, %.o, $(CPP_SRCS))$/;"	m
+CPP_SRCS	Makefile	/^CPP_SRCS := kernel\/kernel.cpp \\$/;"	m
+CXX	Makefile	/^CXX       := g++$/;"	m
+CXX	build.bat	/^set CXX="%TOOLCHAIN%\\i686-elf-g++"$/;"	v
+CXXFLAGS	Makefile	/^CXXFLAGS := -m32 -ffreestanding -O2 \\$/;"	m
+CXXFLAGS	build.bat	/^set CXXFLAGS=-m32 -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -fno-pie -fno-pic -std=gnu++17$/;"	v
+Color	kernel/vgraphics.h	/^	Color(uint8_t r=0, uint8_t g=0, uint8_t b=0, uint8_t a=0)$/;"	f	struct:Color
+Color	kernel/vgraphics.h	/^struct Color {$/;"	s
+Console	kernel/Console.h	/^class Console {$/;"	c
+DATA_START	fatnenuphar.cpp	/^const uint32_t DATA_START  = 5;$/;"	v
+DATE_H	kernel/date.h	2;"	d
+DEG_TO_RAD	kernel/Graphics.h	29;"	d
+DISK_SIZE_BYTES	kernel/kernel.cpp	27;"	d	file:
+Debug	kernel/Debug.cpp	/^namespace Debug {$/;"	n	file:
+Debug	kernel/Debug.h	/^namespace Debug {$/;"	n
+DirectoryEntry	kernel/iso.cpp	/^    struct DirectoryEntry {$/;"	s	struct:ISO9660::PVD	file:
+DirectoryEntry	kernel/iso.cpp	/^struct DirectoryEntry {$/;"	s	namespace:ISO9660	file:
+DiskInfo	kernel/part_mgr.h	/^struct DiskInfo {$/;"	s
+FAT32	kernel/fat32.cpp	/^FAT32::FAT32() : partition_start(0), mounted(false) {$/;"	f	class:FAT32
+FAT32	kernel/fat32.h	/^class FAT32 {$/;"	c
+FAT32_BootSector	kernel/fat32.h	/^struct FAT32_BootSector {$/;"	s
+FAT32_DENIED	kernel/fat32.h	/^    FAT32_DENIED,$/;"	e	enum:FAT32_Result
+FAT32_DISK_ERR	kernel/fat32.h	/^    FAT32_DISK_ERR,$/;"	e	enum:FAT32_Result
+FAT32_DirEntry	kernel/fat32.h	/^struct FAT32_DirEntry {$/;"	s
+FAT32_EXIST	kernel/fat32.h	/^    FAT32_EXIST,$/;"	e	enum:FAT32_Result
+FAT32_INVALID_DRIVE	kernel/fat32.h	/^    FAT32_INVALID_DRIVE,$/;"	e	enum:FAT32_Result
+FAT32_INVALID_NAME	kernel/fat32.h	/^    FAT32_INVALID_NAME,$/;"	e	enum:FAT32_Result
+FAT32_INVALID_OBJECT	kernel/fat32.h	/^    FAT32_INVALID_OBJECT,$/;"	e	enum:FAT32_Result
+FAT32_INVALID_PARAMETER	kernel/fat32.h	/^    FAT32_INVALID_PARAMETER$/;"	e	enum:FAT32_Result
+FAT32_LOCKED	kernel/fat32.h	/^    FAT32_LOCKED,$/;"	e	enum:FAT32_Result
+FAT32_LongDirEntry	kernel/fat32.h	/^struct FAT32_LongDirEntry {$/;"	s
+FAT32_NOT_ENABLED	kernel/fat32.h	/^    FAT32_NOT_ENABLED,$/;"	e	enum:FAT32_Result
+FAT32_NOT_ENOUGH_CORE	kernel/fat32.h	/^    FAT32_NOT_ENOUGH_CORE,$/;"	e	enum:FAT32_Result
+FAT32_NOT_READY	kernel/fat32.h	/^    FAT32_NOT_READY,$/;"	e	enum:FAT32_Result
+FAT32_NO_FILE	kernel/fat32.h	/^    FAT32_NO_FILE,$/;"	e	enum:FAT32_Result
+FAT32_NO_FILESYSTEM	kernel/fat32.h	/^    FAT32_NO_FILESYSTEM,$/;"	e	enum:FAT32_Result
+FAT32_NO_PATH	kernel/fat32.h	/^    FAT32_NO_PATH,$/;"	e	enum:FAT32_Result
+FAT32_OK	kernel/fat32.h	/^    FAT32_OK,$/;"	e	enum:FAT32_Result
+FAT32_Result	kernel/fat32.h	/^enum FAT32_Result {$/;"	g
+FAT32_TIMEOUT	kernel/fat32.h	/^    FAT32_TIMEOUT,$/;"	e	enum:FAT32_Result
+FAT32_TOO_MANY_OPEN_FILES	kernel/fat32.h	/^    FAT32_TOO_MANY_OPEN_FILES,$/;"	e	enum:FAT32_Result
+FAT32_WRITE_PROTECTED	kernel/fat32.h	/^    FAT32_WRITE_PROTECTED,$/;"	e	enum:FAT32_Result
+FBInfo	kernel/vgraphics.h	/^struct FBInfo {$/;"	s
+FB_HEIGHT	kernel/Console.cpp	15;"	d	file:
+FB_WIDTH	kernel/Console.cpp	14;"	d	file:
+FileEntry	fatnenuphar.cpp	/^struct FileEntry {$/;"	s	file:
+Framebuffer	kernel/vesa.cpp	/^struct Framebuffer {$/;"	s	file:
+GRAPHICS_H	kernel/Graphics.h	2;"	d
+GRUB_DIR	Makefile	/^GRUB_DIR  := $(BOOT_DIR)\/grub$/;"	m
+GRUB_MKRESCUE	Makefile	/^GRUB_MKRESCUE := grub-mkrescue$/;"	m
+IDTEntry	kernel/idt.h	/^struct IDTEntry {$/;"	s
+IDTPtr	kernel/idt.h	/^struct IDTPtr {$/;"	s
+IDT_H	kernel/idt.h	3;"	d
+IRQ	kernel/exceptions.asm	/^IRQ 0, 32    ; Timer$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 1, 33    ; Keyboard$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 10, 42   ; Free$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 11, 43   ; Free$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 12, 44   ; PS2 Mouse$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 13, 45   ; FPU$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 14, 46   ; Primary ATA$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 15, 47   ; Secondary ATA$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 2, 34    ; Cascade (never raised)$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 3, 35    ; COM2$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 4, 36    ; COM1$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 5, 37    ; LPT2$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 6, 38    ; Floppy$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 7, 39    ; LPT1$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 8, 40    ; CMOS RTC$/;"	l
+IRQ	kernel/exceptions.asm	/^IRQ 9, 41    ; Free$/;"	l
+ISO9660	kernel/iso.cpp	/^namespace ISO9660 {$/;"	n	file:
+ISO_DIR	Makefile	/^ISO_DIR   := isodir$/;"	m
+ISO_IMG	Makefile	/^ISO_IMG    := RanaOS.iso$/;"	m
+ISRHandler	kernel/idt.h	/^typedef void (*ISRHandler)(Registers*);$/;"	t
+ISR_ERRCODE	kernel/exceptions.asm	/^ISR_ERRCODE   10   ; Invalid TSS$/;"	l
+ISR_ERRCODE	kernel/exceptions.asm	/^ISR_ERRCODE   11   ; Segment Not Present$/;"	l
+ISR_ERRCODE	kernel/exceptions.asm	/^ISR_ERRCODE   12   ; Stack Segment Fault$/;"	l
+ISR_ERRCODE	kernel/exceptions.asm	/^ISR_ERRCODE   13   ; General Protection Fault$/;"	l
+ISR_ERRCODE	kernel/exceptions.asm	/^ISR_ERRCODE   14   ; Page Fault$/;"	l
+ISR_ERRCODE	kernel/exceptions.asm	/^ISR_ERRCODE   17   ; Alignment Check$/;"	l
+ISR_ERRCODE	kernel/exceptions.asm	/^ISR_ERRCODE   8    ; Double Fault$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 0    ; Divide By Zero$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 1    ; Debug$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 15   ; Reserved$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 16   ; x87 Floating-Point Exception$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 18   ; Machine Check$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 19   ; SIMD Floating-Point Exception$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 2    ; Non Maskable Interrupt$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 20   ; Virtualization Exception$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 21   ; Control Protection Exception$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 3    ; Breakpoint$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 4    ; Overflow$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 5    ; Bound Range Exceeded$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 6    ; Invalid Opcode$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 7    ; Device Not Available$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE 9    ; Coprocessor Segment Overrun$/;"	l
+ISR_NOERRCODE	kernel/exceptions.asm	/^ISR_NOERRCODE i$/;"	l
+Init	kernel/Debug.cpp	/^    void Init() {$/;"	f	namespace:Debug
+KERNEL_ELF	Makefile	/^KERNEL_ELF := kernel.elf$/;"	m
+KEYBOARD_H	kernel/Keyboard.h	4;"	d
+KEY_BACKSPACE	kernel/Console.cpp	290;"	d	file:
+KEY_BACKSPACE	kernel/Keyboard.cpp	99;"	d	file:
+KEY_BACKSPACE	kernel/kernel.cpp	339;"	d	file:
+KEY_DOWN	kernel/Console.cpp	289;"	d	file:
+KEY_DOWN	kernel/Keyboard.cpp	98;"	d	file:
+KEY_DOWN	kernel/kernel.cpp	338;"	d	file:
+KEY_ENTER	kernel/Console.cpp	291;"	d	file:
+KEY_ENTER	kernel/Keyboard.cpp	100;"	d	file:
+KEY_ENTER	kernel/kernel.cpp	340;"	d	file:
+KEY_LEFT	kernel/Console.cpp	286;"	d	file:
+KEY_LEFT	kernel/Keyboard.cpp	95;"	d	file:
+KEY_LEFT	kernel/kernel.cpp	335;"	d	file:
+KEY_RIGHT	kernel/Console.cpp	287;"	d	file:
+KEY_RIGHT	kernel/Keyboard.cpp	96;"	d	file:
+KEY_RIGHT	kernel/kernel.cpp	336;"	d	file:
+KEY_UP	kernel/Console.cpp	288;"	d	file:
+KEY_UP	kernel/Keyboard.cpp	97;"	d	file:
+KEY_UP	kernel/kernel.cpp	337;"	d	file:
+LD	Makefile	/^LD        := ld$/;"	m
+LD	build.bat	/^set LD="%TOOLCHAIN%\\i686-elf-ld"$/;"	v
+LDFLAGS	Makefile	/^LDFLAGS := -m elf_i386 -nostdlib -L$(shell dirname $$(gcc -m32 -print-libgcc-file-name))$/;"	m
+LDFLAGS	build.bat	/^set LDFLAGS=-m elf_i386$/;"	v
+LDSCRIPT	Makefile	/^LDSCRIPT := kernel\/linker.ld$/;"	m
+MAXLEN	kernel/Console.h	/^    static const int MAXLEN = 256;$/;"	m	class:Console
+MAX_FILES	fatnenuphar.cpp	/^const uint32_t MAX_FILES   = 32;$/;"	v
+MAX_FILE_SIZE	kernel/kernel.cpp	28;"	d	file:
+MBR	kernel/mbr.h	/^struct MBR {$/;"	s
+MODULES	Makefile	/^MODULES = files\/text.txt files\/bg.pim files\/tux.pim$/;"	m
+MODULES_DIR	Makefile	/^MODULES_DIR  := $(ISO_DIR)\/files$/;"	m
+MULTIBOOT_H	kernel/multiboot.h	2;"	d
+MULTIBOOT_INFO_FRAMEBUFFER_INFO	kernel/multiboot.h	47;"	d
+Mouse	kernel/Mouse.h	/^namespace Mouse {$/;"	n
+NASM	Makefile	/^NASM      := nasm$/;"	m
+NASM	build.bat	/^set NASM=nasm$/;"	v
+NULL	kernel/parrot.cpp	2;"	d	file:
+NULL	kernel/parrot.cpp	4;"	d	file:
+PALETTE	PIMConverter.java	/^    private static final Color[] PALETTE = {$/;"	f	class:PIMConverter	file:
+PARTITION_EMPTY	kernel/mbr.h	/^    PARTITION_EMPTY = 0x00,$/;"	e	enum:PartitionType
+PARTITION_FAT12	kernel/mbr.h	/^    PARTITION_FAT12 = 0x01,$/;"	e	enum:PartitionType
+PARTITION_FAT16	kernel/mbr.h	/^    PARTITION_FAT16 = 0x04,$/;"	e	enum:PartitionType
+PARTITION_FAT32	kernel/mbr.h	/^    PARTITION_FAT32 = 0x0B,$/;"	e	enum:PartitionType
+PARTITION_FAT32_LBA	kernel/mbr.h	/^    PARTITION_FAT32_LBA = 0x0C,$/;"	e	enum:PartitionType
+PARTITION_LINUX_NATIVE	kernel/mbr.h	/^    PARTITION_LINUX_NATIVE = 0x83$/;"	e	enum:PartitionType
+PARTITION_LINUX_SWAP	kernel/mbr.h	/^    PARTITION_LINUX_SWAP = 0x82,$/;"	e	enum:PartitionType
+PI	kernel/Graphics.h	28;"	d
+PIC1_COMMAND	kernel/Keyboard.cpp	7;"	d	file:
+PIC1_COMMAND	kernel/pic.cpp	4;"	d	file:
+PIC1_COMMAND	kernel/pic_wrapper.cpp	3;"	d	file:
+PIC1_DATA	kernel/pic.cpp	5;"	d	file:
+PIC1_DATA	kernel/pic_wrapper.cpp	4;"	d	file:
+PIC2_COMMAND	kernel/pic.cpp	6;"	d	file:
+PIC2_COMMAND	kernel/pic_wrapper.cpp	5;"	d	file:
+PIC2_DATA	kernel/pic.cpp	7;"	d	file:
+PIC2_DATA	kernel/pic_wrapper.cpp	6;"	d	file:
+PIC_EOI	kernel/Keyboard.cpp	8;"	d	file:
+PIC_H	kernel/pic.h	2;"	d
+PIMConverter	PIMConverter.java	/^public class PIMConverter {$/;"	c
+PIT_CHANNEL0	kernel/io.h	5;"	d
+PIT_CHANNEL0	kernel/kernel.cpp	31;"	d	file:
+PIT_CHANNEL0	kernel/wait_wrapper.cpp	3;"	d	file:
+PIT_COMMAND	kernel/io.h	6;"	d
+PIT_COMMAND	kernel/kernel.cpp	32;"	d	file:
+PIT_COMMAND	kernel/wait_wrapper.cpp	4;"	d	file:
+PIT_FREQUENCY	kernel/io.h	7;"	d
+PIT_FREQUENCY	kernel/kernel.cpp	33;"	d	file:
+PIT_FREQUENCY	kernel/wait_wrapper.cpp	5;"	d	file:
+PVD	kernel/iso.cpp	/^struct PVD {$/;"	s	namespace:ISO9660	file:
+PartitionInfo	kernel/part_mgr.h	/^struct PartitionInfo {$/;"	s
+PartitionTableEntry	kernel/mbr.h	/^struct PartitionTableEntry {$/;"	s
+PartitionType	kernel/mbr.h	/^enum PartitionType {$/;"	g
+Print	kernel/Debug.cpp	/^    void Print(const char* s) {$/;"	f	namespace:Debug
+PrintChar	kernel/Debug.cpp	/^    void PrintChar(char c) {$/;"	f	namespace:Debug
+PrintDec	kernel/Debug.cpp	/^    void PrintDec(uint32_t val) {$/;"	f	namespace:Debug
+PrintHex	kernel/Debug.cpp	/^    void PrintHex(uint32_t val) {$/;"	f	namespace:Debug
+QEMU	Makefile	/^QEMU      := qemu-system-i386$/;"	m
+RUSTFLAGS	Makefile	/^RUSTFLAGS := -C opt-level=2 -C panic=abort -C link-arg=-nostartfiles$/;"	m
+RUST_LIB	Makefile	/^RUST_LIB := rust\/target\/$(RUST_TARGET)\/release\/libgraphicsm.a$/;"	m
+RUST_TARGET	Makefile	/^RUST_TARGET := i686-unknown-linux-gnu$/;"	m
+Ready	kernel/Debug.cpp	/^    static bool Ready() {$/;"	f	namespace:Debug
+Registers	kernel/idt.h	/^struct Registers {$/;"	s
+SCREEN_HEIGHT	kernel/Graphics.cpp	8;"	d	file:
+SCREEN_WIDTH	kernel/Graphics.cpp	7;"	d	file:
+SECTOR_SIZE	fatnenuphar.cpp	/^const uint32_t SECTOR_SIZE = 512;$/;"	v
+String	kernel/string.hpp	/^namespace String {$/;"	n
+TABLE_START	fatnenuphar.cpp	/^const uint32_t TABLE_START = 1;$/;"	v
+TOOLCHAIN	build.bat	/^set TOOLCHAIN=C:\\Users\\blasf\\Downloads\\i686-elf-tools-windows\\bin$/;"	v
+ThreadFunc	kernel/Graphics.h	/^typedef void (*ThreadFunc)(void*);$/;"	t
+Triangle	kernel/Graphics.h	/^} Triangle;$/;"	t	typeref:struct:__anon4
+VESA_H	kernel/vesa.h	2;"	d
+VGA	kernel/Graphics.cpp	/^static uint8_t* const VGA = (uint8_t*)0xA0000;$/;"	v	file:
+VGA_ADDRESS	kernel/Console.cpp	7;"	d	file:
+VGA_COLOR_BLACK	kernel/kernel.cpp	36;"	d	file:
+VGA_COLOR_BLUE	kernel/kernel.cpp	37;"	d	file:
+VGA_COLOR_BROWN	kernel/kernel.cpp	42;"	d	file:
+VGA_COLOR_CYAN	kernel/kernel.cpp	39;"	d	file:
+VGA_COLOR_DARK_GREY	kernel/kernel.cpp	44;"	d	file:
+VGA_COLOR_GREEN	kernel/kernel.cpp	38;"	d	file:
+VGA_COLOR_LIGHT_BLUE	kernel/kernel.cpp	45;"	d	file:
+VGA_COLOR_LIGHT_CYAN	kernel/kernel.cpp	47;"	d	file:
+VGA_COLOR_LIGHT_GREEN	kernel/kernel.cpp	46;"	d	file:
+VGA_COLOR_LIGHT_GREY	kernel/kernel.cpp	43;"	d	file:
+VGA_COLOR_LIGHT_MAGENTA	kernel/kernel.cpp	49;"	d	file:
+VGA_COLOR_LIGHT_RED	kernel/kernel.cpp	48;"	d	file:
+VGA_COLOR_MAGENTA	kernel/kernel.cpp	41;"	d	file:
+VGA_COLOR_RED	kernel/kernel.cpp	40;"	d	file:
+VGA_COLOR_WHITE	kernel/kernel.cpp	51;"	d	file:
+VGA_COLOR_YELLOW	kernel/kernel.cpp	50;"	d	file:
+VGA_HEIGHT	kernel/Console.h	/^    static const uint16_t VGA_HEIGHT = 25;$/;"	m	class:Console
+VGA_WIDTH	kernel/Console.h	/^    static const uint16_t VGA_WIDTH  = 80;$/;"	m	class:Console
+VGraphics	kernel/vgraphics.h	/^class VGraphics {$/;"	c
+Vec3	kernel/Graphics.h	/^} Vec3;$/;"	t	typeref:struct:__anon3
+__udivdi3	kernel/Console.cpp	/^unsigned long long __udivdi3(unsigned long long n, unsigned long long d) {$/;"	f
+__umoddi3	kernel/Console.cpp	/^unsigned long long __umoddi3(unsigned long long n, unsigned long long d) {$/;"	f
+_start	boot.asm	/^_start:$/;"	l
+a	kernel/vgraphics.h	/^	uint8_t r, g, b, a;$/;"	m	struct:Color
+absf	kernel/Graphics.cpp	/^static float absf(float x) { return (x < 0) ? -x : x; }$/;"	f	file:
+absi	kernel/Graphics.cpp	/^static int absi(int x) { return (x < 0) ? -x : x; }$/;"	f	file:
+access_date	kernel/fat32.h	/^    uint16_t access_date;$/;"	m	struct:FAT32_DirEntry
+addr	kernel/multiboot.h	/^    uint32_t addr;$/;"	m	struct:multiboot_info_t
+address	kernel/vesa.cpp	/^    uint32_t* address;$/;"	m	struct:Framebuffer	file:
+address	kernel/vgraphics.h	/^	uint32_t* address;$/;"	m	struct:FBInfo
+apm_table	kernel/multiboot.h	/^    uint32_t apm_table;$/;"	m	struct:multiboot_info_t
+ata_read_word	kernel/ata_detect.cpp	/^uint16_t ata_read_word(uint16_t port) {$/;"	f
+attributes	kernel/fat32.h	/^    uint8_t attributes;$/;"	m	struct:FAT32_DirEntry
+attributes	kernel/fat32.h	/^    uint8_t attributes;$/;"	m	struct:FAT32_LongDirEntry
+attributes	kernel/vesa.h	/^    uint16_t attributes;$/;"	m	struct:vbe_mode_info
+b	kernel/Graphics.h	/^    uint8_t r, g, b;$/;"	m	struct:vga_color
+b	kernel/vgraphics.h	/^	uint8_t r, g, b, a;$/;"	m	struct:Color
+backup_boot	kernel/fat32.h	/^    uint16_t backup_boot;$/;"	m	struct:FAT32_BootSector
+bank_size	kernel/vesa.h	/^    uint8_t bank_size;$/;"	m	struct:vbe_mode_info
+banks	kernel/vesa.h	/^    uint8_t banks;$/;"	m	struct:vbe_mode_info
+base	kernel/idt.h	/^    uint32_t base;$/;"	m	struct:IDTPtr
+bcd_to_bin	kernel/date.cpp	/^uint8_t bcd_to_bin(uint8_t val) {$/;"	f
+bcolor	kernel/Console.cpp	/^uint32_t Console::bcolor = 0x000000; \/\/ Color de fondo por defecto en modo gráfico$/;"	m	class:Console	file:
+bcolor	kernel/Console.h	/^    static uint32_t bcolor; \/\/ Color por defecto en modo gráfico$/;"	m	class:Console
+bgColor	kernel/Console.cpp	/^static Color bgColor = {0, 0, 0, 0};          \/\/ Negro por defecto$/;"	v	file:
+blue_mask	kernel/vesa.h	/^    uint8_t blue_mask;$/;"	m	struct:vbe_mode_info
+blue_position	kernel/vesa.h	/^    uint8_t blue_position;$/;"	m	struct:vbe_mode_info
+boot_device	kernel/multiboot.h	/^    uint32_t boot_device;$/;"	m	struct:multiboot_info_t
+boot_loader_name	kernel/multiboot.h	/^    uint32_t boot_loader_name;$/;"	m	struct:multiboot_info_t
+bootstrap	kernel/mbr.h	/^    uint8_t bootstrap[446];$/;"	m	struct:MBR
+bpp	kernel/vesa.cpp	/^    uint8_t bpp;$/;"	m	struct:Framebuffer	file:
+bpp	kernel/vesa.h	/^    uint8_t bpp;$/;"	m	struct:vbe_mode_info
+bpp	kernel/vgraphics.h	/^	uint32_t bpp;$/;"	m	struct:FBInfo
+bs	kernel/fat32.h	/^    FAT32_BootSector bs;$/;"	m	class:FAT32
+bytes_per_sector	kernel/fat32.h	/^    uint16_t bytes_per_sector;$/;"	m	struct:FAT32_BootSector
+camera_matrix	kernel/Graphics.cpp	/^static float camera_matrix[4][4] = {{0}};$/;"	v	file:
+check_sector_op	kernel/fat32.cpp	/^static bool check_sector_op(bool success) {$/;"	f	file:
+checksum	kernel/fat32.h	/^    uint8_t checksum;$/;"	m	struct:FAT32_LongDirEntry
+chs_end	kernel/mbr.h	/^    uint8_t chs_end[3];$/;"	m	struct:PartitionTableEntry
+chs_start	kernel/mbr.h	/^    uint8_t chs_start[3];$/;"	m	struct:PartitionTableEntry
+clearScreen	kernel/Console.cpp	/^void Console::clearScreen() {$/;"	f	class:Console
+clearScreen	kernel/vgraphics.cpp	/^void VGraphics::clearScreen() {$/;"	f	class:VGraphics
+closedir	kernel/fat32.cpp	/^FAT32_Result FAT32::closedir(uint32_t dir_handle) {$/;"	f	class:FAT32
+cluster_high	kernel/fat32.h	/^    uint16_t cluster_high;$/;"	m	struct:FAT32_DirEntry
+cluster_low	kernel/fat32.h	/^    uint16_t cluster_low;$/;"	m	struct:FAT32_DirEntry
+cluster_to_lba	kernel/fat32.cpp	/^uint32_t FAT32::cluster_to_lba(uint32_t cluster) {$/;"	f	class:FAT32
+cmdline	kernel/multiboot.h	/^    uint32_t cmdline;$/;"	m	struct:__anon5
+cmdline	kernel/multiboot.h	/^    uint32_t cmdline;$/;"	m	struct:multiboot_info_t
+color	kernel/Console.cpp	/^uint8_t   Console::color        = 0x07;$/;"	m	class:Console	file:
+color	kernel/Console.h	/^    static uint8_t   color;$/;"	m	class:Console
+color	kernel/Graphics.h	/^    uint8_t color;$/;"	m	struct:__anon4
+colorDistance	PIMConverter.java	/^    private static double colorDistance(Color c1, Color c2) {$/;"	m	class:PIMConverter	file:
+color_info	kernel/multiboot.h	/^    uint8_t color_info[6];$/;"	m	struct:multiboot_info_t
+concat	kernel/kernel.cpp	/^char* concat(const char* a, const char* b) {$/;"	f
+config_table	kernel/multiboot.h	/^    uint32_t config_table;$/;"	m	struct:multiboot_info_t
+convertPNGtoPIM	PIMConverter.java	/^    public static void convertPNGtoPIM(File pngFile, File pimFile) throws IOException {$/;"	m	class:PIMConverter
+cosf	kernel/Graphics.cpp	/^static float cosf(float x) {$/;"	f	file:
+cosf	kernel/kernel.cpp	/^static float cosf(float x) {$/;"	f	file:
+create_partition	kernel/part_mgr.cpp	/^bool create_partition(uint32_t disk_lba, int index, uint8_t type, uint32_t start_lba, uint32_t size_sectors) {$/;"	f
+creation_date	kernel/fat32.h	/^    uint16_t creation_date;$/;"	m	struct:FAT32_DirEntry
+creation_time	kernel/fat32.h	/^    uint16_t creation_time;$/;"	m	struct:FAT32_DirEntry
+creation_time_tenths	kernel/fat32.h	/^    uint8_t creation_time_tenths;$/;"	m	struct:FAT32_DirEntry
+cs	kernel/idt.h	/^    uint32_t eip, cs, eflags, useresp, ss; \/\/ Automáticamente pusheados por el CPU$/;"	m	struct:Registers
+cube	kernel/kernel.cpp	/^static Triangle cube[12] = {$/;"	v	file:
+current_dir_cluster	kernel/fat32.h	/^    uint32_t current_dir_cluster;$/;"	m	class:FAT32
+cursorPos	kernel/Console.cpp	/^uint16_t  Console::cursorPos    = 0;$/;"	m	class:Console	file:
+cursorPos	kernel/Console.h	/^    static uint16_t  cursorPos;$/;"	m	class:Console
+cursorX	kernel/Console.cpp	/^uint32_t Console::cursorX = 0;$/;"	m	class:Console	file:
+cursorX	kernel/Console.h	/^    static uint32_t cursorX; \/\/ Posición del cursor en X (modo gráfico)$/;"	m	class:Console
+cursorY	kernel/Console.cpp	/^uint32_t Console::cursorY = 0;$/;"	m	class:Console	file:
+cursorY	kernel/Console.h	/^    static uint32_t cursorY; \/\/ Posición del cursor en Y (modo gráfico)$/;"	m	class:Console
+cylinders	kernel/part_mgr.h	/^    uint16_t cylinders;$/;"	m	struct:DiskInfo
+data_length	kernel/iso.cpp	/^    uint32_t data_length;       \/\/ Size of the file in bytes$/;"	m	struct:ISO9660::DirectoryEntry	file:
+data_length_be	kernel/iso.cpp	/^        uint32_t data_length_be;$/;"	m	struct:ISO9660::PVD::DirectoryEntry	file:
+data_length_le	kernel/iso.cpp	/^        uint32_t data_length_le;$/;"	m	struct:ISO9660::PVD::DirectoryEntry	file:
+data_start	kernel/fat32.h	/^    uint32_t data_start;$/;"	m	class:FAT32
+delay_ms	kernel/kernel.cpp	/^void delay_ms(uint32_t ms) {$/;"	f
+delete_partition	kernel/part_mgr.cpp	/^bool delete_partition(uint32_t disk_lba, int index) {$/;"	f
+detect_disks	kernel/ata_detect.cpp	/^void detect_disks() {$/;"	f
+detect_disks	kernel/part_mgr.cpp	/^bool detect_disks(DiskInfo* disks, int max_count, int* count) {$/;"	f
+directcolor_attributes	kernel/vesa.h	/^    uint8_t directcolor_attributes;$/;"	m	struct:vbe_mode_info
+drawChar	kernel/vgraphics.cpp	/^void VGraphics::drawChar(uint32_t x, uint32_t y, char c, uint32_t color, uint32_t bg) {$/;"	f	class:VGraphics
+drawString	kernel/vgraphics.cpp	/^void VGraphics::drawString(uint32_t x, uint32_t y, const char* str, uint32_t fg) {$/;"	f	class:VGraphics
+draw_pixel	kernel/vesa.cpp	/^void draw_pixel(uint32_t x, uint32_t y, uint32_t color) {$/;"	f
+draw_rotating_cube	kernel/kernel.cpp	/^void draw_rotating_cube() {$/;"	f
+drive_letter_to_bios	kernel/hard_disk.cpp	/^static uint8_t drive_letter_to_bios(char letter) {$/;"	f	file:
+drive_number	kernel/fat32.h	/^    uint8_t drive_number;$/;"	m	struct:FAT32_BootSector
+drives_addr	kernel/multiboot.h	/^    uint32_t drives_addr;$/;"	m	struct:multiboot_info_t
+drives_length	kernel/multiboot.h	/^    uint32_t drives_length;$/;"	m	struct:multiboot_info_t
+ds	kernel/idt.h	/^    uint32_t ds;                 \/\/ Segmento de datos$/;"	m	struct:Registers
+eax	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
+ebp	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
+ebx	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
+ecx	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
+edi	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
+edx	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
+eflags	kernel/idt.h	/^    uint32_t eip, cs, eflags, useresp, ss; \/\/ Automáticamente pusheados por el CPU$/;"	m	struct:Registers
+eip	kernel/idt.h	/^    uint32_t eip, cs, eflags, useresp, ss; \/\/ Automáticamente pusheados por el CPU$/;"	m	struct:Registers
+enable_cursor	kernel/Console.cpp	/^void Console::enable_cursor(uint8_t start, uint8_t end) {$/;"	f	class:Console
+enable_cursor_blink	kernel/kernel.cpp	/^void enable_cursor_blink() {$/;"	f
+enable_irq	kernel/pic.cpp	/^void enable_irq(uint8_t irq) {$/;"	f
+enable_irq	kernel/pic_wrapper.cpp	/^void enable_irq(uint8_t irq) {$/;"	f
+err_code	kernel/idt.h	/^    uint32_t int_no, err_code;   \/\/ Número de interrupción y código de error$/;"	m	struct:Registers
+esi	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
+esp	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
+exception_handler	kernel/idt.cpp	/^static void exception_handler(Registers* regs) {$/;"	f	file:
+ext_flags	kernel/fat32.h	/^    uint16_t ext_flags;$/;"	m	struct:FAT32_BootSector
+extended_attribute_length	kernel/iso.cpp	/^        uint8_t extended_attribute_length;$/;"	m	struct:ISO9660::PVD::DirectoryEntry	file:
+extended_attribute_length	kernel/iso.cpp	/^    uint8_t extended_attribute_length;$/;"	m	struct:ISO9660::DirectoryEntry	file:
+extent_location	kernel/iso.cpp	/^    uint32_t extent_location;   \/\/ LBA of the file$/;"	m	struct:ISO9660::DirectoryEntry	file:
+extent_location_be	kernel/iso.cpp	/^        uint32_t extent_location_be;$/;"	m	struct:ISO9660::PVD::DirectoryEntry	file:
+extent_location_le	kernel/iso.cpp	/^        uint32_t extent_location_le;$/;"	m	struct:ISO9660::PVD::DirectoryEntry	file:
+extern	boot.asm	/^extern kmain$/;"	l
+extern	kernel/exceptions.asm	/^extern irq_handler$/;"	l
+extern	kernel/exceptions.asm	/^extern isr_handler    ; Definido en idt.cpp$/;"	l
+fat_count	kernel/fat32.h	/^    uint8_t fat_count;$/;"	m	struct:FAT32_BootSector
+fat_size_16	kernel/fat32.h	/^    uint16_t fat_size_16;$/;"	m	struct:FAT32_BootSector
+fat_size_32	kernel/fat32.h	/^    uint32_t fat_size_32;$/;"	m	struct:FAT32_BootSector
+fat_start	kernel/fat32.h	/^    uint32_t fat_start;$/;"	m	class:FAT32
+fb	kernel/vgraphics.cpp	/^FBInfo VGraphics::fb;$/;"	m	class:VGraphics	file:
+fb	kernel/vgraphics.h	/^	static FBInfo fb;$/;"	m	class:VGraphics
+fclose	kernel/fat32.cpp	/^FAT32_Result FAT32::fclose(uint32_t file_handle) {$/;"	f	class:FAT32
+file_id	kernel/iso.cpp	/^        char file_id[];$/;"	m	struct:ISO9660::PVD::DirectoryEntry	file:
+file_id_length	kernel/iso.cpp	/^        uint8_t file_id_length;$/;"	m	struct:ISO9660::PVD::DirectoryEntry	file:
+file_size	kernel/fat32.h	/^    uint32_t file_size;$/;"	m	struct:FAT32_DirEntry
+file_unit_size	kernel/iso.cpp	/^        uint8_t file_unit_size;$/;"	m	struct:ISO9660::PVD::DirectoryEntry	file:
+fillRect	kernel/vgraphics.cpp	/^void VGraphics::fillRect(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t color) {$/;"	f	class:VGraphics
+fin	build.bat	/^:fin$/;"	l
+findClosestColor	PIMConverter.java	/^    private static char findClosestColor(Color color) {$/;"	m	class:PIMConverter	file:
+find_disk_by_letter	kernel/read_file.cpp	/^DiskInfo* find_disk_by_letter(char letter) {$/;"	f
+find_file	kernel/iso.cpp	/^bool find_file(const char* path, DirectoryEntry* entry) {$/;"	f	namespace:ISO9660
+find_file_in_dir	kernel/fat32.cpp	/^bool FAT32::find_file_in_dir(uint32_t dir_cluster, const char* name, FAT32_DirEntry* entry) {$/;"	f	class:FAT32
+first_cluster	kernel/fat32.h	/^    uint16_t first_cluster;$/;"	m	struct:FAT32_LongDirEntry
+flags	kernel/iso.cpp	/^        uint8_t flags;$/;"	m	struct:ISO9660::PVD::DirectoryEntry	file:
+flags	kernel/iso.cpp	/^    uint8_t flags;$/;"	m	struct:ISO9660::DirectoryEntry	file:
+flags	kernel/multiboot.h	/^    uint32_t flags;$/;"	m	struct:multiboot_info_t
+font	kernel/Graphics.cpp	/^static uint8_t* font = nullptr;$/;"	v	file:
+font8x16	kernel/font8x16/font8x16.h	/^unsigned char font8x16[][16] = {$/;"	v
+format	kernel/fat32.cpp	/^bool FAT32::format(uint32_t total_sectors) {$/;"	f	class:FAT32
+format_date_time	kernel/iso.cpp	/^void format_date_time(const uint8_t* iso_time, char* buffer) {$/;"	f	namespace:ISO9660
+format_fat32	kernel/part_mgr.cpp	/^bool format_fat32(uint32_t partition_lba, uint32_t total_sectors) {$/;"	f
+format_wth_0	kernel/kernel.cpp	/^char* format_wth_0(int i) {$/;"	f
+framebuffer	kernel/vesa.cpp	/^static Framebuffer framebuffer;$/;"	v	file:
+framebuffer	kernel/vesa.h	/^    uint32_t framebuffer;$/;"	m	struct:vbe_mode_info
+framebuffer_addr	kernel/multiboot.h	/^    uint32_t framebuffer_addr;$/;"	m	struct:multiboot_info_t
+framebuffer_bpp	kernel/multiboot.h	/^    uint8_t framebuffer_bpp;$/;"	m	struct:multiboot_info_t
+framebuffer_height	kernel/multiboot.h	/^    uint32_t framebuffer_height;$/;"	m	struct:multiboot_info_t
+framebuffer_pitch	kernel/multiboot.h	/^    uint32_t framebuffer_pitch;$/;"	m	struct:multiboot_info_t
+framebuffer_type	kernel/multiboot.h	/^    uint8_t framebuffer_type;$/;"	m	struct:multiboot_info_t
+framebuffer_width	kernel/multiboot.h	/^    uint32_t framebuffer_width;$/;"	m	struct:multiboot_info_t
+fread	kernel/fat32.cpp	/^FAT32_Result FAT32::fread(uint32_t file_handle, void* buffer, uint32_t size, uint32_t* bytes_read) {$/;"	f	class:FAT32
+fs_info	kernel/fat32.h	/^    uint16_t fs_info;$/;"	m	struct:FAT32_BootSector
+fs_type	kernel/fat32.h	/^    char fs_type[8];$/;"	m	struct:FAT32_BootSector
+fs_version	kernel/fat32.h	/^    uint16_t fs_version;$/;"	m	struct:FAT32_BootSector
+fwrite	kernel/fat32.cpp	/^FAT32_Result FAT32::fwrite(uint32_t file_handle, const void* buffer, uint32_t size, uint32_t* bytes_written) {$/;"	f	class:FAT32
+g	kernel/Graphics.h	/^    uint8_t r, g, b;$/;"	m	struct:vga_color
+g	kernel/vgraphics.h	/^	uint8_t r, g, b, a;$/;"	m	struct:Color
+g_320x200x256	kernel/Graphics.cpp	/^static uint8_t g_320x200x256[] = {$/;"	v	file:
+g_cycles_per_ms	kernel/kernel.cpp	/^uint64_t g_cycles_per_ms = 0; \/\/ Ciclos de la CPU$/;"	v
+gclear_screen	kernel/vesa.cpp	/^void gclear_screen(uint32_t color) {$/;"	f
+gcolor	kernel/Console.cpp	/^uint32_t Console::gcolor = 0xFFFFFF; \/\/ Color por defecto en modo gráfico$/;"	m	class:Console	file:
+gcolor	kernel/Console.h	/^    static uint32_t gcolor; \/\/ Color por defecto en modo gráfico$/;"	m	class:Console
+getDay	kernel/date.cpp	/^uint8_t getDay() {$/;"	f
+getFBInfo	kernel/vgraphics.h	/^    static FBInfo getFBInfo() {$/;"	f	class:VGraphics
+getHeight	kernel/vgraphics.h	/^    static uint32_t getHeight() {$/;"	f	class:VGraphics
+getHour	kernel/date.cpp	/^uint8_t getHour() {$/;"	f
+getKey	kernel/Console.cpp	/^extern "C" int Console::getKey(bool& shift) {$/;"	f	class:Console
+getKey	kernel/Keyboard.cpp	/^extern "C" int getKey() {$/;"	f
+getMinute	kernel/date.cpp	/^uint8_t getMinute() {$/;"	f
+getMonth	kernel/date.cpp	/^uint8_t getMonth() {$/;"	f
+getSecond	kernel/date.cpp	/^uint8_t getSecond() {$/;"	f
+getWidth	kernel/vgraphics.h	/^    static uint32_t getWidth() {$/;"	f	class:VGraphics
+getYear	kernel/date.cpp	/^uint8_t getYear() {$/;"	f
+get_buttons	kernel/Mouse.cpp	/^uint8_t Mouse::get_buttons() {$/;"	f	class:Mouse
+get_day	kernel/date_wrapper.cpp	/^uint8_t get_day() {$/;"	f
+get_hour	kernel/date_wrapper.cpp	/^uint8_t get_hour() {$/;"	f
+get_minute	kernel/date_wrapper.cpp	/^uint8_t get_minute() {$/;"	f
+get_month	kernel/date_wrapper.cpp	/^uint8_t get_month() {$/;"	f
+get_next_cluster	kernel/fat32.cpp	/^uint32_t FAT32::get_next_cluster(uint32_t cluster) {$/;"	f	class:FAT32
+get_partition_type_name	kernel/part_mgr.cpp	/^const char* get_partition_type_name(uint8_t type) {$/;"	f
+get_second	kernel/date_wrapper.cpp	/^uint8_t get_second() {$/;"	f
+get_weekday_name	kernel/date.cpp	/^const char* get_weekday_name() {$/;"	f
+get_weekday_nme	kernel/date_wrapper.cpp	/^const char* get_weekday_nme() {$/;"	f
+get_x	kernel/Mouse.cpp	/^int16_t Mouse::get_x() {$/;"	f	class:Mouse
+get_y	kernel/Mouse.cpp	/^int16_t Mouse::get_y() {$/;"	f	class:Mouse
+get_year	kernel/date_wrapper.cpp	/^uint8_t get_year() {$/;"	f
+gfx_clear_screen	kernel/Graphics.cpp	/^void gfx_clear_screen(uint8_t color) {$/;"	f
+gfx_draw_circle	kernel/Graphics.cpp	/^void gfx_draw_circle(int cx, int cy, int r, uint8_t color) {$/;"	f
+gfx_draw_line	kernel/Graphics.cpp	/^void gfx_draw_line(int x0, int y0, int x1, int y1, uint8_t color) {$/;"	f
+gfx_draw_mesh	kernel/Graphics.cpp	/^void gfx_draw_mesh(const Triangle* triangles, int count) {$/;"	f
+gfx_draw_rect	kernel/Graphics.cpp	/^void gfx_draw_rect(int x, int y, int w, int h, uint8_t color) {$/;"	f
+gfx_draw_triangle	kernel/Graphics.cpp	/^void gfx_draw_triangle(const Triangle& tri) {$/;"	f
+gfx_fill_circle	kernel/Graphics.cpp	/^void gfx_fill_circle(int cx, int cy, int r, uint8_t color) {$/;"	f
+gfx_fill_rect	kernel/Graphics.cpp	/^void gfx_fill_rect(int x, int y, int w, int h, uint8_t color) {$/;"	f
+gfx_init	kernel/Graphics.cpp	/^void gfx_init() {$/;"	f
+gfx_put_image	kernel/Graphics.cpp	/^void gfx_put_image(int dx, int dy, const char* img_data) {$/;"	f
+gfx_put_pixel	kernel/Graphics.cpp	/^void gfx_put_pixel(int x, int y, uint8_t color) {$/;"	f
+gfx_set_camera	kernel/Graphics.cpp	/^void gfx_set_camera(float x, float y, float z, float rx, float ry, float rz) {$/;"	f
+gfx_set_projection	kernel/Graphics.cpp	/^void gfx_set_projection(float fov, float aspect, float near, float far) {$/;"	f
+global	boot.asm	/^global _start$/;"	l
+global	kernel/exceptions.asm	/^global irq%1$/;"	l
+global	kernel/exceptions.asm	/^global isr%1$/;"	l
+global	kernel/exceptions.asm	/^global isr_stub_table$/;"	l
+global	kernel/exceptions.asm	/^global isr_stub_table_size$/;"	l
+global	kernel/io.asm	/^global inb$/;"	l
+global	kernel/io.asm	/^global outb$/;"	l
+global	kernel/mouse.asm	/^global mouse_handler_asm$/;"	l
+global	threads.asm	/^global thread_switch_asm$/;"	l
+granularity	kernel/vesa.h	/^    uint16_t granularity;$/;"	m	struct:vbe_mode_info
+graphics	kernel/Console.cpp	/^bool Console::graphics = false;$/;"	m	class:Console	file:
+graphics	kernel/Console.h	/^    static bool graphics;$/;"	m	class:Console
+green_mask	kernel/vesa.h	/^    uint8_t green_mask;$/;"	m	struct:vbe_mode_info
+green_position	kernel/vesa.h	/^    uint8_t green_position;$/;"	m	struct:vbe_mode_info
+handlers	kernel/idt.cpp	/^static ISRHandler handlers[256];$/;"	v	file:
+head	kernel/Keyboard.cpp	/^static volatile int head = 0, tail = 0;$/;"	v	file:
+head_count	kernel/fat32.h	/^    uint16_t head_count;$/;"	m	struct:FAT32_BootSector
+header_end	boot.asm	/^header_end:$/;"	l
+header_start	boot.asm	/^header_start:$/;"	l
+heads	kernel/part_mgr.h	/^    uint16_t heads;$/;"	m	struct:DiskInfo
+height	kernel/vesa.cpp	/^    uint32_t height;$/;"	m	struct:Framebuffer	file:
+height	kernel/vesa.h	/^    uint16_t height;$/;"	m	struct:vbe_mode_info
+height	kernel/vgraphics.h	/^	uint32_t height;$/;"	m	struct:FBInfo
+hex_to_dec	kernel/math.cpp	/^uint32_t hex_to_dec(const char* hex) {$/;"	f
+hidden_sectors	kernel/fat32.h	/^    uint32_t hidden_sectors;$/;"	m	struct:FAT32_BootSector
+identify_disk	kernel/ata_detect.cpp	/^bool identify_disk(uint16_t io_base, bool is_slave, DiskInfo& info) {$/;"	f
+identify_drive	kernel/disk.cpp	/^void ATA::identify_drive(uint16_t* data) {$/;"	f	class:ATA
+idt	kernel/idt.cpp	/^static IDTEntry idt[256];$/;"	v	file:
+idt_init	kernel/idt.cpp	/^extern "C" void idt_init() {$/;"	f
+idt_ptr	kernel/idt.cpp	/^static IDTPtr idt_ptr;$/;"	v	file:
+idt_set_gate	kernel/idt.cpp	/^void idt_set_gate(uint8_t num, uint32_t handler, uint8_t flags) {$/;"	f
+image_pages	kernel/vesa.h	/^    uint8_t image_pages;$/;"	m	struct:vbe_mode_info
+inb	kernel/Debug.cpp	/^static inline uint8_t inb(uint16_t port) {$/;"	f	file:
+inb	kernel/Keyboard.cpp	/^static inline uint8_t inb(uint16_t port) {$/;"	f	file:
+inb	kernel/disk.cpp	5;"	d	file:
+inb	kernel/io.asm	/^inb:$/;"	l
+inb	kernel/io.cpp	/^uint8_t inb(uint16_t port) {$/;"	f
+inb	kernel/pic.cpp	/^static inline uint8_t inb(uint16_t port) {$/;"	f	file:
+init	kernel/vgraphics.cpp	/^void VGraphics::init(uint32_t width, uint32_t height, uint32_t pitch, uint32_t bpp, uintptr_t addr) {$/;"	f	class:VGraphics
+init_graphics	kernel/vesa.cpp	/^void init_graphics(struct multiboot_info_t* mbi) {$/;"	f
+init_pic	kernel/kernel.cpp	/^void init_pic() {$/;"	f
+initialize	kernel/Mouse.cpp	/^void Mouse::initialize() {$/;"	f	class:Mouse
+initialize_exception_handlers	kernel/idt.cpp	/^void initialize_exception_handlers() {$/;"	f
+initialized	kernel/vesa.cpp	/^    bool initialized;$/;"	m	struct:Framebuffer	file:
+insw	kernel/io.cpp	/^void insw(uint16_t port, void* addr, int count) {$/;"	f
+int_no	kernel/idt.h	/^    uint32_t int_no, err_code;   \/\/ Número de interrupción y código de error$/;"	m	struct:Registers
+int_to_str	kernel/kernel.cpp	/^char* int_to_str(int value) {$/;"	f
+interleave_gap_size	kernel/iso.cpp	/^        uint8_t interleave_gap_size;$/;"	m	struct:ISO9660::PVD::DirectoryEntry	file:
+inw	kernel/disk.cpp	6;"	d	file:
+inw	kernel/io.cpp	/^uint16_t inw(uint16_t port) {$/;"	f
+io_wait	kernel/kernel.cpp	/^void io_wait() {$/;"	f
+irq_common	kernel/exceptions.asm	/^irq_common:$/;"	l
+irq_handler	kernel/idt.cpp	/^extern "C" void irq_handler(Registers* regs) {$/;"	f
+isNumber	kernel/kernel.cpp	/^bool isNumber(const char* str) {$/;"	f
+is_valid_short_name	kernel/fat32.cpp	/^bool FAT32::is_valid_short_name(const char* name) {$/;"	f	class:FAT32
+isr_common	kernel/exceptions.asm	/^isr_common:$/;"	l
+isr_handler	kernel/idt.cpp	/^extern "C" void isr_handler(Registers* regs) {$/;"	f
+isr_stub_table	kernel/exceptions.asm	/^isr_stub_table:$/;"	l
+isr_stub_table_size	kernel/exceptions.asm	/^isr_stub_table_size: dd 32    ; Tamaño de la tabla de excepciones/;"	d
+itoa	kernel/Console.cpp	/^void Console::itoa(int value, char* str, int base) {$/;"	f	class:Console
+jump	kernel/fat32.h	/^    uint8_t jump[3];$/;"	m	struct:FAT32_BootSector
+kernel_panic	kernel/kernel_panic.cpp	/^extern "C" void kernel_panic(const char* msg, Registers* regs) {$/;"	f
+keyBuffer	kernel/Keyboard.cpp	/^static volatile int keyBuffer[256];$/;"	v	file:
+keyboard_handler	kernel/Keyboard.cpp	/^extern "C" void keyboard_handler() {$/;"	f
+keyboard_install	kernel/Keyboard.cpp	/^void keyboard_install() {$/;"	f
+keyboard_key_available	kernel/kernel.cpp	/^int keyboard_key_available() {$/;"	f
+keyboard_read_scancode	kernel/kernel.cpp	/^uint8_t keyboard_read_scancode() {$/;"	f
+kfree	kernel/memory.cpp	/^void kfree(void* ptr) {$/;"	f
+kmain	kernel/kernel.cpp	/^extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {$/;"	f
+kmalloc	kernel/memory.cpp	/^void* kmalloc(size_t size) {$/;"	f
+lba_start	kernel/mbr.h	/^    uint32_t lba_start;$/;"	m	struct:PartitionTableEntry
+lba_to_chs	kernel/hard_disk.cpp	/^static void lba_to_chs(uint32_t lba, uint8_t& head, uint16_t& track, uint8_t& sector) {$/;"	f	file:
+length	kernel/iso.cpp	/^        uint8_t length;$/;"	m	struct:ISO9660::PVD::DirectoryEntry	file:
+length	kernel/iso.cpp	/^    uint8_t length;$/;"	m	struct:ISO9660::DirectoryEntry	file:
+limit	kernel/idt.h	/^    uint16_t limit;$/;"	m	struct:IDTPtr
+lineBuffer	kernel/Console.cpp	/^char      Console::lineBuffer[] = {0};$/;"	m	class:Console	file:
+lineBuffer	kernel/Console.h	/^    static char      lineBuffer[MAXLEN];$/;"	m	class:Console
+linebuf	kernel/kernel.cpp	/^static char linebuf[256]; \/\/ Algo para la consola$/;"	v	file:
+list_root_directory	kernel/iso.cpp	/^void list_root_directory() {$/;"	f	namespace:ISO9660
+load_file_content	kernel/read_file.cpp	/^char** load_file_content(char disk_letter, const char* filename) {$/;"	f
+location_of_optional_path_table_be	kernel/iso.cpp	/^    uint32_t location_of_optional_path_table_be;$/;"	m	struct:ISO9660::PVD	file:
+location_of_optional_path_table_le	kernel/iso.cpp	/^    uint32_t location_of_optional_path_table_le;$/;"	m	struct:ISO9660::PVD	file:
+location_of_path_table_be	kernel/iso.cpp	/^    uint32_t location_of_path_table_be;$/;"	m	struct:ISO9660::PVD	file:
+location_of_path_table_le	kernel/iso.cpp	/^    uint32_t location_of_path_table_le;$/;"	m	struct:ISO9660::PVD	file:
+logical_block_size_be	kernel/iso.cpp	/^    uint16_t logical_block_size_be;$/;"	m	struct:ISO9660::PVD	file:
+logical_block_size_le	kernel/iso.cpp	/^    uint16_t logical_block_size_le; \/\/ Typically 2048$/;"	m	struct:ISO9660::PVD	file:
+main	PIMConverter.java	/^    public static void main(String[] args) {$/;"	m	class:PIMConverter
+main	fatnenuphar.cpp	/^int main(int argc, char** argv) {$/;"	f
+main	files/hello.c	/^int main() {$/;"	f
+mbi	kernel/kernel.cpp	/^multiboot_info_t* mbi; \/\/ var global Mulitboot Info$/;"	v
+measure_cpu_frequency	kernel/kernel.cpp	/^uint32_t measure_cpu_frequency() {$/;"	f
+media_type	kernel/fat32.h	/^    uint8_t media_type;$/;"	m	struct:FAT32_BootSector
+mem_lower	kernel/multiboot.h	/^    uint32_t mem_lower;$/;"	m	struct:multiboot_info_t
+mem_upper	kernel/multiboot.h	/^    uint32_t mem_upper;$/;"	m	struct:multiboot_info_t
+memcmp	kernel/string.hpp	/^    static inline int memcmp(const void* s1, const void* s2, size_t n) {$/;"	f	namespace:String
+memcpy	kernel/string.cpp	/^void* memcpy(void* dest, const void* src, size_t n) {$/;"	f
+memcpy	kernel/string.hpp	/^    static inline void* memcpy(void* dest, const void* src, size_t n) {$/;"	f	namespace:String
+memmove	kernel/string.cpp	/^void* memmove(void* dst, const void* src, size_t n) {$/;"	f
+memory_model	kernel/vesa.h	/^    uint8_t memory_model;$/;"	m	struct:vbe_mode_info
+memory_pool	kernel/memory.cpp	/^static char memory_pool[1024 * 1024]; \/\/ 1MB pool$/;"	v	file:
+memory_region_is_safe	kernel/kernel.cpp	/^bool memory_region_is_safe(uint32_t addr, uint32_t size) {$/;"	f
+memset	kernel/string.cpp	/^void* memset(void* s, int c, size_t n) {$/;"	f
+mkdir	kernel/fat32.cpp	/^FAT32_Result FAT32::mkdir(const char* path) {$/;"	f	class:FAT32
+mmap_addr	kernel/multiboot.h	/^    uint32_t mmap_addr;$/;"	m	struct:multiboot_info_t
+mmap_length	kernel/multiboot.h	/^    uint32_t mmap_length;$/;"	m	struct:multiboot_info_t
+mod_date	kernel/fat32.h	/^    uint16_t mod_date;$/;"	m	struct:FAT32_DirEntry
+mod_end	kernel/multiboot.h	/^    uint32_t mod_end;$/;"	m	struct:__anon5
+mod_start	kernel/multiboot.h	/^    uint32_t mod_start;$/;"	m	struct:__anon5
+mod_time	kernel/fat32.h	/^    uint16_t mod_time;$/;"	m	struct:FAT32_DirEntry
+model	kernel/part_mgr.h	/^    char model[41];$/;"	m	struct:DiskInfo
+mods_addr	kernel/multiboot.h	/^    uint32_t mods_addr;$/;"	m	struct:multiboot_info_t
+mods_count	kernel/multiboot.h	/^    uint32_t mods_count;$/;"	m	struct:multiboot_info_t
+mount	kernel/fat32.cpp	/^bool FAT32::mount(uint32_t partition_lba) {$/;"	f	class:FAT32
+mounted	kernel/fat32.h	/^    bool mounted;$/;"	m	class:FAT32
+mouse_buttons	kernel/Mouse.cpp	/^    volatile uint8_t mouse_buttons = 0;$/;"	m	namespace:__anon1	file:
+mouse_get_buttons	kernel/mouse_wrapper.cpp	/^uint8_t mouse_get_buttons() {$/;"	f
+mouse_get_x	kernel/mouse_wrapper.cpp	/^int16_t mouse_get_x() {$/;"	f
+mouse_get_y	kernel/mouse_wrapper.cpp	/^int16_t mouse_get_y() {$/;"	f
+mouse_handler_asm	kernel/mouse.asm	/^mouse_handler_asm:$/;"	l
+mouse_initialize	kernel/mouse_wrapper.cpp	/^void mouse_initialize() {$/;"	f
+mouse_x	kernel/Mouse.cpp	/^    volatile int16_t mouse_x = 160;$/;"	m	namespace:__anon1	file:
+mouse_y	kernel/Mouse.cpp	/^    volatile int16_t mouse_y = 100;$/;"	m	namespace:__anon1	file:
+multiboot_info_t	kernel/multiboot.h	/^struct multiboot_info_t {$/;"	s
+multiboot_module_t	kernel/multiboot.h	/^} multiboot_module_t;$/;"	t	typeref:struct:__anon5
+name	fatnenuphar.cpp	/^    char     name[16];     \/\/ Nombre del archivo (sin carpetas)$/;"	m	struct:FileEntry	file:
+name	kernel/fat32.h	/^    char name[11];$/;"	m	struct:FAT32_DirEntry
+name	kernel/iso.cpp	/^    char name[256];             \/\/ File name (null-terminated)$/;"	m	struct:ISO9660::DirectoryEntry	file:
+name1	kernel/fat32.h	/^    uint16_t name1[5];$/;"	m	struct:FAT32_LongDirEntry
+name2	kernel/fat32.h	/^    uint16_t name2[6];$/;"	m	struct:FAT32_LongDirEntry
+name3	kernel/fat32.h	/^    uint16_t name3[2];$/;"	m	struct:FAT32_LongDirEntry
+nt_flags	kernel/fat32.h	/^    uint8_t nt_flags;$/;"	m	struct:FAT32_BootSector
+nt_reserved	kernel/fat32.h	/^    uint8_t nt_reserved;$/;"	m	struct:FAT32_DirEntry
+num	kernel/multiboot.h	/^    uint32_t num;$/;"	m	struct:multiboot_info_t
+oem	kernel/fat32.h	/^    char oem[8];$/;"	m	struct:FAT32_BootSector
+off_screen_mem_off	kernel/vesa.h	/^    uint32_t off_screen_mem_off;$/;"	m	struct:vbe_mode_info
+off_screen_mem_size	kernel/vesa.h	/^    uint16_t off_screen_mem_size;$/;"	m	struct:vbe_mode_info
+offset	fatnenuphar.cpp	/^    uint32_t offset;       \/\/ Sector donde empieza$/;"	m	struct:FileEntry	file:
+offset_high	kernel/idt.h	/^    uint16_t offset_high;   \/\/ bits 16-31 del offset$/;"	m	struct:IDTEntry
+offset_low	kernel/idt.h	/^    uint16_t offset_low;    \/\/ bits 0-15 del offset$/;"	m	struct:IDTEntry
+opendir	kernel/fat32.cpp	/^FAT32_Result FAT32::opendir(const char* path, uint32_t* dir_handle) {$/;"	f	class:FAT32
+operator new	kernel/memory.cpp	/^void* operator new(size_t size) {$/;"	f
+operator new[]	kernel/memory.cpp	/^void* operator new[](size_t size) {$/;"	f
+order	kernel/fat32.h	/^    uint8_t order;$/;"	m	struct:FAT32_LongDirEntry
+outb	kernel/Debug.cpp	/^static inline void outb(uint16_t port, uint8_t val) {$/;"	f	file:
+outb	kernel/Keyboard.cpp	/^static inline void outb(uint16_t port, uint8_t val) {$/;"	f	file:
+outb	kernel/disk.cpp	3;"	d	file:
+outb	kernel/io.asm	/^outb:$/;"	l
+outb	kernel/io.cpp	/^void outb(uint16_t port, uint8_t value) {$/;"	f
+outb	kernel/pic.cpp	/^static inline void outb(uint16_t port, uint8_t val) {$/;"	f	file:
+outw	kernel/disk.cpp	4;"	d	file:
+outw	kernel/io.cpp	/^void outw(uint16_t port, uint16_t val) {$/;"	f
+pad	kernel/multiboot.h	/^    uint32_t pad;$/;"	m	struct:__anon5
+parrot	kernel/parrot.cpp	/^const char* parrot[] = {$/;"	v
+partition_start	kernel/fat32.h	/^    uint32_t partition_start;$/;"	m	class:FAT32
+partitions	kernel/mbr.h	/^    PartitionTableEntry partitions[4];$/;"	m	struct:MBR
+path_table_size_be	kernel/iso.cpp	/^    uint32_t path_table_size_be;$/;"	m	struct:ISO9660::PVD	file:
+path_table_size_le	kernel/iso.cpp	/^    uint32_t path_table_size_le;$/;"	m	struct:ISO9660::PVD	file:
+pit_init	kernel/kernel.cpp	/^void pit_init(uint32_t frequency) {$/;"	f
+pit_set_frequency	kernel/kernel.cpp	/^void pit_set_frequency(uint32_t freq) {$/;"	f
+pit_wait_ticks	kernel/kernel.cpp	/^void pit_wait_ticks(uint32_t ticks) {$/;"	f
+pitch	kernel/vesa.cpp	/^    uint32_t pitch;$/;"	m	struct:Framebuffer	file:
+pitch	kernel/vesa.h	/^    uint16_t pitch;$/;"	m	struct:vbe_mode_info
+pitch	kernel/vgraphics.h	/^	uint32_t pitch;$/;"	m	struct:FBInfo
+pixel	kernel/vesa.cpp	/^    uint32_t& pixel(uint32_t x, uint32_t y) {$/;"	f	struct:Framebuffer
+planes	kernel/vesa.h	/^    uint8_t planes;$/;"	m	struct:vbe_mode_info
+pool_offset	kernel/memory.cpp	/^static size_t pool_offset = 0;$/;"	v	file:
+pop	kernel/exceptions.asm	/^    pop ds$/;"	d
+printHex	kernel/Console.cpp	/^void Console::printHex(uint32_t value, uint8_t width) {$/;"	f	class:Console
+println	kernel/Console.cpp	/^void Console::println() {$/;"	f	class:Console
+println	kernel/Console.h	/^void Console::println(T first, Args... rest) {$/;"	f	class:Console
+projection_matrix	kernel/Graphics.cpp	/^static float projection_matrix[4][4] = {{0}};$/;"	v	file:
+push	kernel/exceptions.asm	/^    push ds$/;"	d
+putChar	kernel/Console.cpp	/^void Console::putChar(char c) {$/;"	f	class:Console
+putPixel	kernel/vgraphics.cpp	/^void VGraphics::putPixel(uint32_t x, uint32_t y, uint32_t color) {$/;"	f	class:VGraphics
+r	kernel/Graphics.h	/^    uint8_t r, g, b;$/;"	m	struct:vga_color
+r	kernel/vgraphics.h	/^	uint8_t r, g, b, a;$/;"	m	struct:Color
+rand_lcg	kernel/kernel.cpp	/^uint32_t rand_lcg() {$/;"	f
+rand_range	kernel/kernel.cpp	/^int32_t rand_range(int32_t min, int32_t max) {$/;"	f
+rand_seed	kernel/kernel.cpp	/^static uint32_t rand_seed = 1;$/;"	v	file:
+rdtsc	kernel/kernel.cpp	/^uint64_t rdtsc() {$/;"	f
+readLine	kernel/Console.cpp	/^char* Console::readLine(char* buffer, int maxLength) {$/;"	f	class:Console
+readText	kernel/Console.cpp	/^char* Console::readText(int x, int y, int maxLen, uint32_t color) {$/;"	f	class:Console
+read_cmos	kernel/date.cpp	/^uint8_t read_cmos(uint8_t reg) {$/;"	f
+read_directory_entry	kernel/iso.cpp	/^bool read_directory_entry(const uint8_t* data, DirectoryEntry* entry) {$/;"	f	namespace:ISO9660
+read_entire_disk	kernel/read_file.cpp	/^bool read_entire_disk(const DiskInfo& disk, void* out_buffer, uint32_t size_in_bytes) {$/;"	f
+read_file	kernel/iso.cpp	/^bool read_file(const char* path, uint8_t* buffer, uint32_t max_size) {$/;"	f	namespace:ISO9660
+read_file_from_meta	kernel/kernel.cpp	/^const char* read_file_from_meta(char* name) {$/;"	f
+read_large_memory_string	kernel/kernel.cpp	/^const char* read_large_memory_string(uint32_t start_addr, size_t max_bytes) {$/;"	f
+read_model	kernel/ata_detect.cpp	/^void read_model(uint16_t* data, char* buffer, int buffer_size) {$/;"	f
+read_partitions	kernel/part_mgr.cpp	/^bool read_partitions(uint32_t disk_lba, PartitionInfo* partitions, int max_count, int* count) {$/;"	f
+read_sector_ata	kernel/hard_disk.cpp	/^bool read_sector_ata(uint32_t lba, void* buffer) {$/;"	f
+read_sectors	kernel/disk.cpp	/^void ATA::read_sectors(uint32_t lba, uint8_t count, void* buffer) {$/;"	f	class:ATA
+read_string_from_memory	kernel/kernel.cpp	/^const char* read_string_from_memory(uint32_t start_addr, size_t max_len = 1024) {$/;"	f
+readdir	kernel/fat32.cpp	/^FAT32_Result FAT32::readdir(uint32_t dir_handle, FAT32_DirEntry* entry) {$/;"	f	class:FAT32
+recording_date_time	kernel/iso.cpp	/^        uint8_t recording_date_time[7];$/;"	m	struct:ISO9660::PVD::DirectoryEntry	file:
+red_mask	kernel/vesa.h	/^    uint8_t red_mask;$/;"	m	struct:vbe_mode_info
+red_position	kernel/vesa.h	/^    uint8_t red_position;$/;"	m	struct:vbe_mode_info
+register_interrupt_handler	kernel/idt.cpp	/^void register_interrupt_handler(uint8_t n, ISRHandler handler) {$/;"	f
+remap_pic	kernel/pic.cpp	/^void remap_pic() {$/;"	f
+rename	kernel/fat32.cpp	/^FAT32_Result FAT32::rename(const char* old_path, const char* new_path) {$/;"	f	class:FAT32
+reserved	kernel/fat32.h	/^    uint8_t reserved[12];$/;"	m	struct:FAT32_BootSector
+reserved0	kernel/vesa.h	/^    uint8_t reserved0;$/;"	m	struct:vbe_mode_info
+reserved1	kernel/vesa.h	/^    uint8_t reserved1[206];$/;"	m	struct:vbe_mode_info
+reserved_sectors	kernel/fat32.h	/^    uint16_t reserved_sectors;$/;"	m	struct:FAT32_BootSector
+resize_partition	kernel/part_mgr.cpp	/^bool resize_partition(uint32_t disk_lba, int index, uint32_t new_size_sectors) {$/;"	f
+root_cluster	kernel/fat32.h	/^    uint32_t root_cluster;$/;"	m	struct:FAT32_BootSector
+root_directory	kernel/iso.cpp	/^    } root_directory;$/;"	m	struct:ISO9660::PVD	typeref:struct:ISO9660::PVD::DirectoryEntry	file:
+root_entries	kernel/fat32.h	/^    uint16_t root_entries;$/;"	m	struct:FAT32_BootSector
+rotate_vertex	kernel/kernel.cpp	/^static void rotate_vertex(Vec3* vertex, float angle_x, float angle_y, float angle_z) {$/;"	f	file:
+rotation_x	kernel/kernel.cpp	/^static float rotation_x = 0.0f;$/;"	v	file:
+rotation_y	kernel/kernel.cpp	/^static float rotation_y = 0.0f;$/;"	v	file:
+rotation_z	kernel/kernel.cpp	/^static float rotation_z = 0.0f;$/;"	v	file:
+rsv_mask	kernel/vesa.h	/^    uint8_t rsv_mask;$/;"	m	struct:vbe_mode_info
+rsv_position	kernel/vesa.h	/^    uint8_t rsv_position;$/;"	m	struct:vbe_mode_info
+runcommand	kernel/kernel.cpp	/^void runcommand(char* s, bool auth) {	$/;"	f
+scancodeMap	kernel/Keyboard.cpp	/^static const char scancodeMap[128] = {$/;"	v	file:
+scancodeMapShift	kernel/Keyboard.cpp	/^static const char scancodeMapShift[128] = {$/;"	v	file:
+scancodeToAscii	kernel/Console.cpp	/^char scancodeToAscii(uint8_t sc, bool shift) {$/;"	f
+scancodeToAscii	kernel/Keyboard.cpp	/^char scancodeToAscii(uint8_t sc) {$/;"	f
+screen_height	kernel/Mouse.cpp	/^    uint16_t screen_height = 200;$/;"	m	namespace:__anon1	file:
+screen_width	kernel/Mouse.cpp	/^    uint16_t screen_width = 320;$/;"	m	namespace:__anon1	file:
+scroll	kernel/Console.cpp	/^void Console::scroll() {$/;"	f	class:Console
+scroll	kernel/vgraphics.cpp	/^void VGraphics::scroll() {$/;"	f	class:VGraphics
+section	boot.asm	/^section .bss$/;"	l
+section	boot.asm	/^section .multiboot2$/;"	l
+section	boot.asm	/^section .text$/;"	l
+sector_count	kernel/mbr.h	/^    uint32_t sector_count;$/;"	m	struct:PartitionTableEntry
+sector_count	kernel/part_mgr.h	/^    uint32_t sector_count;$/;"	m	struct:PartitionInfo
+sectors_per_cluster	kernel/fat32.h	/^    uint8_t sectors_per_cluster;$/;"	m	struct:FAT32_BootSector
+sectors_per_track	kernel/fat32.h	/^    uint16_t sectors_per_track;$/;"	m	struct:FAT32_BootSector
+sectors_per_track	kernel/part_mgr.h	/^    uint16_t sectors_per_track;$/;"	m	struct:DiskInfo
+segment_a	kernel/vesa.h	/^    uint16_t segment_a;$/;"	m	struct:vbe_mode_info
+segment_b	kernel/vesa.h	/^    uint16_t segment_b;$/;"	m	struct:vbe_mode_info
+selector	kernel/idt.h	/^    uint16_t selector;      \/\/ selector de segmento de código$/;"	m	struct:IDTEntry
+setColor	kernel/Console.cpp	/^void Console::setColor(uint32_t newColor) {   $/;"	f	class:Console
+setColor	kernel/Console.cpp	/^void Console::setColor(uint8_t newColor) {$/;"	f	class:Console
+setColors	kernel/Console.cpp	/^void Console::setColors(uint32_t fg, uint32_t bg) {   $/;"	f	class:Console
+setGraphics	kernel/Console.cpp	/^void Console::setGraphics(bool f) {$/;"	f	class:Console
+set_boundaries	kernel/Mouse.cpp	/^void Mouse::set_boundaries(uint16_t width, uint16_t height) {$/;"	f	class:Mouse
+set_cursor	kernel/Console.cpp	/^void Console::set_cursor(uint16_t pos) {$/;"	f	class:Console
+set_cursor	kernel/kernel.cpp	/^void set_cursor(uint8_t row, uint8_t col) {$/;"	f
+set_next_cluster	kernel/fat32.cpp	/^bool FAT32::set_next_cluster(uint32_t cluster, uint32_t next_cluster) {$/;"	f	class:FAT32
+setbColor	kernel/Console.cpp	/^void Console::setbColor(uint32_t newColor) {   $/;"	f	class:Console
+setup_idt	kernel/idt.cpp	/^extern "C" void setup_idt() {$/;"	f
+shiftDown	kernel/Keyboard.cpp	/^static bool shiftDown = false;$/;"	v	file:
+shndx	kernel/multiboot.h	/^    uint32_t shndx;$/;"	m	struct:multiboot_info_t
+shownModulesExplanation	kernel/kernel.cpp	/^bool shownModulesExplanation = false; \/\/ Flag para saber si se explico los modulos de GRUB en la sesion actual$/;"	v
+signature	kernel/fat32.h	/^    uint8_t signature;$/;"	m	struct:FAT32_BootSector
+signature	kernel/mbr.h	/^    uint16_t signature;$/;"	m	struct:MBR
+sinf	kernel/Graphics.cpp	/^static float sinf(float x) {$/;"	f	file:
+sinf	kernel/kernel.cpp	/^static float sinf(float x) {$/;"	f	file:
+size	fatnenuphar.cpp	/^    uint32_t size;         \/\/ Tamaño en bytes$/;"	m	struct:FileEntry	file:
+size	kernel/multiboot.h	/^    uint32_t size;$/;"	m	struct:multiboot_info_t
+srand_lcg	kernel/kernel.cpp	/^void srand_lcg(uint32_t seed) {$/;"	f
+ss	kernel/idt.h	/^    uint32_t eip, cs, eflags, useresp, ss; \/\/ Automáticamente pusheados por el CPU$/;"	m	struct:Registers
+stack_bottom	boot.asm	/^stack_bottom:$/;"	l
+stack_top	boot.asm	/^stack_top:$/;"	l
+standard_id	kernel/iso.cpp	/^    char standard_id[5];        \/\/ "CD001"$/;"	m	struct:ISO9660::PVD	file:
+start_lba	kernel/part_mgr.h	/^    uint32_t start_lba;$/;"	m	struct:PartitionInfo
+status	kernel/mbr.h	/^    uint8_t status;$/;"	m	struct:PartitionTableEntry
+status	kernel/part_mgr.h	/^    uint8_t status;$/;"	m	struct:PartitionInfo
+stoi	kernel/kernel.cpp	/^int stoi(const char* str) {$/;"	f
+strchr	kernel/string.cpp	/^char* strchr(const char* s, int c) {$/;"	f
+strcmp	kernel/kernel.cpp	/^int strcmp(const char* a, const char* b) {$/;"	f
+strlen	kernel/string.cpp	/^size_t strlen(const char* s) {$/;"	f
+strlen	kernel/string.hpp	/^    static size_t strlen(const char* str) {$/;"	f	namespace:String
+strncmp	kernel/string.cpp	/^int strncmp(const char* s1, const char* s2, size_t n) {$/;"	f
+strncpy	kernel/string.cpp	/^void strncpy(char* dest, const char* src, int maxLen) {$/;"	f
+strrchr	kernel/string.cpp	/^char* strrchr(const char* s, int c) {$/;"	f
+substr	kernel/kernel.cpp	/^char* substr(const char* str, int start, int length = -1) {$/;"	f
+system_id	kernel/iso.cpp	/^    char system_id[32];$/;"	m	struct:ISO9660::PVD	file:
+tail	kernel/Keyboard.cpp	/^static volatile int head = 0, tail = 0;$/;"	v	file:
+tanf	kernel/Graphics.cpp	/^float tanf(float x) {$/;"	f
+textBuffer	kernel/Console.cpp	/^static char textBuffer[FB_HEIGHT][FB_WIDTH];$/;"	v	file:
+textColor	kernel/Console.cpp	/^static Color textColor = {255, 255, 255, 0};  \/\/ Blanco por defecto$/;"	v	file:
+thread_switch_asm	threads.asm	/^thread_switch_asm:$/;"	l
+total_sectors	kernel/part_mgr.h	/^    uint32_t total_sectors;$/;"	m	struct:DiskInfo
+total_sectors_16	kernel/fat32.h	/^    uint16_t total_sectors_16;$/;"	m	struct:FAT32_BootSector
+total_sectors_32	kernel/fat32.h	/^    uint32_t total_sectors_32;$/;"	m	struct:FAT32_BootSector
+transform_point	kernel/Graphics.cpp	/^static Vec3 transform_point(const Vec3& point) {$/;"	f	file:
+trimName	fatnenuphar.cpp	/^void trimName(const std::string& path, char* out) {$/;"	f
+type	kernel/fat32.h	/^    uint8_t type;$/;"	m	struct:FAT32_LongDirEntry
+type	kernel/iso.cpp	/^    uint8_t type;               \/\/ 0x01 for PVD$/;"	m	struct:ISO9660::PVD	file:
+type	kernel/mbr.h	/^    uint8_t type;$/;"	m	struct:PartitionTableEntry
+type	kernel/part_mgr.h	/^    uint8_t type;$/;"	m	struct:PartitionInfo
+type_attr	kernel/idt.h	/^    uint8_t type_attr;      \/\/ atributos (P, DPL, tipo)$/;"	m	struct:IDTEntry
+type_name	kernel/part_mgr.h	/^    char type_name[32];$/;"	m	struct:PartitionInfo
+unused1	kernel/iso.cpp	/^    uint8_t unused1;$/;"	m	struct:ISO9660::PVD	file:
+unused2	kernel/iso.cpp	/^    uint8_t unused2[8];$/;"	m	struct:ISO9660::PVD	file:
+unused3	kernel/iso.cpp	/^    uint8_t unused3[32];$/;"	m	struct:ISO9660::PVD	file:
+updateCursor	kernel/Console.cpp	/^void Console::updateCursor() {$/;"	f	class:Console
+useresp	kernel/idt.h	/^    uint32_t eip, cs, eflags, useresp, ss; \/\/ Automáticamente pusheados por el CPU$/;"	m	struct:Registers
+v0	kernel/Graphics.h	/^    Vec3 v0, v1, v2;$/;"	m	struct:__anon4
+v1	kernel/Graphics.h	/^    Vec3 v0, v1, v2;$/;"	m	struct:__anon4
+v2	kernel/Graphics.h	/^    Vec3 v0, v1, v2;$/;"	m	struct:__anon4
+vbe_control_info	kernel/multiboot.h	/^    uint32_t vbe_control_info;$/;"	m	struct:multiboot_info_t
+vbe_interface_len	kernel/multiboot.h	/^    uint16_t vbe_interface_len;$/;"	m	struct:multiboot_info_t
+vbe_interface_off	kernel/multiboot.h	/^    uint16_t vbe_interface_off;$/;"	m	struct:multiboot_info_t
+vbe_interface_seg	kernel/multiboot.h	/^    uint16_t vbe_interface_seg;$/;"	m	struct:multiboot_info_t
+vbe_mode	kernel/multiboot.h	/^    uint16_t vbe_mode;$/;"	m	struct:multiboot_info_t
+vbe_mode_info	kernel/multiboot.h	/^    uint32_t vbe_mode_info;$/;"	m	struct:multiboot_info_t
+vbe_mode_info	kernel/vesa.h	/^struct vbe_mode_info {$/;"	s
+version	kernel/iso.cpp	/^    uint8_t version;            \/\/ 0x01$/;"	m	struct:ISO9660::PVD	file:
+vga	kernel/Graphics.cpp	/^static uint8_t* vga = (uint8_t*)0xA0000;$/;"	v	file:
+vgaBuffer	kernel/Console.cpp	/^uint16_t* Console::vgaBuffer    = (uint16_t*)VGA_ADDRESS;$/;"	m	class:Console	file:
+vgaBuffer	kernel/Console.h	/^    static uint16_t* vgaBuffer;$/;"	m	class:Console
+vga_color	kernel/Graphics.h	/^struct vga_color {$/;"	s
+vgraphics_clear_screen	kernel/vgraphics_wrapper.cpp	/^void vgraphics_clear_screen() {$/;"	f
+vgraphics_draw_char	kernel/vgraphics_wrapper.cpp	/^void vgraphics_draw_char(uint32_t x, uint32_t y, char c, uint32_t fg, uint32_t bg) {$/;"	f
+vgraphics_draw_string	kernel/vgraphics_wrapper.cpp	/^void vgraphics_draw_string(uint32_t x, uint32_t y, const char* str, uint32_t fg) {$/;"	f
+vgraphics_get_height	kernel/vgraphics_wrapper.cpp	/^uint32_t vgraphics_get_height() {$/;"	f
+vgraphics_get_width	kernel/vgraphics_wrapper.cpp	/^uint32_t vgraphics_get_width() {$/;"	f
+vgraphics_put_pixel	kernel/vgraphics_wrapper.cpp	/^void vgraphics_put_pixel(uint32_t x, uint32_t y, uint32_t color) {$/;"	f
+volume_id	kernel/fat32.h	/^    uint32_t volume_id;$/;"	m	struct:FAT32_BootSector
+volume_id	kernel/iso.cpp	/^    char volume_id[32];$/;"	m	struct:ISO9660::PVD	file:
+volume_label	kernel/fat32.h	/^    char volume_label[11];$/;"	m	struct:FAT32_BootSector
+volume_sequence_number_be	kernel/iso.cpp	/^        uint16_t volume_sequence_number_be;$/;"	m	struct:ISO9660::PVD::DirectoryEntry	file:
+volume_sequence_number_be	kernel/iso.cpp	/^    uint16_t volume_sequence_number_be;$/;"	m	struct:ISO9660::PVD	file:
+volume_sequence_number_le	kernel/iso.cpp	/^        uint16_t volume_sequence_number_le;$/;"	m	struct:ISO9660::PVD::DirectoryEntry	file:
+volume_sequence_number_le	kernel/iso.cpp	/^    uint16_t volume_sequence_number_le;$/;"	m	struct:ISO9660::PVD	file:
+volume_set_size_be	kernel/iso.cpp	/^    uint16_t volume_set_size_be;$/;"	m	struct:ISO9660::PVD	file:
+volume_set_size_le	kernel/iso.cpp	/^    uint16_t volume_set_size_le;$/;"	m	struct:ISO9660::PVD	file:
+volume_space_size_be	kernel/iso.cpp	/^    uint32_t volume_space_size_be; \/\/ Big-endian$/;"	m	struct:ISO9660::PVD	file:
+volume_space_size_le	kernel/iso.cpp	/^    uint32_t volume_space_size_le; \/\/ Little-endian$/;"	m	struct:ISO9660::PVD	file:
+w_char	kernel/vesa.h	/^    uint8_t w_char;$/;"	m	struct:vbe_mode_info
+wait	kernel/kernel.cpp	/^void wait(int secs) {$/;"	f
+wait_bsy	kernel/disk.cpp	/^void ATA::wait_bsy() {$/;"	f	class:ATA
+wait_drq	kernel/disk.cpp	/^void ATA::wait_drq() {$/;"	f	class:ATA
+wait_ms	kernel/kernel.cpp	/^void wait_ms(uint32_t ms) {$/;"	f
+wait_ms	kernel/wait_wrapper.cpp	/^    void wait_ms(uint32_t ms) {$/;"	f
+was_c_pressed	kernel/kernel.cpp	/^bool was_c_pressed() {$/;"	f
+width	kernel/vesa.cpp	/^    uint32_t width;$/;"	m	struct:Framebuffer	file:
+width	kernel/vesa.h	/^    uint16_t width;$/;"	m	struct:vbe_mode_info
+width	kernel/vgraphics.h	/^	uint32_t width;$/;"	m	struct:FBInfo
+win_func_ptr	kernel/vesa.h	/^    uint32_t win_func_ptr;$/;"	m	struct:vbe_mode_info
+window_a	kernel/vesa.h	/^    uint8_t window_a;$/;"	m	struct:vbe_mode_info
+window_b	kernel/vesa.h	/^    uint8_t window_b;$/;"	m	struct:vbe_mode_info
+window_size	kernel/vesa.h	/^    uint16_t window_size;$/;"	m	struct:vbe_mode_info
+write	kernel/Console.cpp	/^void Console::write(bool value) {$/;"	f	class:Console
+write	kernel/Console.cpp	/^void Console::write(char c) {$/;"	f	class:Console
+write	kernel/Console.cpp	/^void Console::write(const char* str) {$/;"	f	class:Console
+write	kernel/Console.cpp	/^void Console::write(const char* str, uint8_t fg) {$/;"	f	class:Console
+write	kernel/Console.cpp	/^void Console::write(const char* str, uint8_t fg, uint8_t bg) {$/;"	f	class:Console
+write	kernel/Console.cpp	/^void Console::write(double value) {$/;"	f	class:Console
+write	kernel/Console.cpp	/^void Console::write(int value) {$/;"	f	class:Console
+write	kernel/Console.cpp	/^void Console::write(uint8_t value) {$/;"	f	class:Console
+write	kernel/Console.cpp	/^void Console::write(unsigned long long value) {$/;"	f	class:Console
+write	kernel/Console.h	/^    static void write(float value) { write((double)value); }  \/\/ opcional$/;"	f	class:Console
+write_registers	kernel/Graphics.cpp	/^void write_registers(uint8_t* regs) {$/;"	f
+write_sectors	kernel/disk.cpp	/^void ATA::write_sectors(uint32_t lba, uint8_t count, void* buffer) {$/;"	f	class:ATA
+x	kernel/Graphics.h	/^    float x, y, z;$/;"	m	struct:__anon3
+y	kernel/Graphics.h	/^    float x, y, z;$/;"	m	struct:__anon3
+y_char	kernel/vesa.h	/^    uint8_t y_char;$/;"	m	struct:vbe_mode_info
+z	kernel/Graphics.h	/^    float x, y, z;$/;"	m	struct:__anon3
+zero	kernel/idt.h	/^    uint8_t zero;           \/\/ siempre 0$/;"	m	struct:IDTEntry
