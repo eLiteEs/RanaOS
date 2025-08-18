@@ -1,0 +1,3 @@
+[submodule "kernel/ffext2"]
+	path = kernel/ffext2
+	url = https://github.com/eLiteEs/ffext2
