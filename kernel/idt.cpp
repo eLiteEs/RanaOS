@@ -2,7 +2,6 @@
 #include "idt.h"
 #include "io.h"
 #include <stddef.h>
-#include "kernel_panic.cpp"
 
 extern "C" uint32_t isr_stub_table[];
 
@@ -37,12 +36,7 @@ extern "C" void idt_init() {
         handlers[i] = nullptr;
     }
 
-    // Configurar manejadores de excepciones (0-31)
-    extern uint32_t isr_stub_table[];  // Definido en exceptions.asm
-    for (int i = 0; i < 32; i++) {
-        idt_set_gate(i, isr_stub_table[i], 0x8E);  // 0x8E = Presente, DPL 0, Interrupt Gate 32-bit
-    }
-
+    
     // Cargar la IDT
     asm volatile("lidt %0" : : "m"(idt_ptr));
 }
@@ -85,7 +79,6 @@ static void exception_handler(Registers* regs) {
         "Reserved"
     };
     
-    kernel_panic(messages[regs->int_no], regs);
 }
 
 // Registra los manejadores de excepciones básicos
@@ -120,11 +113,6 @@ void idt_set_gate(uint8_t num, uint32_t handler, uint8_t flags) {
 extern "C" void setup_idt() {
     idt_ptr.limit = sizeof(IDTEntry) * 256 - 1;
     idt_ptr.base = (uint32_t)&idt;
-
-    // Inicializar todas las entradas
-    for (int i = 0; i < 32; i++) {  // Solo las 32 primeras para excepciones
-        idt_set_gate(i, isr_stub_table[i], 0x8E); // 0x8E = Presente, DPL 0, Interrupt Gate
-    }
 
     // Cargar la IDT
     asm volatile("lidt %0" : : "m"(idt_ptr));

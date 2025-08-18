@@ -27,33 +27,26 @@ BOOT_DIR  := $(ISO_DIR)/boot
 GRUB_DIR  := $(BOOT_DIR)/grub
 
 # Fuentes
-ASM_SRCS := boot.asm threads.asm kernel/exceptions.asm
+ASM_SRCS := boot.asm
 ASM_OBJS := $(patsubst %.asm, %.o, $(ASM_SRCS))
 
 CPP_SRCS := kernel/kernel.cpp \
-    kernel/Console.cpp \
-    kernel/io.cpp \
-    kernel/disk.cpp \
-    kernel/Graphics.cpp \
-    kernel/string.cpp \
-    kernel/memory.cpp \
-    kernel/math.cpp \
-    kernel/idt.cpp \
-    kernel/vesa.cpp \
-    kernel/vgraphics.cpp \
-    kernel/Debug.cpp \
-    kernel/vgraphics_wrapper.cpp \
+    	kernel/Console.cpp \
+    	kernel/io.cpp \
+    	kernel/Graphics.cpp \
+    	kernel/string.cpp \
+    	kernel/memory.cpp \
+    	kernel/math.cpp \
+	kernel/idt.cpp \
+	kernel/vgraphics.cpp \
+	kernel/Debug.cpp \
+	kernel/vgraphics_wrapper.cpp \
 	kernel/date_wrapper.cpp \
 	kernel/date.cpp \
-	kernel/mouse_wrapper.cpp \
 	kernel/wait_wrapper.cpp \
-	kernel/Mouse.cpp \
 	kernel/pic.cpp \
 	kernel/io_wrapper.cpp \
-	kernel/pic_wrapper.cpp \
-	kernel/disk.cpp \
-	kernel/part_mgr.cpp \
-	kernel/fat32.cpp
+	kernel/pic_wrapper.cpp
 CPP_OBJS := $(patsubst kernel/%.cpp, %.o, $(CPP_SRCS))
 
 LDSCRIPT := kernel/linker.ld

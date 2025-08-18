@@ -15,13 +15,10 @@
 #include "string.h" // ns
 #include "math.hpp" // Math operations
 #include "string.hpp"
-#include "vesa.h" // VESA Graphic mode
 #include "idt.h"
 #include "vgraphics.h"
 #include "Debug.h" // Debugging functions
 #include "date.h"
-#include "part_mgr.h"
-#include "fat32.h"
 
 // Algo del filesystem
 #define DISK_SIZE_BYTES (128 * 1024)
@@ -822,51 +819,11 @@ void runcommand(char* s, bool auth) {
 
         while(true) {}
 
-    } else if(!strcmp(s, "vesa")) {
-        // Inicializar modo gráfico
-        init_graphics(mbi);
-        
-        gclear_screen(0xffffff);
-
-        while(1) {}
     } else if(!strcmp(s, "start")) {
         start_so(); // Llamar a la función de inicio del SO
-    } else if(!strcmp(s, "fdisk")) {
-        DiskInfo disks[1];
-        int disk_count;
-        if (!detect_disks(disks, 1, &disk_count)) {
-            Console::println("Error: No se detectaron discos\n");
-            return;
-        }
-        Console::println("Disco detectado:", disks[0].model, ", Sectores totales: ", (long long unsigned) disks[0].total_sectors, '\n');
-        Console::write("Usar este disco? (y=yes, else=no): ");
-        bool tr = false;
-        char answer = Console::getKey(tr);
-
-        if(answer != 0x15) {
-            Console::println("Operación cancelada.");
-            return;
-        }
-        
-        // Crear partición que ocupe todo el disco (ajusta el LBA según tu disco)
-        uint32_t partition_start = 2048;  // Offset estándar para MBR (1MB)
-        uint32_t total_sectors = disks[0].total_sectors - partition_start;
-
-        if (!create_partition(0, 0, PARTITION_FAT32_LBA, partition_start, total_sectors)) {
-            Console::println("Error al crear partición");
-            return;
-        }
-
-        // Formatear como FAT32
-        FAT32 fs;
-        if (!fs.format(total_sectors)) {
-            Console::println("Error al formatear");
-            return;
-        }
-        Console::println("Partición FAT32 creada y formateada\n");
     } else {
-		Console::write("Unknown Command. Use \"help\" to get a list of commands.\n");
-	}
+	Console::write("Unknown Command. Use \"help\" to get a list of commands.\n");
+    }
 }
 
 void enable_cursor_blink() {
