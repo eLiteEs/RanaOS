@@ -8,6 +8,7 @@
 ASM_OBJS	Makefile	/^ASM_OBJS := $(patsubst %.asm, %.o, $(ASM_SRCS))$/;"	m
 ASM_SRCS	Makefile	/^ASM_SRCS := boot.asm$/;"	m
 BOOT_DIR	Makefile	/^BOOT_DIR  := $(ISO_DIR)\/boot$/;"	m
+BlockDevice	kernel/ffext2/ext2.hpp	/^struct BlockDevice {$/;"	s	namespace:ext2full
 CARGO	Makefile	/^CARGO     := cargo$/;"	m
 CC	Makefile	/^CC        := gcc$/;"	m
 CFLAGS	Makefile	/^CFLAGS   := -m32 -ffreestanding -O2 -Wall -Wextra \\$/;"	m
@@ -41,19 +42,20 @@ CXXFLAGS	build.bat	/^set CXXFLAGS=-m32 -ffreestanding -O2 -Wall -Wextra -fno-exc
 Color	kernel/vgraphics.h	/^	Color(uint8_t r=0, uint8_t g=0, uint8_t b=0, uint8_t a=0)$/;"	f	struct:Color
 Color	kernel/vgraphics.h	/^struct Color {$/;"	s
 Console	kernel/Console.h	/^class Console {$/;"	c
-DATA_START	fatnenuphar.cpp	/^const uint32_t DATA_START  = 5;$/;"	v
 DATE_H	kernel/date.h	2;"	d
 DEG_TO_RAD	kernel/Graphics.h	29;"	d
-DISK_SIZE_BYTES	kernel/kernel.cpp	24;"	d	file:
+DISK_SIZE_BYTES	kernel/kernel.cpp	31;"	d	file:
 Debug	kernel/Debug.cpp	/^namespace Debug {$/;"	n	file:
 Debug	kernel/Debug.h	/^namespace Debug {$/;"	n
+EXT2_FULL_HPP	kernel/ffext2/ext2.hpp	3;"	d
 FBInfo	kernel/vgraphics.h	/^struct FBInfo {$/;"	s
 FB_HEIGHT	kernel/Console.cpp	15;"	d	file:
 FB_WIDTH	kernel/Console.cpp	14;"	d	file:
-FileEntry	fatnenuphar.cpp	/^struct FileEntry {$/;"	s	file:
+FS	kernel/ffext2/ext2.hpp	/^struct FS {$/;"	s	namespace:ext2full
 GRAPHICS_H	kernel/Graphics.h	2;"	d
 GRUB_DIR	Makefile	/^GRUB_DIR  := $(BOOT_DIR)\/grub$/;"	m
 GRUB_MKRESCUE	Makefile	/^GRUB_MKRESCUE := grub-mkrescue$/;"	m
+HostCtx	kernel/ffext2/host_blockdev.cpp	/^struct HostCtx { int fd; };$/;"	s	file:
 IDTEntry	kernel/idt.h	/^struct IDTEntry {$/;"	s
 IDTPtr	kernel/idt.h	/^struct IDTPtr {$/;"	s
 IDT_H	kernel/idt.h	3;"	d
@@ -65,30 +67,29 @@ KERNEL_ELF	Makefile	/^KERNEL_ELF := kernel.elf$/;"	m
 KEYBOARD_H	kernel/Keyboard.h	4;"	d
 KEY_BACKSPACE	kernel/Console.cpp	290;"	d	file:
 KEY_BACKSPACE	kernel/Keyboard.cpp	99;"	d	file:
-KEY_BACKSPACE	kernel/kernel.cpp	336;"	d	file:
+KEY_BACKSPACE	kernel/kernel.cpp	343;"	d	file:
 KEY_DOWN	kernel/Console.cpp	289;"	d	file:
 KEY_DOWN	kernel/Keyboard.cpp	98;"	d	file:
-KEY_DOWN	kernel/kernel.cpp	335;"	d	file:
+KEY_DOWN	kernel/kernel.cpp	342;"	d	file:
 KEY_ENTER	kernel/Console.cpp	291;"	d	file:
 KEY_ENTER	kernel/Keyboard.cpp	100;"	d	file:
-KEY_ENTER	kernel/kernel.cpp	337;"	d	file:
+KEY_ENTER	kernel/kernel.cpp	344;"	d	file:
 KEY_LEFT	kernel/Console.cpp	286;"	d	file:
 KEY_LEFT	kernel/Keyboard.cpp	95;"	d	file:
-KEY_LEFT	kernel/kernel.cpp	332;"	d	file:
+KEY_LEFT	kernel/kernel.cpp	339;"	d	file:
 KEY_RIGHT	kernel/Console.cpp	287;"	d	file:
 KEY_RIGHT	kernel/Keyboard.cpp	96;"	d	file:
-KEY_RIGHT	kernel/kernel.cpp	333;"	d	file:
+KEY_RIGHT	kernel/kernel.cpp	340;"	d	file:
 KEY_UP	kernel/Console.cpp	288;"	d	file:
 KEY_UP	kernel/Keyboard.cpp	97;"	d	file:
-KEY_UP	kernel/kernel.cpp	334;"	d	file:
+KEY_UP	kernel/kernel.cpp	341;"	d	file:
 LD	Makefile	/^LD        := ld$/;"	m
 LD	build.bat	/^set LD="%TOOLCHAIN%\\i686-elf-ld"$/;"	v
 LDFLAGS	Makefile	/^LDFLAGS := -m elf_i386 -nostdlib -L$(shell dirname $$(gcc -m32 -print-libgcc-file-name))$/;"	m
 LDFLAGS	build.bat	/^set LDFLAGS=-m elf_i386$/;"	v
 LDSCRIPT	Makefile	/^LDSCRIPT := kernel\/linker.ld$/;"	m
 MAXLEN	kernel/Console.h	/^    static const int MAXLEN = 256;$/;"	m	class:Console
-MAX_FILES	fatnenuphar.cpp	/^const uint32_t MAX_FILES   = 32;$/;"	v
-MAX_FILE_SIZE	kernel/kernel.cpp	25;"	d	file:
+MAX_FILE_SIZE	kernel/kernel.cpp	32;"	d	file:
 MODULES	Makefile	/^MODULES = files\/text.txt files\/bg.pim files\/tux.pim$/;"	m
 MODULES_DIR	Makefile	/^MODULES_DIR  := $(ISO_DIR)\/files$/;"	m
 MULTIBOOT_H	kernel/multiboot.h	2;"	d
@@ -97,6 +98,8 @@ NASM	Makefile	/^NASM      := nasm$/;"	m
 NASM	build.bat	/^set NASM=nasm$/;"	v
 NULL	kernel/parrot.cpp	2;"	d	file:
 NULL	kernel/parrot.cpp	4;"	d	file:
+PACKED_STRUCT	kernel/ffext2/ext2.hpp	11;"	d
+PACKED_STRUCT	kernel/ffext2/ext2.hpp	9;"	d
 PALETTE	PIMConverter.java	/^    private static final Color[] PALETTE = {$/;"	f	class:PIMConverter	file:
 PI	kernel/Graphics.h	28;"	d
 PIC1_COMMAND	kernel/Keyboard.cpp	7;"	d	file:
@@ -112,13 +115,13 @@ PIC_EOI	kernel/Keyboard.cpp	8;"	d	file:
 PIC_H	kernel/pic.h	2;"	d
 PIMConverter	PIMConverter.java	/^public class PIMConverter {$/;"	c
 PIT_CHANNEL0	kernel/io.h	5;"	d
-PIT_CHANNEL0	kernel/kernel.cpp	28;"	d	file:
+PIT_CHANNEL0	kernel/kernel.cpp	35;"	d	file:
 PIT_CHANNEL0	kernel/wait_wrapper.cpp	3;"	d	file:
 PIT_COMMAND	kernel/io.h	6;"	d
-PIT_COMMAND	kernel/kernel.cpp	29;"	d	file:
+PIT_COMMAND	kernel/kernel.cpp	36;"	d	file:
 PIT_COMMAND	kernel/wait_wrapper.cpp	4;"	d	file:
 PIT_FREQUENCY	kernel/io.h	7;"	d
-PIT_FREQUENCY	kernel/kernel.cpp	30;"	d	file:
+PIT_FREQUENCY	kernel/kernel.cpp	37;"	d	file:
 PIT_FREQUENCY	kernel/wait_wrapper.cpp	5;"	d	file:
 Print	kernel/Debug.cpp	/^    void Print(const char* s) {$/;"	f	namespace:Debug
 PrintChar	kernel/Debug.cpp	/^    void PrintChar(char c) {$/;"	f	namespace:Debug
@@ -132,30 +135,28 @@ Ready	kernel/Debug.cpp	/^    static bool Ready() {$/;"	f	namespace:Debug
 Registers	kernel/idt.h	/^struct Registers {$/;"	s
 SCREEN_HEIGHT	kernel/Graphics.cpp	8;"	d	file:
 SCREEN_WIDTH	kernel/Graphics.cpp	7;"	d	file:
-SECTOR_SIZE	fatnenuphar.cpp	/^const uint32_t SECTOR_SIZE = 512;$/;"	v
 String	kernel/string.hpp	/^namespace String {$/;"	n
-TABLE_START	fatnenuphar.cpp	/^const uint32_t TABLE_START = 1;$/;"	v
 TOOLCHAIN	build.bat	/^set TOOLCHAIN=C:\\Users\\blasf\\Downloads\\i686-elf-tools-windows\\bin$/;"	v
 ThreadFunc	kernel/Graphics.h	/^typedef void (*ThreadFunc)(void*);$/;"	t
 Triangle	kernel/Graphics.h	/^} Triangle;$/;"	t	typeref:struct:__anon3
 VGA	kernel/Graphics.cpp	/^static uint8_t* const VGA = (uint8_t*)0xA0000;$/;"	v	file:
 VGA_ADDRESS	kernel/Console.cpp	7;"	d	file:
-VGA_COLOR_BLACK	kernel/kernel.cpp	33;"	d	file:
-VGA_COLOR_BLUE	kernel/kernel.cpp	34;"	d	file:
-VGA_COLOR_BROWN	kernel/kernel.cpp	39;"	d	file:
-VGA_COLOR_CYAN	kernel/kernel.cpp	36;"	d	file:
-VGA_COLOR_DARK_GREY	kernel/kernel.cpp	41;"	d	file:
-VGA_COLOR_GREEN	kernel/kernel.cpp	35;"	d	file:
-VGA_COLOR_LIGHT_BLUE	kernel/kernel.cpp	42;"	d	file:
-VGA_COLOR_LIGHT_CYAN	kernel/kernel.cpp	44;"	d	file:
-VGA_COLOR_LIGHT_GREEN	kernel/kernel.cpp	43;"	d	file:
-VGA_COLOR_LIGHT_GREY	kernel/kernel.cpp	40;"	d	file:
-VGA_COLOR_LIGHT_MAGENTA	kernel/kernel.cpp	46;"	d	file:
-VGA_COLOR_LIGHT_RED	kernel/kernel.cpp	45;"	d	file:
-VGA_COLOR_MAGENTA	kernel/kernel.cpp	38;"	d	file:
-VGA_COLOR_RED	kernel/kernel.cpp	37;"	d	file:
-VGA_COLOR_WHITE	kernel/kernel.cpp	48;"	d	file:
-VGA_COLOR_YELLOW	kernel/kernel.cpp	47;"	d	file:
+VGA_COLOR_BLACK	kernel/kernel.cpp	40;"	d	file:
+VGA_COLOR_BLUE	kernel/kernel.cpp	41;"	d	file:
+VGA_COLOR_BROWN	kernel/kernel.cpp	46;"	d	file:
+VGA_COLOR_CYAN	kernel/kernel.cpp	43;"	d	file:
+VGA_COLOR_DARK_GREY	kernel/kernel.cpp	48;"	d	file:
+VGA_COLOR_GREEN	kernel/kernel.cpp	42;"	d	file:
+VGA_COLOR_LIGHT_BLUE	kernel/kernel.cpp	49;"	d	file:
+VGA_COLOR_LIGHT_CYAN	kernel/kernel.cpp	51;"	d	file:
+VGA_COLOR_LIGHT_GREEN	kernel/kernel.cpp	50;"	d	file:
+VGA_COLOR_LIGHT_GREY	kernel/kernel.cpp	47;"	d	file:
+VGA_COLOR_LIGHT_MAGENTA	kernel/kernel.cpp	53;"	d	file:
+VGA_COLOR_LIGHT_RED	kernel/kernel.cpp	52;"	d	file:
+VGA_COLOR_MAGENTA	kernel/kernel.cpp	45;"	d	file:
+VGA_COLOR_RED	kernel/kernel.cpp	44;"	d	file:
+VGA_COLOR_WHITE	kernel/kernel.cpp	55;"	d	file:
+VGA_COLOR_YELLOW	kernel/kernel.cpp	54;"	d	file:
 VGA_HEIGHT	kernel/Console.h	/^    static const uint16_t VGA_HEIGHT = 25;$/;"	m	class:Console
 VGA_WIDTH	kernel/Console.h	/^    static const uint16_t VGA_WIDTH  = 80;$/;"	m	class:Console
 VGraphics	kernel/vgraphics.h	/^class VGraphics {$/;"	c
@@ -168,6 +169,9 @@ absf	kernel/Graphics.cpp	/^static float absf(float x) { return (x < 0) ? -x : x;
 absi	kernel/Graphics.cpp	/^static int absi(int x) { return (x < 0) ? -x : x; }$/;"	f	file:
 addr	kernel/multiboot.h	/^    uint32_t addr;$/;"	m	struct:multiboot_info_t
 address	kernel/vgraphics.h	/^	uint32_t* address;$/;"	m	struct:FBInfo
+alloc_block	kernel/ffext2/ext2.cpp	/^static u32 alloc_block(FS& fs, u32 preferred_group) {$/;"	f	namespace:ext2full
+alloc_inode	kernel/ffext2/ext2.cpp	/^static u32 alloc_inode(FS& fs, u32 preferred_group) {$/;"	f	namespace:ext2full
+allocate_block_for_inode	kernel/ffext2/ext2.cpp	/^static bool allocate_block_for_inode(FS& fs, Inode& in, u32 file_block_index, u32 preferred_group, u32& out_block) {$/;"	f	namespace:ext2full
 apm_table	kernel/multiboot.h	/^    uint32_t apm_table;$/;"	m	struct:multiboot_info_t
 b	kernel/Graphics.h	/^    uint8_t r, g, b;$/;"	m	struct:vga_color
 b	kernel/vgraphics.h	/^	uint8_t r, g, b, a;$/;"	m	struct:Color
@@ -176,10 +180,20 @@ bcd_to_bin	kernel/date.cpp	/^uint8_t bcd_to_bin(uint8_t val) {$/;"	f
 bcolor	kernel/Console.cpp	/^uint32_t Console::bcolor = 0x000000; \/\/ Color de fondo por defecto en modo gráfico$/;"	m	class:Console	file:
 bcolor	kernel/Console.h	/^    static uint32_t bcolor; \/\/ Color por defecto en modo gráfico$/;"	m	class:Console
 bgColor	kernel/Console.cpp	/^static Color bgColor = {0, 0, 0, 0};          \/\/ Negro por defecto$/;"	v	file:
+bitmap_clear	kernel/ffext2/ext2.cpp	/^static void bitmap_clear(u8* bm, u32 i) { bm[i>>3] &= ~(1u << (i&7)); }$/;"	f	namespace:ext2full
+bitmap_set	kernel/ffext2/ext2.cpp	/^static void bitmap_set(u8* bm, u32 i) { bm[i>>3] |= (1u << (i&7)); }$/;"	f	namespace:ext2full
+bitmap_test	kernel/ffext2/ext2.cpp	/^static bool bitmap_test(const u8* bm, u32 i) { return (bm[i>>3] >> (i&7)) & 1; }$/;"	f	namespace:ext2full
+block_bitmap	kernel/ffext2/ext2.hpp	/^    u8* block_bitmap;$/;"	m	struct:ext2full::FS
+block_bitmap_bytes	kernel/ffext2/ext2.hpp	/^    u32 block_bitmap_bytes;$/;"	m	struct:ext2full::FS
+block_size	kernel/ffext2/ext2.hpp	/^    u32 block_size;$/;"	m	struct:ext2full::FS
+block_size_512	kernel/ffext2/ext2.hpp	/^    u32 block_size_512;$/;"	m	struct:ext2full::BlockDevice
+blocks_count	kernel/ffext2/ext2.hpp	/^    u32 blocks_count;$/;"	m	struct:ext2full::FS
 boot_device	kernel/multiboot.h	/^    uint32_t boot_device;$/;"	m	struct:multiboot_info_t
 boot_loader_name	kernel/multiboot.h	/^    uint32_t boot_loader_name;$/;"	m	struct:multiboot_info_t
 bpp	kernel/vgraphics.h	/^	uint32_t bpp;$/;"	m	struct:FBInfo
 camera_matrix	kernel/Graphics.cpp	/^static float camera_matrix[4][4] = {{0}};$/;"	v	file:
+chmod_path	kernel/ffext2/ext2.cpp	/^bool chmod_path(FS& fs, const char* path, u16 mode) {$/;"	f	namespace:ext2full
+chown_path	kernel/ffext2/ext2.cpp	/^bool chown_path(FS& fs, const char* path, u16 uid, u16 gid) {$/;"	f	namespace:ext2full
 clearScreen	kernel/Console.cpp	/^void Console::clearScreen() {$/;"	f	class:Console
 clearScreen	kernel/vgraphics.cpp	/^void VGraphics::clearScreen() {$/;"	f	class:VGraphics
 cmdline	kernel/multiboot.h	/^    uint32_t cmdline;$/;"	m	struct:__anon4
@@ -189,11 +203,15 @@ color	kernel/Console.h	/^    static uint8_t   color;$/;"	m	class:Console
 color	kernel/Graphics.h	/^    uint8_t color;$/;"	m	struct:__anon3
 colorDistance	PIMConverter.java	/^    private static double colorDistance(Color c1, Color c2) {$/;"	m	class:PIMConverter	file:
 color_info	kernel/multiboot.h	/^    uint8_t color_info[6];$/;"	m	struct:multiboot_info_t
+compute_block_bitmap_bytes	kernel/ffext2/ext2.cpp	/^u32 compute_block_bitmap_bytes(u32 blocks_count) {$/;"	f	namespace:ext2full
+compute_gdt_bytes	kernel/ffext2/ext2.cpp	/^u32 compute_gdt_bytes(u32 groups_count) {$/;"	f	namespace:ext2full
+compute_inode_bitmap_bytes	kernel/ffext2/ext2.cpp	/^u32 compute_inode_bitmap_bytes(u32 inodes_count) {$/;"	f	namespace:ext2full
 concat	kernel/kernel.cpp	/^char* concat(const char* a, const char* b) {$/;"	f
 config_table	kernel/multiboot.h	/^    uint32_t config_table;$/;"	m	struct:multiboot_info_t
 convertPNGtoPIM	PIMConverter.java	/^    public static void convertPNGtoPIM(File pngFile, File pimFile) throws IOException {$/;"	m	class:PIMConverter
 cosf	kernel/Graphics.cpp	/^static float cosf(float x) {$/;"	f	file:
 cosf	kernel/kernel.cpp	/^static float cosf(float x) {$/;"	f	file:
+create_dir	kernel/ffext2/ext2.cpp	/^bool create_dir(FS& fs, const char* path) {$/;"	f	namespace:ext2full
 cs	kernel/idt.h	/^    uint32_t eip, cs, eflags, useresp, ss; \/\/ Automáticamente pusheados por el CPU$/;"	m	struct:Registers
 cube	kernel/kernel.cpp	/^static Triangle cube[12] = {$/;"	v	file:
 cursorPos	kernel/Console.cpp	/^uint16_t  Console::cursorPos    = 0;$/;"	m	class:Console	file:
@@ -203,6 +221,10 @@ cursorX	kernel/Console.h	/^    static uint32_t cursorX; \/\/ Posición del curso
 cursorY	kernel/Console.cpp	/^uint32_t Console::cursorY = 0;$/;"	m	class:Console	file:
 cursorY	kernel/Console.h	/^    static uint32_t cursorY; \/\/ Posición del cursor en Y (modo gráfico)$/;"	m	class:Console
 delay_ms	kernel/kernel.cpp	/^void delay_ms(uint32_t ms) {$/;"	f
+dev	kernel/ffext2/ext2.hpp	/^    BlockDevice dev;$/;"	m	struct:ext2full::FS
+dir_add_entry	kernel/ffext2/ext2.cpp	/^static bool dir_add_entry(FS& fs, u32 dir_inum, u32 child_inum, const char* name, u32 name_len, u8 file_type) {$/;"	f	namespace:ext2full
+dir_lookup_inode	kernel/ffext2/ext2.cpp	/^static u32 dir_lookup_inode(FS& fs, const Inode& dir, const char* name, u32 name_len) {$/;"	f	namespace:ext2full
+div_up	kernel/ffext2/ext2.cpp	/^static u32 div_up(u32 a, u32 b) { return (a + b - 1) \/ b; }$/;"	f	namespace:ext2full
 drawChar	kernel/vgraphics.cpp	/^void VGraphics::drawChar(uint32_t x, uint32_t y, char c, uint32_t color, uint32_t bg) {$/;"	f	class:VGraphics
 drawString	kernel/vgraphics.cpp	/^void VGraphics::drawString(uint32_t x, uint32_t y, const char* str, uint32_t fg) {$/;"	f	class:VGraphics
 draw_rotating_cube	kernel/kernel.cpp	/^void draw_rotating_cube() {$/;"	f
@@ -225,9 +247,18 @@ err_code	kernel/idt.h	/^    uint32_t int_no, err_code;   \/\/ Número de interru
 esi	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
 esp	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
 exception_handler	kernel/idt.cpp	/^static void exception_handler(Registers* regs) {$/;"	f	file:
+ext2_memcpy	kernel/ffext2/ext2.cpp	/^static inline void* ext2_memcpy(void* dst, const void* src, unsigned long n) {$/;"	f	file:
+ext2_memset	kernel/ffext2/ext2.cpp	/^static inline void* ext2_memset(void* dst, int c, unsigned long n) {$/;"	f	file:
+ext2_strcmp	kernel/ffext2/ext2.cpp	/^static inline int ext2_strcmp(const char* a, const char* b) {$/;"	f	file:
+ext2_strcpy	kernel/ffext2/ext2.cpp	/^static inline char* ext2_strcpy(char* dst, const char* src) {$/;"	f	file:
+ext2_strlen	kernel/ffext2/ext2.cpp	/^static inline unsigned long ext2_strlen(const char* s) {$/;"	f	file:
+ext2_strncmp	kernel/ffext2/ext2.cpp	/^static inline int ext2_strncmp(const char* a, const char* b, unsigned long n) {$/;"	f	file:
+ext2full	kernel/ffext2/ext2.cpp	/^namespace ext2full {$/;"	n	file:
+ext2full	kernel/ffext2/ext2.hpp	/^namespace ext2full {$/;"	n
 extern	boot.asm	/^extern kmain$/;"	l
 fb	kernel/vgraphics.cpp	/^FBInfo VGraphics::fb;$/;"	m	class:VGraphics	file:
 fb	kernel/vgraphics.h	/^	static FBInfo fb;$/;"	m	class:VGraphics
+fd	kernel/ffext2/host_blockdev.cpp	/^struct HostCtx { int fd; };$/;"	m	struct:HostCtx	file:
 fillRect	kernel/vgraphics.cpp	/^void VGraphics::fillRect(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t color) {$/;"	f	class:VGraphics
 fin	build.bat	/^:fin$/;"	l
 findClosestColor	PIMConverter.java	/^    private static char findClosestColor(Color color) {$/;"	m	class:PIMConverter	file:
@@ -247,6 +278,7 @@ g_320x200x256	kernel/Graphics.cpp	/^static uint8_t g_320x200x256[] = {$/;"	v	fil
 g_cycles_per_ms	kernel/kernel.cpp	/^uint64_t g_cycles_per_ms = 0; \/\/ Ciclos de la CPU$/;"	v
 gcolor	kernel/Console.cpp	/^uint32_t Console::gcolor = 0xFFFFFF; \/\/ Color por defecto en modo gráfico$/;"	m	class:Console	file:
 gcolor	kernel/Console.h	/^    static uint32_t gcolor; \/\/ Color por defecto en modo gráfico$/;"	m	class:Console
+gdt	kernel/ffext2/ext2.hpp	/^    GroupDesc* gdt;$/;"	m	struct:ext2full::FS
 getDay	kernel/date.cpp	/^uint8_t getDay() {$/;"	f
 getFBInfo	kernel/vgraphics.h	/^    static FBInfo getFBInfo() {$/;"	f	class:VGraphics
 getHeight	kernel/vgraphics.h	/^    static uint32_t getHeight() {$/;"	f	class:VGraphics
@@ -285,12 +317,15 @@ global	kernel/io.asm	/^global outb$/;"	l
 global	threads.asm	/^global thread_switch_asm$/;"	l
 graphics	kernel/Console.cpp	/^bool Console::graphics = false;$/;"	m	class:Console	file:
 graphics	kernel/Console.h	/^    static bool graphics;$/;"	m	class:Console
+groups_count	kernel/ffext2/ext2.hpp	/^    u32 groups_count;$/;"	m	struct:ext2full::FS
 handlers	kernel/idt.cpp	/^static ISRHandler handlers[256];$/;"	v	file:
 head	kernel/Keyboard.cpp	/^static volatile int head = 0, tail = 0;$/;"	v	file:
 header_end	boot.asm	/^header_end:$/;"	l
 header_start	boot.asm	/^header_start:$/;"	l
 height	kernel/vgraphics.h	/^	uint32_t height;$/;"	m	struct:FBInfo
 hex_to_dec	kernel/math.cpp	/^uint32_t hex_to_dec(const char* hex) {$/;"	f
+host_read	kernel/ffext2/host_blockdev.cpp	/^static bool host_read(void* user, u32 lba, u32 count, void* buf) {$/;"	f	file:
+host_write	kernel/ffext2/host_blockdev.cpp	/^static bool host_write(void* user, u32 lba, u32 count, const void* buf) {$/;"	f	file:
 idt	kernel/idt.cpp	/^static IDTEntry idt[256];$/;"	v	file:
 idt_init	kernel/idt.cpp	/^extern "C" void idt_init() {$/;"	f
 idt_ptr	kernel/idt.cpp	/^static IDTPtr idt_ptr;$/;"	v	file:
@@ -303,6 +338,10 @@ inb	kernel/pic.cpp	/^static inline uint8_t inb(uint16_t port) {$/;"	f	file:
 init	kernel/vgraphics.cpp	/^void VGraphics::init(uint32_t width, uint32_t height, uint32_t pitch, uint32_t bpp, uintptr_t addr) {$/;"	f	class:VGraphics
 init_pic	kernel/kernel.cpp	/^void init_pic() {$/;"	f
 initialize_exception_handlers	kernel/idt.cpp	/^void initialize_exception_handlers() {$/;"	f
+inode_bitmap	kernel/ffext2/ext2.hpp	/^    u8* inode_bitmap;$/;"	m	struct:ext2full::FS
+inode_bitmap_bytes	kernel/ffext2/ext2.hpp	/^    u32 inode_bitmap_bytes;$/;"	m	struct:ext2full::FS
+inode_size	kernel/ffext2/ext2.hpp	/^    u32 inode_size;$/;"	m	struct:ext2full::FS
+inodes_count	kernel/ffext2/ext2.hpp	/^    u32 inodes_count;$/;"	m	struct:ext2full::FS
 insw	kernel/io.cpp	/^void insw(uint16_t port, void* addr, int count) {$/;"	f
 int_no	kernel/idt.h	/^    uint32_t int_no, err_code;   \/\/ Número de interrupción y código de error$/;"	m	struct:Registers
 int_to_str	kernel/kernel.cpp	/^char* int_to_str(int value) {$/;"	f
@@ -325,30 +364,34 @@ lineBuffer	kernel/Console.cpp	/^char      Console::lineBuffer[] = {0};$/;"	m	cla
 lineBuffer	kernel/Console.h	/^    static char      lineBuffer[MAXLEN];$/;"	m	class:Console
 linebuf	kernel/kernel.cpp	/^static char linebuf[256]; \/\/ Algo para la consola$/;"	v	file:
 main	PIMConverter.java	/^    public static void main(String[] args) {$/;"	m	class:PIMConverter
-main	fatnenuphar.cpp	/^int main(int argc, char** argv) {$/;"	f
 main	files/hello.c	/^int main() {$/;"	f
+main	kernel/ffext2/host_blockdev.cpp	/^int main(int argc, char** argv) {$/;"	f
+make_symlink	kernel/ffext2/ext2.cpp	/^bool make_symlink(FS& fs, const char* target, const char* linkpath) {$/;"	f	namespace:ext2full
 mbi	kernel/kernel.cpp	/^multiboot_info_t* mbi; \/\/ var global Mulitboot Info$/;"	v
 measure_cpu_frequency	kernel/kernel.cpp	/^uint32_t measure_cpu_frequency() {$/;"	f
 mem_lower	kernel/multiboot.h	/^    uint32_t mem_lower;$/;"	m	struct:multiboot_info_t
 mem_upper	kernel/multiboot.h	/^    uint32_t mem_upper;$/;"	m	struct:multiboot_info_t
 memcmp	kernel/string.hpp	/^    static inline int memcmp(const void* s1, const void* s2, size_t n) {$/;"	f	namespace:String
+memcpy	kernel/ffext2/ext2.cpp	40;"	d	file:
 memcpy	kernel/string.cpp	/^void* memcpy(void* dest, const void* src, size_t n) {$/;"	f
 memcpy	kernel/string.hpp	/^    static inline void* memcpy(void* dest, const void* src, size_t n) {$/;"	f	namespace:String
 memmove	kernel/string.cpp	/^void* memmove(void* dst, const void* src, size_t n) {$/;"	f
 memory_pool	kernel/memory.cpp	/^static char memory_pool[1024 * 1024]; \/\/ 1MB pool$/;"	v	file:
 memory_region_is_safe	kernel/kernel.cpp	/^bool memory_region_is_safe(uint32_t addr, uint32_t size) {$/;"	f
+memset	kernel/ffext2/ext2.cpp	41;"	d	file:
 memset	kernel/string.cpp	/^void* memset(void* s, int c, size_t n) {$/;"	f
+min_u32	kernel/ffext2/ext2.cpp	/^static u32 min_u32(u32 a, u32 b) { return (a < b) ? a : b; }$/;"	f	namespace:ext2full
+mkfs_on_device	kernel/ffext2/ext2.cpp	/^bool mkfs_on_device(const BlockDevice& dev, u32 part_lba_start, u32 block_size, u32 groups_count, u32 inodes_per_group,$/;"	f	namespace:ext2full
 mmap_addr	kernel/multiboot.h	/^    uint32_t mmap_addr;$/;"	m	struct:multiboot_info_t
 mmap_length	kernel/multiboot.h	/^    uint32_t mmap_length;$/;"	m	struct:multiboot_info_t
 mod_end	kernel/multiboot.h	/^    uint32_t mod_end;$/;"	m	struct:__anon4
 mod_start	kernel/multiboot.h	/^    uint32_t mod_start;$/;"	m	struct:__anon4
 mods_addr	kernel/multiboot.h	/^    uint32_t mods_addr;$/;"	m	struct:multiboot_info_t
 mods_count	kernel/multiboot.h	/^    uint32_t mods_count;$/;"	m	struct:multiboot_info_t
+mount	kernel/ffext2/ext2.cpp	/^bool mount(FS& fs, const BlockDevice& dev, u32 part_lba_start,$/;"	f	namespace:ext2full
 multiboot_info_t	kernel/multiboot.h	/^struct multiboot_info_t {$/;"	s
 multiboot_module_t	kernel/multiboot.h	/^} multiboot_module_t;$/;"	t	typeref:struct:__anon4
-name	fatnenuphar.cpp	/^    char     name[16];     \/\/ Nombre del archivo (sin carpetas)$/;"	m	struct:FileEntry	file:
 num	kernel/multiboot.h	/^    uint32_t num;$/;"	m	struct:multiboot_info_t
-offset	fatnenuphar.cpp	/^    uint32_t offset;       \/\/ Sector donde empieza$/;"	m	struct:FileEntry	file:
 offset_high	kernel/idt.h	/^    uint16_t offset_high;   \/\/ bits 16-31 del offset$/;"	m	struct:IDTEntry
 offset_low	kernel/idt.h	/^    uint16_t offset_low;    \/\/ bits 0-15 del offset$/;"	m	struct:IDTEntry
 operator new	kernel/memory.cpp	/^void* operator new(size_t size) {$/;"	f
@@ -361,6 +404,7 @@ outb	kernel/pic.cpp	/^static inline void outb(uint16_t port, uint8_t val) {$/;"	
 outw	kernel/io.cpp	/^void outw(uint16_t port, uint16_t val) {$/;"	f
 pad	kernel/multiboot.h	/^    uint32_t pad;$/;"	m	struct:__anon4
 parrot	kernel/parrot.cpp	/^const char* parrot[] = {$/;"	v
+part_lba_start	kernel/ffext2/ext2.hpp	/^    u32 part_lba_start;$/;"	m	struct:ext2full::FS
 pit_init	kernel/kernel.cpp	/^void pit_init(uint32_t frequency) {$/;"	f
 pit_set_frequency	kernel/kernel.cpp	/^void pit_set_frequency(uint32_t freq) {$/;"	f
 pit_wait_ticks	kernel/kernel.cpp	/^void pit_wait_ticks(uint32_t ticks) {$/;"	f
@@ -380,17 +424,30 @@ rand_seed	kernel/kernel.cpp	/^static uint32_t rand_seed = 1;$/;"	v	file:
 rdtsc	kernel/kernel.cpp	/^uint64_t rdtsc() {$/;"	f
 readLine	kernel/Console.cpp	/^char* Console::readLine(char* buffer, int maxLength) {$/;"	f	class:Console
 readText	kernel/Console.cpp	/^char* Console::readText(int x, int y, int maxLen, uint32_t color) {$/;"	f	class:Console
+read_block	kernel/ffext2/ext2.cpp	/^static bool read_block(const FS& fs, u32 block_idx, void* out) {$/;"	f	namespace:ext2full
+read_blocks	kernel/ffext2/ext2.hpp	/^    bool (*read_blocks)(void* user, u32 lba, u32 count, void* buf);$/;"	m	struct:ext2full::BlockDevice
+read_bytes	kernel/ffext2/ext2.cpp	/^static bool read_bytes(const FS& fs, u32 byte_off, void* out, u32 n) {$/;"	f	namespace:ext2full
 read_cmos	kernel/date.cpp	/^uint8_t read_cmos(uint8_t reg) {$/;"	f
+read_file	kernel/ffext2/ext2.cpp	/^bool read_file(FS& fs, const char* path, void* buf, u32 buf_size, u32* out_read) {$/;"	f	namespace:ext2full
 read_file_from_meta	kernel/kernel.cpp	/^const char* read_file_from_meta(char* name) {$/;"	f
+read_inode	kernel/ffext2/ext2.cpp	/^static bool read_inode(const FS& fs, u32 inum, Inode& out) {$/;"	f	namespace:ext2full
 read_large_memory_string	kernel/kernel.cpp	/^const char* read_large_memory_string(uint32_t start_addr, size_t max_bytes) {$/;"	f
 read_string_from_memory	kernel/kernel.cpp	/^const char* read_string_from_memory(uint32_t start_addr, size_t max_len = 1024) {$/;"	f
+read_symlink	kernel/ffext2/ext2.cpp	/^bool read_symlink(FS& fs, const char* linkpath, void* buf, u32 buf_size, u32* out_read) {$/;"	f	namespace:ext2full
 register_interrupt_handler	kernel/idt.cpp	/^void register_interrupt_handler(uint8_t n, ISRHandler handler) {$/;"	f
 remap_pic	kernel/pic.cpp	/^void remap_pic() {$/;"	f
+remove_dir	kernel/ffext2/ext2.cpp	/^bool remove_dir(FS& fs, const char* path) {$/;"	f	namespace:ext2full
+remove_file	kernel/ffext2/ext2.cpp	/^bool remove_file(FS& fs, const char* path) {$/;"	f	namespace:ext2full
+rename_path	kernel/ffext2/ext2.cpp	/^bool rename_path(FS& fs, const char* oldpath, const char* newpath) {$/;"	f	namespace:ext2full
+resolve_block_ptr	kernel/ffext2/ext2.cpp	/^static bool resolve_block_ptr(const FS& fs, const Inode& in, u32 file_block_index, u32& out_block) {$/;"	f	namespace:ext2full
+resolve_path	kernel/ffext2/ext2.cpp	/^static u32 resolve_path(FS& fs, const char* path, u32* parent_out, char* name_out, u32* name_len_out) {$/;"	f	namespace:ext2full
 rotate_vertex	kernel/kernel.cpp	/^static void rotate_vertex(Vec3* vertex, float angle_x, float angle_y, float angle_z) {$/;"	f	file:
 rotation_x	kernel/kernel.cpp	/^static float rotation_x = 0.0f;$/;"	v	file:
 rotation_y	kernel/kernel.cpp	/^static float rotation_y = 0.0f;$/;"	v	file:
 rotation_z	kernel/kernel.cpp	/^static float rotation_z = 0.0f;$/;"	v	file:
 runcommand	kernel/kernel.cpp	/^void runcommand(char* s, bool auth) {	$/;"	f
+s32	kernel/ffext2/ext2.hpp	/^typedef int32_t  s32;$/;"	t	namespace:ext2full
+sb	kernel/ffext2/ext2.hpp	/^    Superblock sb;$/;"	m	struct:ext2full::FS
 scancodeMap	kernel/Keyboard.cpp	/^static const char scancodeMap[128] = {$/;"	v	file:
 scancodeMapShift	kernel/Keyboard.cpp	/^static const char scancodeMapShift[128] = {$/;"	v	file:
 scancodeToAscii	kernel/Console.cpp	/^char scancodeToAscii(uint8_t sc, bool shift) {$/;"	f
@@ -414,7 +471,6 @@ shndx	kernel/multiboot.h	/^    uint32_t shndx;$/;"	m	struct:multiboot_info_t
 shownModulesExplanation	kernel/kernel.cpp	/^bool shownModulesExplanation = false; \/\/ Flag para saber si se explico los modulos de GRUB en la sesion actual$/;"	v
 sinf	kernel/Graphics.cpp	/^static float sinf(float x) {$/;"	f	file:
 sinf	kernel/kernel.cpp	/^static float sinf(float x) {$/;"	f	file:
-size	fatnenuphar.cpp	/^    uint32_t size;         \/\/ Tamaño en bytes$/;"	m	struct:FileEntry	file:
 size	kernel/multiboot.h	/^    uint32_t size;$/;"	m	struct:multiboot_info_t
 srand_lcg	kernel/kernel.cpp	/^void srand_lcg(uint32_t seed) {$/;"	f
 ss	kernel/idt.h	/^    uint32_t eip, cs, eflags, useresp, ss; \/\/ Automáticamente pusheados por el CPU$/;"	m	struct:Registers
@@ -422,9 +478,13 @@ stack_bottom	boot.asm	/^stack_bottom:$/;"	l
 stack_top	boot.asm	/^stack_top:$/;"	l
 stoi	kernel/kernel.cpp	/^int stoi(const char* str) {$/;"	f
 strchr	kernel/string.cpp	/^char* strchr(const char* s, int c) {$/;"	f
+strcmp	kernel/ffext2/ext2.cpp	43;"	d	file:
 strcmp	kernel/kernel.cpp	/^int strcmp(const char* a, const char* b) {$/;"	f
+strcpy	kernel/ffext2/ext2.cpp	45;"	d	file:
+strlen	kernel/ffext2/ext2.cpp	42;"	d	file:
 strlen	kernel/string.cpp	/^size_t strlen(const char* s) {$/;"	f
 strlen	kernel/string.hpp	/^    static size_t strlen(const char* str) {$/;"	f	namespace:String
+strncmp	kernel/ffext2/ext2.cpp	44;"	d	file:
 strncmp	kernel/string.cpp	/^int strncmp(const char* s1, const char* s2, size_t n) {$/;"	f
 strncpy	kernel/string.cpp	/^void strncpy(char* dest, const char* src, int maxLen) {$/;"	f
 strrchr	kernel/string.cpp	/^char* strrchr(const char* s, int c) {$/;"	f
@@ -435,9 +495,19 @@ textBuffer	kernel/Console.cpp	/^static char textBuffer[FB_HEIGHT][FB_WIDTH];$/;"
 textColor	kernel/Console.cpp	/^static Color textColor = {255, 255, 255, 0};  \/\/ Blanco por defecto$/;"	v	file:
 thread_switch_asm	threads.asm	/^thread_switch_asm:$/;"	l
 transform_point	kernel/Graphics.cpp	/^static Vec3 transform_point(const Vec3& point) {$/;"	f	file:
-trimName	fatnenuphar.cpp	/^void trimName(const std::string& path, char* out) {$/;"	f
+truncate_path	kernel/ffext2/ext2.cpp	/^bool truncate_path(FS& fs, const char* path, u32 new_size) {$/;"	f	namespace:ext2full
 type_attr	kernel/idt.h	/^    uint8_t type_attr;      \/\/ atributos (P, DPL, tipo)$/;"	m	struct:IDTEntry
+u16	kernel/ffext2/ext2.hpp	/^typedef uint16_t u16;$/;"	t	namespace:ext2full
+u16	kernel/kernel.cpp	/^typedef uint16 u16;$/;"	t	file:
+u32	kernel/ffext2/ext2.hpp	/^typedef uint32_t u32;$/;"	t	namespace:ext2full
+u32	kernel/kernel.cpp	/^typedef uint32 u32;$/;"	t	file:
+u64	kernel/ffext2/ext2.hpp	/^typedef uint64_t u64;$/;"	t	namespace:ext2full
+u64	kernel/kernel.cpp	/^typedef uint64 u64;$/;"	t	file:
+u8	kernel/ffext2/ext2.hpp	/^typedef uint8_t  u8;$/;"	t	namespace:ext2full
+u8	kernel/kernel.cpp	/^typedef uint8 u8;$/;"	t	file:
 updateCursor	kernel/Console.cpp	/^void Console::updateCursor() {$/;"	f	class:Console
+usage	kernel/ffext2/host_blockdev.cpp	/^static void usage(const char* prog) {$/;"	f	file:
+user	kernel/ffext2/ext2.hpp	/^    void* user;$/;"	m	struct:ext2full::BlockDevice
 useresp	kernel/idt.h	/^    uint32_t eip, cs, eflags, useresp, ss; \/\/ Automáticamente pusheados por el CPU$/;"	m	struct:Registers
 v0	kernel/Graphics.h	/^    Vec3 v0, v1, v2;$/;"	m	struct:__anon3
 v1	kernel/Graphics.h	/^    Vec3 v0, v1, v2;$/;"	m	struct:__anon3
@@ -463,6 +533,8 @@ wait_ms	kernel/kernel.cpp	/^void wait_ms(uint32_t ms) {$/;"	f
 wait_ms	kernel/wait_wrapper.cpp	/^    void wait_ms(uint32_t ms) {$/;"	f
 was_c_pressed	kernel/kernel.cpp	/^bool was_c_pressed() {$/;"	f
 width	kernel/vgraphics.h	/^	uint32_t width;$/;"	m	struct:FBInfo
+work_buf	kernel/ffext2/ext2.hpp	/^    void* work_buf;$/;"	m	struct:ext2full::FS
+work_buf_bytes	kernel/ffext2/ext2.hpp	/^    u32 work_buf_bytes;$/;"	m	struct:ext2full::FS
 write	kernel/Console.cpp	/^void Console::write(bool value) {$/;"	f	class:Console
 write	kernel/Console.cpp	/^void Console::write(char c) {$/;"	f	class:Console
 write	kernel/Console.cpp	/^void Console::write(const char* str) {$/;"	f	class:Console
@@ -473,6 +545,11 @@ write	kernel/Console.cpp	/^void Console::write(int value) {$/;"	f	class:Console
 write	kernel/Console.cpp	/^void Console::write(uint8_t value) {$/;"	f	class:Console
 write	kernel/Console.cpp	/^void Console::write(unsigned long long value) {$/;"	f	class:Console
 write	kernel/Console.h	/^    static void write(float value) { write((double)value); }  \/\/ opcional$/;"	f	class:Console
+write_block	kernel/ffext2/ext2.cpp	/^static bool write_block(const FS& fs, u32 block_idx, const void* in) {$/;"	f	namespace:ext2full
+write_blocks	kernel/ffext2/ext2.hpp	/^    bool (*write_blocks)(void* user, u32 lba, u32 count, const void* buf);$/;"	m	struct:ext2full::BlockDevice
+write_bytes	kernel/ffext2/ext2.cpp	/^static bool write_bytes(const FS& fs, u32 byte_off, const void* in, u32 n) {$/;"	f	namespace:ext2full
+write_file	kernel/ffext2/ext2.cpp	/^bool write_file(FS& fs, const char* path, const void* data, u32 size) {$/;"	f	namespace:ext2full
+write_inode	kernel/ffext2/ext2.cpp	/^static bool write_inode(const FS& fs, u32 inum, const Inode& in) {$/;"	f	namespace:ext2full
 write_registers	kernel/Graphics.cpp	/^void write_registers(uint8_t* regs) {$/;"	f
 x	kernel/Graphics.h	/^    float x, y, z;$/;"	m	struct:__anon2
 y	kernel/Graphics.h	/^    float x, y, z;$/;"	m	struct:__anon2

@@ -108,4 +108,7 @@ clean:
 
 disk:
 	qemu-img create -f qcow2 disk1gb.qcow2 1G
-	
+
+ext2-tool:
+	gcc -O2 -std=c11 kernel/ffext2/host_blockdev.cpp kernel/ffext2/ext2.cpp -o host_blockdev
+
