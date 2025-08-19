@@ -20,6 +20,17 @@
 #include "Debug.h" // Debugging functions
 #include "date.h"
 
+// Typedef for C++ look like Rust
+typedef uint8_t u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
+
+typedef int8_t i8;
+typedef int16_t i16;
+typedef int32_t i32;
+typedef int64_t i64;
+
 // Algo del filesystem
 #define DISK_SIZE_BYTES (128 * 1024)
 #define MAX_FILE_SIZE   2048
