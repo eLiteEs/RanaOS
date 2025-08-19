@@ -95,7 +95,7 @@ iso: $(KERNEL_ELF)
 
 # Ejecutar en QEMU
 run:
-	$(QEMU) -cdrom $(ISO_IMG) -m 512M -vga std -serial stdio -hda disk1gb.qcow2 -boot d
+	$(QEMU) -cdrom $(ISO_IMG) -m 512M -vga std -serial stdio -boot d
 
 krun:
 	$(QEMU) -kernel $(KERNEL_ELF) -m 512M -vga std -serial stdio -hda disk1gb.qcow2 -boot d
