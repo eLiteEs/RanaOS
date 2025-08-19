@@ -46,6 +46,9 @@ public:
 
     static uint32_t cursorX; // Posición del cursor en X (modo gráfico)
     static uint32_t cursorY; // Posición del cursor en Y (modo gráfico)
+
+    static void itoa(int value, char* str, int base);
+
 private:
     static const uint16_t VGA_WIDTH  = 80;
     static const uint16_t VGA_HEIGHT = 25;
@@ -58,8 +61,6 @@ private:
 
     static void updateCursor();
     static void scroll();
-
-    static void itoa(int value, char* str, int base);
 
     static bool graphics;
 

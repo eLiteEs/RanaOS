@@ -44,7 +44,7 @@ Color	kernel/vgraphics.h	/^struct Color {$/;"	s
 Console	kernel/Console.h	/^class Console {$/;"	c
 DATE_H	kernel/date.h	2;"	d
 DEG_TO_RAD	kernel/Graphics.h	29;"	d
-DISK_SIZE_BYTES	kernel/kernel.cpp	31;"	d	file:
+DISK_SIZE_BYTES	kernel/kernel.cpp	35;"	d	file:
 Debug	kernel/Debug.cpp	/^namespace Debug {$/;"	n	file:
 Debug	kernel/Debug.h	/^namespace Debug {$/;"	n
 EXT2_FULL_HPP	kernel/ffext2/ext2.hpp	3;"	d
@@ -67,29 +67,29 @@ KERNEL_ELF	Makefile	/^KERNEL_ELF := kernel.elf$/;"	m
 KEYBOARD_H	kernel/Keyboard.h	4;"	d
 KEY_BACKSPACE	kernel/Console.cpp	290;"	d	file:
 KEY_BACKSPACE	kernel/Keyboard.cpp	99;"	d	file:
-KEY_BACKSPACE	kernel/kernel.cpp	343;"	d	file:
+KEY_BACKSPACE	kernel/kernel.cpp	347;"	d	file:
 KEY_DOWN	kernel/Console.cpp	289;"	d	file:
 KEY_DOWN	kernel/Keyboard.cpp	98;"	d	file:
-KEY_DOWN	kernel/kernel.cpp	342;"	d	file:
+KEY_DOWN	kernel/kernel.cpp	346;"	d	file:
 KEY_ENTER	kernel/Console.cpp	291;"	d	file:
 KEY_ENTER	kernel/Keyboard.cpp	100;"	d	file:
-KEY_ENTER	kernel/kernel.cpp	344;"	d	file:
+KEY_ENTER	kernel/kernel.cpp	348;"	d	file:
 KEY_LEFT	kernel/Console.cpp	286;"	d	file:
 KEY_LEFT	kernel/Keyboard.cpp	95;"	d	file:
-KEY_LEFT	kernel/kernel.cpp	339;"	d	file:
+KEY_LEFT	kernel/kernel.cpp	343;"	d	file:
 KEY_RIGHT	kernel/Console.cpp	287;"	d	file:
 KEY_RIGHT	kernel/Keyboard.cpp	96;"	d	file:
-KEY_RIGHT	kernel/kernel.cpp	340;"	d	file:
+KEY_RIGHT	kernel/kernel.cpp	344;"	d	file:
 KEY_UP	kernel/Console.cpp	288;"	d	file:
 KEY_UP	kernel/Keyboard.cpp	97;"	d	file:
-KEY_UP	kernel/kernel.cpp	341;"	d	file:
+KEY_UP	kernel/kernel.cpp	345;"	d	file:
 LD	Makefile	/^LD        := ld$/;"	m
 LD	build.bat	/^set LD="%TOOLCHAIN%\\i686-elf-ld"$/;"	v
 LDFLAGS	Makefile	/^LDFLAGS := -m elf_i386 -nostdlib -L$(shell dirname $$(gcc -m32 -print-libgcc-file-name))$/;"	m
 LDFLAGS	build.bat	/^set LDFLAGS=-m elf_i386$/;"	v
 LDSCRIPT	Makefile	/^LDSCRIPT := kernel\/linker.ld$/;"	m
 MAXLEN	kernel/Console.h	/^    static const int MAXLEN = 256;$/;"	m	class:Console
-MAX_FILE_SIZE	kernel/kernel.cpp	32;"	d	file:
+MAX_FILE_SIZE	kernel/kernel.cpp	36;"	d	file:
 MODULES	Makefile	/^MODULES = files\/text.txt files\/bg.pim files\/tux.pim$/;"	m
 MODULES_DIR	Makefile	/^MODULES_DIR  := $(ISO_DIR)\/files$/;"	m
 MULTIBOOT_H	kernel/multiboot.h	2;"	d
@@ -115,13 +115,13 @@ PIC_EOI	kernel/Keyboard.cpp	8;"	d	file:
 PIC_H	kernel/pic.h	2;"	d
 PIMConverter	PIMConverter.java	/^public class PIMConverter {$/;"	c
 PIT_CHANNEL0	kernel/io.h	5;"	d
-PIT_CHANNEL0	kernel/kernel.cpp	35;"	d	file:
+PIT_CHANNEL0	kernel/kernel.cpp	39;"	d	file:
 PIT_CHANNEL0	kernel/wait_wrapper.cpp	3;"	d	file:
 PIT_COMMAND	kernel/io.h	6;"	d
-PIT_COMMAND	kernel/kernel.cpp	36;"	d	file:
+PIT_COMMAND	kernel/kernel.cpp	40;"	d	file:
 PIT_COMMAND	kernel/wait_wrapper.cpp	4;"	d	file:
 PIT_FREQUENCY	kernel/io.h	7;"	d
-PIT_FREQUENCY	kernel/kernel.cpp	37;"	d	file:
+PIT_FREQUENCY	kernel/kernel.cpp	41;"	d	file:
 PIT_FREQUENCY	kernel/wait_wrapper.cpp	5;"	d	file:
 Print	kernel/Debug.cpp	/^    void Print(const char* s) {$/;"	f	namespace:Debug
 PrintChar	kernel/Debug.cpp	/^    void PrintChar(char c) {$/;"	f	namespace:Debug
@@ -141,22 +141,22 @@ ThreadFunc	kernel/Graphics.h	/^typedef void (*ThreadFunc)(void*);$/;"	t
 Triangle	kernel/Graphics.h	/^} Triangle;$/;"	t	typeref:struct:__anon3
 VGA	kernel/Graphics.cpp	/^static uint8_t* const VGA = (uint8_t*)0xA0000;$/;"	v	file:
 VGA_ADDRESS	kernel/Console.cpp	7;"	d	file:
-VGA_COLOR_BLACK	kernel/kernel.cpp	40;"	d	file:
-VGA_COLOR_BLUE	kernel/kernel.cpp	41;"	d	file:
-VGA_COLOR_BROWN	kernel/kernel.cpp	46;"	d	file:
-VGA_COLOR_CYAN	kernel/kernel.cpp	43;"	d	file:
-VGA_COLOR_DARK_GREY	kernel/kernel.cpp	48;"	d	file:
-VGA_COLOR_GREEN	kernel/kernel.cpp	42;"	d	file:
-VGA_COLOR_LIGHT_BLUE	kernel/kernel.cpp	49;"	d	file:
-VGA_COLOR_LIGHT_CYAN	kernel/kernel.cpp	51;"	d	file:
-VGA_COLOR_LIGHT_GREEN	kernel/kernel.cpp	50;"	d	file:
-VGA_COLOR_LIGHT_GREY	kernel/kernel.cpp	47;"	d	file:
-VGA_COLOR_LIGHT_MAGENTA	kernel/kernel.cpp	53;"	d	file:
-VGA_COLOR_LIGHT_RED	kernel/kernel.cpp	52;"	d	file:
-VGA_COLOR_MAGENTA	kernel/kernel.cpp	45;"	d	file:
-VGA_COLOR_RED	kernel/kernel.cpp	44;"	d	file:
-VGA_COLOR_WHITE	kernel/kernel.cpp	55;"	d	file:
-VGA_COLOR_YELLOW	kernel/kernel.cpp	54;"	d	file:
+VGA_COLOR_BLACK	kernel/kernel.cpp	44;"	d	file:
+VGA_COLOR_BLUE	kernel/kernel.cpp	45;"	d	file:
+VGA_COLOR_BROWN	kernel/kernel.cpp	50;"	d	file:
+VGA_COLOR_CYAN	kernel/kernel.cpp	47;"	d	file:
+VGA_COLOR_DARK_GREY	kernel/kernel.cpp	52;"	d	file:
+VGA_COLOR_GREEN	kernel/kernel.cpp	46;"	d	file:
+VGA_COLOR_LIGHT_BLUE	kernel/kernel.cpp	53;"	d	file:
+VGA_COLOR_LIGHT_CYAN	kernel/kernel.cpp	55;"	d	file:
+VGA_COLOR_LIGHT_GREEN	kernel/kernel.cpp	54;"	d	file:
+VGA_COLOR_LIGHT_GREY	kernel/kernel.cpp	51;"	d	file:
+VGA_COLOR_LIGHT_MAGENTA	kernel/kernel.cpp	57;"	d	file:
+VGA_COLOR_LIGHT_RED	kernel/kernel.cpp	56;"	d	file:
+VGA_COLOR_MAGENTA	kernel/kernel.cpp	49;"	d	file:
+VGA_COLOR_RED	kernel/kernel.cpp	48;"	d	file:
+VGA_COLOR_WHITE	kernel/kernel.cpp	59;"	d	file:
+VGA_COLOR_YELLOW	kernel/kernel.cpp	58;"	d	file:
 VGA_HEIGHT	kernel/Console.h	/^    static const uint16_t VGA_HEIGHT = 25;$/;"	m	class:Console
 VGA_WIDTH	kernel/Console.h	/^    static const uint16_t VGA_WIDTH  = 80;$/;"	m	class:Console
 VGraphics	kernel/vgraphics.h	/^class VGraphics {$/;"	c
@@ -226,7 +226,7 @@ dir_add_entry	kernel/ffext2/ext2.cpp	/^static bool dir_add_entry(FS& fs, u32 dir
 dir_lookup_inode	kernel/ffext2/ext2.cpp	/^static u32 dir_lookup_inode(FS& fs, const Inode& dir, const char* name, u32 name_len) {$/;"	f	namespace:ext2full
 div_up	kernel/ffext2/ext2.cpp	/^static u32 div_up(u32 a, u32 b) { return (a + b - 1) \/ b; }$/;"	f	namespace:ext2full
 drawChar	kernel/vgraphics.cpp	/^void VGraphics::drawChar(uint32_t x, uint32_t y, char c, uint32_t color, uint32_t bg) {$/;"	f	class:VGraphics
-drawString	kernel/vgraphics.cpp	/^void VGraphics::drawString(uint32_t x, uint32_t y, const char* str, uint32_t fg) {$/;"	f	class:VGraphics
+drawString	kernel/vgraphics.cpp	/^void VGraphics::drawString(uint32_t x, uint32_t y, const char* str, uint32_t fg, uint32_t bg) {$/;"	f	class:VGraphics
 draw_rotating_cube	kernel/kernel.cpp	/^void draw_rotating_cube() {$/;"	f
 drives_addr	kernel/multiboot.h	/^    uint32_t drives_addr;$/;"	m	struct:multiboot_info_t
 drives_length	kernel/multiboot.h	/^    uint32_t drives_length;$/;"	m	struct:multiboot_info_t
@@ -326,6 +326,10 @@ height	kernel/vgraphics.h	/^	uint32_t height;$/;"	m	struct:FBInfo
 hex_to_dec	kernel/math.cpp	/^uint32_t hex_to_dec(const char* hex) {$/;"	f
 host_read	kernel/ffext2/host_blockdev.cpp	/^static bool host_read(void* user, u32 lba, u32 count, void* buf) {$/;"	f	file:
 host_write	kernel/ffext2/host_blockdev.cpp	/^static bool host_write(void* user, u32 lba, u32 count, const void* buf) {$/;"	f	file:
+i16	kernel/kernel.cpp	/^typedef int16_t i16;$/;"	t	file:
+i32	kernel/kernel.cpp	/^typedef int32_t i32;$/;"	t	file:
+i64	kernel/kernel.cpp	/^typedef int64_t i64;$/;"	t	file:
+i8	kernel/kernel.cpp	/^typedef int8_t i8;$/;"	t	file:
 idt	kernel/idt.cpp	/^static IDTEntry idt[256];$/;"	v	file:
 idt_init	kernel/idt.cpp	/^extern "C" void idt_init() {$/;"	f
 idt_ptr	kernel/idt.cpp	/^static IDTPtr idt_ptr;$/;"	v	file:
@@ -498,13 +502,13 @@ transform_point	kernel/Graphics.cpp	/^static Vec3 transform_point(const Vec3& po
 truncate_path	kernel/ffext2/ext2.cpp	/^bool truncate_path(FS& fs, const char* path, u32 new_size) {$/;"	f	namespace:ext2full
 type_attr	kernel/idt.h	/^    uint8_t type_attr;      \/\/ atributos (P, DPL, tipo)$/;"	m	struct:IDTEntry
 u16	kernel/ffext2/ext2.hpp	/^typedef uint16_t u16;$/;"	t	namespace:ext2full
-u16	kernel/kernel.cpp	/^typedef uint16 u16;$/;"	t	file:
+u16	kernel/kernel.cpp	/^typedef uint16_t u16;$/;"	t	file:
 u32	kernel/ffext2/ext2.hpp	/^typedef uint32_t u32;$/;"	t	namespace:ext2full
-u32	kernel/kernel.cpp	/^typedef uint32 u32;$/;"	t	file:
+u32	kernel/kernel.cpp	/^typedef uint32_t u32;$/;"	t	file:
 u64	kernel/ffext2/ext2.hpp	/^typedef uint64_t u64;$/;"	t	namespace:ext2full
-u64	kernel/kernel.cpp	/^typedef uint64 u64;$/;"	t	file:
+u64	kernel/kernel.cpp	/^typedef uint64_t u64;$/;"	t	file:
 u8	kernel/ffext2/ext2.hpp	/^typedef uint8_t  u8;$/;"	t	namespace:ext2full
-u8	kernel/kernel.cpp	/^typedef uint8 u8;$/;"	t	file:
+u8	kernel/kernel.cpp	/^typedef uint8_t u8;$/;"	t	file:
 updateCursor	kernel/Console.cpp	/^void Console::updateCursor() {$/;"	f	class:Console
 usage	kernel/ffext2/host_blockdev.cpp	/^static void usage(const char* prog) {$/;"	f	file:
 user	kernel/ffext2/ext2.hpp	/^    void* user;$/;"	m	struct:ext2full::BlockDevice

@@ -625,17 +625,17 @@ void runcommand(char* s, bool auth) {
 		Console::write("  date >> Show current date.\n");
 		Console::write("  parrot >> Dancing parrot animation from ascii.live.\n");
 		Console::write("  day >> Get the weekday name.\n");
-        Console::write("  shutdwn || shutdown >> Power off the computer.\n");
-        Console::write("      ... /y >> Power off the computer without asking.\n");
-        Console::write("  reboot >> Reboot the computer.\n");
-	    Console::write("      ... /y >> Reboot the computer without asking.\n");
-        Console::write("  jogo >> Play a game on graphical mode.\n");
-        Console::write("  3d >> Shooow a rotating 3d cube on the screen.\n");
-        Console::write("  auth >> Prints yes if the command was runned authenticated.\n");
-        Console::write("  hex [hexadecimal] >> Shows the decimal value of a hexadecimal string.\n");
-        Console::write("  read [filename] >> Read the contents of a module in a better way.\n");
-        Console::write("  start >> Start Os in graphical mode.\n");
-    } else if(!strcmp(s, "version")) {
+        	Console::write("  shutdwn || shutdown >> Power off the computer.\n");
+        	Console::write("      ... /y >> Power off the computer without asking.\n");
+        	Console::write("  reboot >> Reboot the computer.\n");
+		Console::write("      ... /y >> Reboot the computer without asking.\n");
+        	Console::write("  jogo >> Play a game on graphical mode.\n");
+        	Console::write("  3d >> Shooow a rotating 3d cube on the screen.\n");
+        	Console::write("  auth >> Prints yes if the command was runned authenticated.\n");
+        	Console::write("  hex [hexadecimal] >> Shows the decimal value of a hexadecimal string.\n");
+        	Console::write("  read [filename] >> Read the contents of a module in a better way.\n");
+        	Console::write("  start >> Start Os in graphical mode.\n");
+    	} else if(!strcmp(s, "version")) {
 		Console::write("eLite Systems RanaOS beta 3\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
 		Console::println(substr(s, 5));
@@ -732,28 +732,43 @@ void runcommand(char* s, bool auth) {
         int x = 10;
         int y = 10;
 
+	int ox = 10;
+	int oy = 10;
+
         int fruitX = 40;
         int fruitY = 40;
+
+	int ofX = 40;
+	int ofY = 40;
 
         int points = 0;
 
         while(true)
         {
-            VGraphics::fillRect(0, 0, 1920, 1080, 0x0000ff); // Clear screen
+            // Clear the objects
+	    VGraphics::fillRect(ox, oy, 10, 10, 0x0000ff);
+            VGraphics::fillRect(ofX, ofY, 10, 10, 0x0000ff);
+	    VGraphics::fillRect(0, 0, 9*8, 500, 0x0000ff);
+
 
             VGraphics::fillRect(x, y, 10, 10, 0xff0000); // Draw player
 
             VGraphics::fillRect(fruitX, fruitY, 10, 10, 0x00ff00); // Draw point
 
             // Draw points
-            for (int i = 0; i < points; i++) 
-            {
-                VGraphics::fillRect(i * 2 + 1, 2, 1, 2, 0x00ff00); // Draw point
-            }
+
+	    char buff[12];
+	    Console::itoa(points, buff, 10);
+	    
+	    VGraphics::drawString(0,0, "Points: ", 0xffffff, 0x0000ff);
+	    VGraphics::drawString(9 * 8, 0, buff, 0xffffff, 0x0000ff);
 
             // Move the player on key
             bool tr = false;
             char answer = Console::getKey(tr);
+
+	    ox = x;
+	    oy = y;
 
             if(answer == KEY_RIGHT)
             {
@@ -786,8 +801,10 @@ void runcommand(char* s, bool auth) {
                 break;
             }
 
-            // Chekc collision between player and fruit
+            // Check collision between player and fruit
             if(x == fruitX && y == fruitY) {
+		ofX = fruitX;
+		ofY = fruitY;
                 points++;
                 fruitX = rand_range(10, 30) * 10;
                 fruitY = rand_range(10, 18) * 10;

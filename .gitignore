@@ -4,3 +4,5 @@
 *.elf
 isodir/
 rust/target/
+tags
+
