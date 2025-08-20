@@ -812,8 +812,7 @@ void runcommand(char* s, bool auth) {
         }
 
         // Exit the game
-        while (inb(0x64) & 0x02);
-        outb(0x64, 0xFE);
+    	VGraphics::fillRect(0, 0, 1920, 1080, 0x0);
     } else if(!strcmp(s, "3d")) {    
         gfx_init();  // Configurar modo VGA/gráfico
         float aspect = 120 / (float)80;
