@@ -273,23 +273,18 @@ pub extern "C" fn start_so() {
     Graphics::draw_string(Graphics::width() / 2 - time_width / 2, 2, time_str, 0xffffff, 0x0);
     
     loop {
-        // Draw background
-        Graphics::draw_rect(0, 20, Graphics::width(), Graphics::height() - 20, 0x42f590);
-
-        // Draw toolbar
-        Graphics::draw_rect(0, 0, Graphics::width(), 20, 0x000000);
-        Graphics::draw_string(2, 2, "RanaOS beta 2", 0xffffff, 0x000000);
-
-        // Display datetime in toolbar (right-aligned)
+        // Display datetime in toolbar (middle-aligned)
         let datetime = DateTime;
         let datetime_str = datetime.format();
         let time_str = unsafe { core::str::from_utf8_unchecked(&datetime_str) };
         
         let time_width = time_str.len() as u32 * 8;
 
+        Graphics::draw_rect(Graphics::width() / 2 - time_width / 2, 0, time_width, 20, 0x0);
+
         Graphics::draw_string(Graphics::width() / 2 - time_width / 2, 2, time_str, 0xffffff, 0x0);
 
-        
+        unsafe  { wait_ms(250); }       
     }
 }
 
