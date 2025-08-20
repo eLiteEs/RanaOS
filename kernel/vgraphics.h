@@ -15,6 +15,8 @@ struct FBInfo {
 	uint32_t bpp;
 };
 
+
+
 class VGraphics {
 public:
 	static void init(uint32_t width, uint32_t height, uint32_t pitch, uint32_t bpp, uintptr_t addr);
@@ -41,6 +43,9 @@ public:
     static void draw_circle(int cx, int cy, int r, uint32_t color);
     static void draw_line(int x0, int y0, int x1, int y1, uint32_t color);
     static void draw_line_adv(int x0, int y0, int width, int deg, uint32_t color); 
+
+    static float cos_lookup(int deg);
+    static float sin_lookup(int deg);
 private:
 	static FBInfo fb;
 };

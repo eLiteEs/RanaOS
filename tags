@@ -213,7 +213,7 @@ compute_inode_bitmap_bytes	kernel/ffext2/ext2.cpp	/^u32 compute_inode_bitmap_byt
 concat	kernel/kernel.cpp	/^char* concat(const char* a, const char* b) {$/;"	f
 config_table	kernel/multiboot.h	/^    uint32_t config_table;$/;"	m	struct:multiboot_info_t
 convertPNGtoPIM	PIMConverter.java	/^    public static void convertPNGtoPIM(File pngFile, File pimFile) throws IOException {$/;"	m	class:PIMConverter
-cos_lookup	kernel/vgraphics.cpp	/^static inline float cos_lookup(int deg) {$/;"	f	file:
+cos_lookup	kernel/vgraphics.cpp	/^float VGraphics::cos_lookup(int deg) {$/;"	f	class:VGraphics
 cosf	kernel/Graphics.cpp	/^static float cosf(float x) {$/;"	f	file:
 cosf	kernel/kernel.cpp	/^static float cosf(float x) {$/;"	f	file:
 cosf	kernel/vgraphics.cpp	/^float cosf(float x) {$/;"	f
@@ -483,7 +483,7 @@ setup_idt	kernel/idt.cpp	/^extern "C" void setup_idt() {$/;"	f
 shiftDown	kernel/Keyboard.cpp	/^static bool shiftDown = false;$/;"	v	file:
 shndx	kernel/multiboot.h	/^    uint32_t shndx;$/;"	m	struct:multiboot_info_t
 shownModulesExplanation	kernel/kernel.cpp	/^bool shownModulesExplanation = false; \/\/ Flag para saber si se explico los modulos de GRUB en la sesion actual$/;"	v
-sin_lookup	kernel/vgraphics.cpp	/^static inline float sin_lookup(int deg) {$/;"	f	file:
+sin_lookup	kernel/vgraphics.cpp	/^float VGraphics::sin_lookup(int deg) {$/;"	f	class:VGraphics
 sinf	kernel/Graphics.cpp	/^static float sinf(float x) {$/;"	f	file:
 sinf	kernel/kernel.cpp	/^static float sinf(float x) {$/;"	f	file:
 sinf	kernel/vgraphics.cpp	/^float sinf(float x) {$/;"	f

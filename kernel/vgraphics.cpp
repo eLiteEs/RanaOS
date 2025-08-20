@@ -186,13 +186,13 @@ static const float SIN_TABLE[360] = {
     -0.173648f,-0.156434f,-0.139173f,-0.121869f,-0.104528f,-0.087156f,-0.069756f,-0.052336f,-0.034899f,-0.017452f
 };
 
-static inline float cos_lookup(int deg) {
+float VGraphics::cos_lookup(int deg) {
     deg %= 360;
     if (deg < 0) deg += 360;
     return SIN_TABLE[(deg + 90) % 360];
 }
 
-static inline float sin_lookup(int deg) {
+float VGraphics::sin_lookup(int deg) {
     deg %= 360;
     if (deg < 0) deg += 360;
     return SIN_TABLE[deg];

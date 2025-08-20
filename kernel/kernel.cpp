@@ -852,7 +852,7 @@ void runcommand(char* s, bool auth) {
 
 	VGraphics::draw_circle(500, 500, 253, 0x0);
 	VGraphics::draw_circle(500, 500, 251, 0x0);
-	VGraphics::draw_circle(500, 500, 242, 0x0);
+	VGraphics::draw_circle(500, 500, 252, 0x0);
 	
 	do {
 	    VGraphics::fill_circle(500, 500, 250, 0xffffff);	
@@ -866,8 +866,22 @@ void runcommand(char* s, bool auth) {
 	    int secondsAngle = 90 - (seconds * 6);
 
 	    VGraphics::draw_line_adv(500, 500, 100, hoursAngle, 0x0);
-	    VGraphics::draw_line_adv(500, 500, 200, minutesAngle, 0x0);
-	    VGraphics::draw_line_adv(500, 500, 170, secondsAngle, 0x0);
+	    VGraphics::draw_line_adv(500, 500, 170, minutesAngle, 0x0);
+	    VGraphics::draw_line_adv(500, 500, 200, secondsAngle, 0x0); 
+
+	    for (int h = 0; h < 12; h++) {
+    		int angle = 90 - h * 30;   // cada hora 30°, 12h = arriba
+    		int outer = 250;           // radio exterior
+    		int inner = 230;           // radio interior
+
+    		int x_outer = 500 + (int)(VGraphics::cos_lookup(angle) * outer);
+    		int y_outer = 500 - (int)(VGraphics::sin_lookup(angle) * outer);
+
+    		int x_inner = 500 + (int)(VGraphics::cos_lookup(angle) * inner);
+    		int y_inner = 500 - (int)(VGraphics::sin_lookup(angle) * inner);
+
+    		VGraphics::draw_line(x_outer, y_outer, x_inner, y_inner, 0x000000);
+	    } 
 
 	    wait_ms(500);
 	} while(true);
