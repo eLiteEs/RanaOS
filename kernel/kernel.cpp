@@ -849,7 +849,9 @@ void runcommand(char* s, bool auth) {
     } else if(!strcmp(s, "start")) {
         start_so(); // Llamar a la función de inicio del SO
     } else {
-	Console::write("Unknown Command. Use \"help\" to get a list of commands.\n");
+	Console::write("Unknown command \"");
+	Console::write(s);
+       	Console::write("\". Use \"help\" to get a list of commands.\n");
     }
 }
 
