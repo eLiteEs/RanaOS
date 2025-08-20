@@ -144,7 +144,14 @@ void VGraphics::draw_line(int x0, int y0, int x1, int y1, uint32_t color) {
         }
     }
 }
+void VGraphics::draw_line_adv(int x0, int y0, int width, int deg, uint32_t color) {	
+    double rad = deg * 3.14159265358979323846 / 180.0;
 
+    int x1 = x0 + (int)(cosf(rad) * width);
+    int y1 = y0 + (int)((sinf(rad) - sinf(rad) - sinf(rad)) * width);
+
+    VGraphics::draw_line(x0, y0, x1, y1, color);
+}
 void VGraphics::draw_circle(int cx, int cy, int r, uint32_t color) {
     int x = r;
     int y = 0;

@@ -844,6 +844,32 @@ void runcommand(char* s, bool auth) {
 
     } else if(!strcmp(s, "start")) {
         start_so(); // Llamar a la función de inicio del SO
+    } else if(!strcmp(s, "clock")) {
+    	Console::clearScreen();
+	
+	VGraphics::fillRect(0, 0, 1920, 1080, 0xeeeeee);    
+
+	VGraphics::draw_circle(500, 500, 253, 0x0);
+	VGraphics::draw_circle(500, 500, 251, 0x0);
+	VGraphics::draw_circle(500, 500, 242, 0x0);
+	
+	do {
+	    VGraphics::fill_circle(500, 500, 250, 0xffffff);	
+
+	    int hour = getHour();
+	    int minutes = getMinute();
+	    int seconds = getSecond();   
+	
+	    int hoursAngle = 90 - ((hour % 12) * 30 + minutes / 2);
+	    int minutesAngle = 90 - (minutes * 6);
+	    int secondsAngle = 90 - (seconds * 6);
+
+	    VGraphics::draw_line_adv(500, 500, 100, hoursAngle, 0x0);
+	    VGraphics::draw_line_adv(500, 500, 200, minutesAngle, 0x0);
+	    VGraphics::draw_line_adv(500, 500, 170, secondsAngle, 0x0);
+
+	    wait_ms(500);
+	} while(true);
     } else {
 	Console::write("Unknown command \"");
 	Console::write(s);

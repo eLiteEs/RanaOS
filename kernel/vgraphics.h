@@ -40,6 +40,7 @@ public:
     static void fill_circle(int cx, int cy, int r, uint32_t color);
     static void draw_circle(int cx, int cy, int r, uint32_t color);
     static void draw_line(int x0, int y0, int x1, int y1, uint32_t color);
+    static void draw_line_adv(int x0, int y0, int width, int deg, uint32_t color); 
 private:
 	static FBInfo fb;
 };

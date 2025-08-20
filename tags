@@ -232,6 +232,7 @@ drawChar	kernel/vgraphics.cpp	/^void VGraphics::drawChar(uint32_t x, uint32_t y,
 drawString	kernel/vgraphics.cpp	/^void VGraphics::drawString(uint32_t x, uint32_t y, const char* str, uint32_t fg, uint32_t bg) {$/;"	f	class:VGraphics
 draw_circle	kernel/vgraphics.cpp	/^void VGraphics::draw_circle(int cx, int cy, int r, uint32_t color) {$/;"	f	class:VGraphics
 draw_line	kernel/vgraphics.cpp	/^void VGraphics::draw_line(int x0, int y0, int x1, int y1, uint32_t color) {$/;"	f	class:VGraphics
+draw_line_adv	kernel/vgraphics.cpp	/^void VGraphics::draw_line_adv(int x0, int y0, int width, int deg, uint32_t color) {	$/;"	f	class:VGraphics
 draw_rotating_cube	kernel/kernel.cpp	/^void draw_rotating_cube() {$/;"	f
 drives_addr	kernel/multiboot.h	/^    uint32_t drives_addr;$/;"	m	struct:multiboot_info_t
 drives_length	kernel/multiboot.h	/^    uint32_t drives_length;$/;"	m	struct:multiboot_info_t
