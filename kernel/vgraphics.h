@@ -36,6 +36,10 @@ public:
     static void fillRect(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t color);
 
     static void scroll();
+
+    static void fill_circle(int cx, int cy, int r, uint32_t color);
+    static void draw_circle(int cx, int cy, int r, uint32_t color);
+    static void draw_line(int x0, int y0, int x1, int y1, uint32_t color);
 private:
 	static FBInfo fb;
 };

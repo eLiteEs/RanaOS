@@ -748,15 +748,11 @@ void runcommand(char* s, bool auth) {
             // Clear the objects
 	    VGraphics::fillRect(ox, oy, 10, 10, 0x0000ff);
             VGraphics::fillRect(ofX, ofY, 10, 10, 0x0000ff);
-	    VGraphics::fillRect(0, 0, 9*8, 500, 0x0000ff);
-
-
-            VGraphics::fillRect(x, y, 10, 10, 0xff0000); // Draw player
-
-            VGraphics::fillRect(fruitX, fruitY, 10, 10, 0x00ff00); // Draw point
-
+            VGraphics::fill_circle(ofX + 5, ofY + 5, 5, 0x0000ff);
+            
+	    VGraphics::fillRect(x, y, 10, 10, 0xff0000); // Draw player
+	    VGraphics::fill_circle(fruitX + 5, fruitY + 5, 5, 0x00ff00); // Draw point
             // Draw points
-
 	    char buff[12];
 	    Console::itoa(points, buff, 10);
 	    

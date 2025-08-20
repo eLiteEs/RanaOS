@@ -166,7 +166,9 @@ __umoddi3	kernel/Console.cpp	/^unsigned long long __umoddi3(unsigned long long n
 _start	boot.asm	/^_start:$/;"	l
 a	kernel/vgraphics.h	/^	uint8_t r, g, b, a;$/;"	m	struct:Color
 absf	kernel/Graphics.cpp	/^static float absf(float x) { return (x < 0) ? -x : x; }$/;"	f	file:
+absf	kernel/vgraphics.cpp	/^float absf(float x) { return (x < 0) ? -x : x; }$/;"	f
 absi	kernel/Graphics.cpp	/^static int absi(int x) { return (x < 0) ? -x : x; }$/;"	f	file:
+absi	kernel/vgraphics.cpp	/^int absi(int x) { return (x < 0) ? -x : x; }$/;"	f
 addr	kernel/multiboot.h	/^    uint32_t addr;$/;"	m	struct:multiboot_info_t
 address	kernel/vgraphics.h	/^	uint32_t* address;$/;"	m	struct:FBInfo
 alloc_block	kernel/ffext2/ext2.cpp	/^static u32 alloc_block(FS& fs, u32 preferred_group) {$/;"	f	namespace:ext2full
@@ -211,6 +213,7 @@ config_table	kernel/multiboot.h	/^    uint32_t config_table;$/;"	m	struct:multib
 convertPNGtoPIM	PIMConverter.java	/^    public static void convertPNGtoPIM(File pngFile, File pimFile) throws IOException {$/;"	m	class:PIMConverter
 cosf	kernel/Graphics.cpp	/^static float cosf(float x) {$/;"	f	file:
 cosf	kernel/kernel.cpp	/^static float cosf(float x) {$/;"	f	file:
+cosf	kernel/vgraphics.cpp	/^float cosf(float x) {$/;"	f
 create_dir	kernel/ffext2/ext2.cpp	/^bool create_dir(FS& fs, const char* path) {$/;"	f	namespace:ext2full
 cs	kernel/idt.h	/^    uint32_t eip, cs, eflags, useresp, ss; \/\/ Automáticamente pusheados por el CPU$/;"	m	struct:Registers
 cube	kernel/kernel.cpp	/^static Triangle cube[12] = {$/;"	v	file:
@@ -227,6 +230,8 @@ dir_lookup_inode	kernel/ffext2/ext2.cpp	/^static u32 dir_lookup_inode(FS& fs, co
 div_up	kernel/ffext2/ext2.cpp	/^static u32 div_up(u32 a, u32 b) { return (a + b - 1) \/ b; }$/;"	f	namespace:ext2full
 drawChar	kernel/vgraphics.cpp	/^void VGraphics::drawChar(uint32_t x, uint32_t y, char c, uint32_t color, uint32_t bg) {$/;"	f	class:VGraphics
 drawString	kernel/vgraphics.cpp	/^void VGraphics::drawString(uint32_t x, uint32_t y, const char* str, uint32_t fg, uint32_t bg) {$/;"	f	class:VGraphics
+draw_circle	kernel/vgraphics.cpp	/^void VGraphics::draw_circle(int cx, int cy, int r, uint32_t color) {$/;"	f	class:VGraphics
+draw_line	kernel/vgraphics.cpp	/^void VGraphics::draw_line(int x0, int y0, int x1, int y1, uint32_t color) {$/;"	f	class:VGraphics
 draw_rotating_cube	kernel/kernel.cpp	/^void draw_rotating_cube() {$/;"	f
 drives_addr	kernel/multiboot.h	/^    uint32_t drives_addr;$/;"	m	struct:multiboot_info_t
 drives_length	kernel/multiboot.h	/^    uint32_t drives_length;$/;"	m	struct:multiboot_info_t
@@ -260,6 +265,7 @@ fb	kernel/vgraphics.cpp	/^FBInfo VGraphics::fb;$/;"	m	class:VGraphics	file:
 fb	kernel/vgraphics.h	/^	static FBInfo fb;$/;"	m	class:VGraphics
 fd	kernel/ffext2/host_blockdev.cpp	/^struct HostCtx { int fd; };$/;"	m	struct:HostCtx	file:
 fillRect	kernel/vgraphics.cpp	/^void VGraphics::fillRect(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t color) {$/;"	f	class:VGraphics
+fill_circle	kernel/vgraphics.cpp	/^void VGraphics::fill_circle(int cx, int cy, int r, uint32_t color) {$/;"	f	class:VGraphics
 fin	build.bat	/^:fin$/;"	l
 findClosestColor	PIMConverter.java	/^    private static char findClosestColor(Color color) {$/;"	m	class:PIMConverter	file:
 flags	kernel/multiboot.h	/^    uint32_t flags;$/;"	m	struct:multiboot_info_t
@@ -475,6 +481,7 @@ shndx	kernel/multiboot.h	/^    uint32_t shndx;$/;"	m	struct:multiboot_info_t
 shownModulesExplanation	kernel/kernel.cpp	/^bool shownModulesExplanation = false; \/\/ Flag para saber si se explico los modulos de GRUB en la sesion actual$/;"	v
 sinf	kernel/Graphics.cpp	/^static float sinf(float x) {$/;"	f	file:
 sinf	kernel/kernel.cpp	/^static float sinf(float x) {$/;"	f	file:
+sinf	kernel/vgraphics.cpp	/^float sinf(float x) {$/;"	f
 size	kernel/multiboot.h	/^    uint32_t size;$/;"	m	struct:multiboot_info_t
 srand_lcg	kernel/kernel.cpp	/^void srand_lcg(uint32_t seed) {$/;"	f
 ss	kernel/idt.h	/^    uint32_t eip, cs, eflags, useresp, ss; \/\/ Automáticamente pusheados por el CPU$/;"	m	struct:Registers
@@ -495,6 +502,7 @@ strrchr	kernel/string.cpp	/^char* strrchr(const char* s, int c) {$/;"	f
 substr	kernel/kernel.cpp	/^char* substr(const char* str, int start, int length = -1) {$/;"	f
 tail	kernel/Keyboard.cpp	/^static volatile int head = 0, tail = 0;$/;"	v	file:
 tanf	kernel/Graphics.cpp	/^float tanf(float x) {$/;"	f
+tanf	kernel/vgraphics.cpp	/^float tanf(float x) {$/;"	f
 textBuffer	kernel/Console.cpp	/^static char textBuffer[FB_HEIGHT][FB_WIDTH];$/;"	v	file:
 textColor	kernel/Console.cpp	/^static Color textColor = {255, 255, 255, 0};  \/\/ Blanco por defecto$/;"	v	file:
 thread_switch_asm	threads.asm	/^thread_switch_asm:$/;"	l
