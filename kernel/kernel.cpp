@@ -634,7 +634,8 @@ void runcommand(char* s, bool auth) {
         	Console::write("  auth >> Prints yes if the command was runned authenticated.\n");
         	Console::write("  hex [hexadecimal] >> Shows the decimal value of a hexadecimal string.\n");
         	Console::write("  read [filename] >> Read the contents of a module in a better way.\n");
-        	Console::write("  start >> Start Os in graphical mode.\n");
+        	Console::write("  start >> Start OS in graphical mode.\n");
+		Console::write("  clock >> Show a analogic clock in the screen.\n");
     	} else if(!strcmp(s, "version")) {
 		Console::write("eLite Systems RanaOS beta 3\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {

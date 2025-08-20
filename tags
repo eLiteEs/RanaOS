@@ -102,6 +102,7 @@ PACKED_STRUCT	kernel/ffext2/ext2.hpp	11;"	d
 PACKED_STRUCT	kernel/ffext2/ext2.hpp	9;"	d
 PALETTE	PIMConverter.java	/^    private static final Color[] PALETTE = {$/;"	f	class:PIMConverter	file:
 PI	kernel/Graphics.h	28;"	d
+PI	kernel/vgraphics.cpp	148;"	d	file:
 PIC1_COMMAND	kernel/Keyboard.cpp	7;"	d	file:
 PIC1_COMMAND	kernel/pic.cpp	4;"	d	file:
 PIC1_COMMAND	kernel/pic_wrapper.cpp	3;"	d	file:
@@ -135,6 +136,7 @@ Ready	kernel/Debug.cpp	/^    static bool Ready() {$/;"	f	namespace:Debug
 Registers	kernel/idt.h	/^struct Registers {$/;"	s
 SCREEN_HEIGHT	kernel/Graphics.cpp	8;"	d	file:
 SCREEN_WIDTH	kernel/Graphics.cpp	7;"	d	file:
+SIN_TABLE	kernel/vgraphics.cpp	/^static const float SIN_TABLE[360] = {$/;"	v	file:
 String	kernel/string.hpp	/^namespace String {$/;"	n
 TOOLCHAIN	build.bat	/^set TOOLCHAIN=C:\\Users\\blasf\\Downloads\\i686-elf-tools-windows\\bin$/;"	v
 ThreadFunc	kernel/Graphics.h	/^typedef void (*ThreadFunc)(void*);$/;"	t
@@ -211,6 +213,7 @@ compute_inode_bitmap_bytes	kernel/ffext2/ext2.cpp	/^u32 compute_inode_bitmap_byt
 concat	kernel/kernel.cpp	/^char* concat(const char* a, const char* b) {$/;"	f
 config_table	kernel/multiboot.h	/^    uint32_t config_table;$/;"	m	struct:multiboot_info_t
 convertPNGtoPIM	PIMConverter.java	/^    public static void convertPNGtoPIM(File pngFile, File pimFile) throws IOException {$/;"	m	class:PIMConverter
+cos_lookup	kernel/vgraphics.cpp	/^static inline float cos_lookup(int deg) {$/;"	f	file:
 cosf	kernel/Graphics.cpp	/^static float cosf(float x) {$/;"	f	file:
 cosf	kernel/kernel.cpp	/^static float cosf(float x) {$/;"	f	file:
 cosf	kernel/vgraphics.cpp	/^float cosf(float x) {$/;"	f
@@ -232,7 +235,7 @@ drawChar	kernel/vgraphics.cpp	/^void VGraphics::drawChar(uint32_t x, uint32_t y,
 drawString	kernel/vgraphics.cpp	/^void VGraphics::drawString(uint32_t x, uint32_t y, const char* str, uint32_t fg, uint32_t bg) {$/;"	f	class:VGraphics
 draw_circle	kernel/vgraphics.cpp	/^void VGraphics::draw_circle(int cx, int cy, int r, uint32_t color) {$/;"	f	class:VGraphics
 draw_line	kernel/vgraphics.cpp	/^void VGraphics::draw_line(int x0, int y0, int x1, int y1, uint32_t color) {$/;"	f	class:VGraphics
-draw_line_adv	kernel/vgraphics.cpp	/^void VGraphics::draw_line_adv(int x0, int y0, int width, int deg, uint32_t color) {	$/;"	f	class:VGraphics
+draw_line_adv	kernel/vgraphics.cpp	/^void VGraphics::draw_line_adv(int x0, int y0, int length, int deg, uint32_t color) {$/;"	f	class:VGraphics
 draw_rotating_cube	kernel/kernel.cpp	/^void draw_rotating_cube() {$/;"	f
 drives_addr	kernel/multiboot.h	/^    uint32_t drives_addr;$/;"	m	struct:multiboot_info_t
 drives_length	kernel/multiboot.h	/^    uint32_t drives_length;$/;"	m	struct:multiboot_info_t
@@ -480,6 +483,7 @@ setup_idt	kernel/idt.cpp	/^extern "C" void setup_idt() {$/;"	f
 shiftDown	kernel/Keyboard.cpp	/^static bool shiftDown = false;$/;"	v	file:
 shndx	kernel/multiboot.h	/^    uint32_t shndx;$/;"	m	struct:multiboot_info_t
 shownModulesExplanation	kernel/kernel.cpp	/^bool shownModulesExplanation = false; \/\/ Flag para saber si se explico los modulos de GRUB en la sesion actual$/;"	v
+sin_lookup	kernel/vgraphics.cpp	/^static inline float sin_lookup(int deg) {$/;"	f	file:
 sinf	kernel/Graphics.cpp	/^static float sinf(float x) {$/;"	f	file:
 sinf	kernel/kernel.cpp	/^static float sinf(float x) {$/;"	f	file:
 sinf	kernel/vgraphics.cpp	/^float sinf(float x) {$/;"	f
