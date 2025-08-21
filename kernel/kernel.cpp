@@ -850,12 +850,15 @@ void runcommand(char* s, bool auth) {
 	
 	VGraphics::fillRect(0, 0, 1920, 1080, 0xeeeeee);    
 
-	VGraphics::draw_circle(500, 500, 253, 0x0);
-	VGraphics::draw_circle(500, 500, 251, 0x0);
-	VGraphics::draw_circle(500, 500, 252, 0x0);
+	int midX = 1920 / 2;
+	int midY = 1080 / 2;
+
+	VGraphics::draw_circle(midX, midY, 253, 0x0);
+	VGraphics::draw_circle(midX, midY, 251, 0x0);
+	VGraphics::draw_circle(midX, midY, 252, 0x0);
 	
 	do {
-	    VGraphics::fill_circle(500, 500, 250, 0xffffff);	
+	    VGraphics::fill_circle(midX, midY, 250, 0xffffff);	
 
 	    int hour = getHour();
 	    int minutes = getMinute();
@@ -865,20 +868,20 @@ void runcommand(char* s, bool auth) {
 	    int minutesAngle = 90 - (minutes * 6);
 	    int secondsAngle = 90 - (seconds * 6);
 
-	    VGraphics::draw_line_adv(500, 500, 100, hoursAngle, 0x0);
-	    VGraphics::draw_line_adv(500, 500, 170, minutesAngle, 0x0);
-	    VGraphics::draw_line_adv(500, 500, 200, secondsAngle, 0x0); 
+	    VGraphics::draw_line_adv(midX, midY, 100, hoursAngle, 0x0);
+	    VGraphics::draw_line_adv(midX, midY, 170, minutesAngle, 0x0);
+	    VGraphics::draw_line_adv(midX, midY, 200, secondsAngle, 0x0); 
 
 	    for (int h = 0; h < 12; h++) {
     		int angle = 90 - h * 30;   // cada hora 30°, 12h = arriba
     		int outer = 250;           // radio exterior
     		int inner = 230;           // radio interior
 
-    		int x_outer = 500 + (int)(VGraphics::cos_lookup(angle) * outer);
-    		int y_outer = 500 - (int)(VGraphics::sin_lookup(angle) * outer);
+    		int x_outer = midX + (int)(VGraphics::cos_lookup(angle) * outer);
+    		int y_outer = midY - (int)(VGraphics::sin_lookup(angle) * outer);
 
-    		int x_inner = 500 + (int)(VGraphics::cos_lookup(angle) * inner);
-    		int y_inner = 500 - (int)(VGraphics::sin_lookup(angle) * inner);
+    		int x_inner = midX + (int)(VGraphics::cos_lookup(angle) * inner);
+    		int y_inner = midY - (int)(VGraphics::sin_lookup(angle) * inner);
 
     		VGraphics::draw_line(x_outer, y_outer, x_inner, y_inner, 0x000000);
 	    } 
