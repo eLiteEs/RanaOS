@@ -94,6 +94,8 @@ MODULES	Makefile	/^MODULES = files\/text.txt files\/bg.pim files\/tux.pim$/;"	m
 MODULES_DIR	Makefile	/^MODULES_DIR  := $(ISO_DIR)\/files$/;"	m
 MULTIBOOT_H	kernel/multiboot.h	2;"	d
 MULTIBOOT_INFO_FRAMEBUFFER_INFO	kernel/multiboot.h	47;"	d
+MULTIBOOT_TAG_TYPE_END	kernel/kernel.cpp	558;"	d	file:
+MULTIBOOT_TAG_TYPE_MODULE	kernel/kernel.cpp	559;"	d	file:
 NASM	Makefile	/^NASM      := nasm$/;"	m
 NASM	build.bat	/^set NASM=nasm$/;"	v
 NULL	kernel/parrot.cpp	2;"	d	file:
@@ -200,6 +202,8 @@ chmod_path	kernel/ffext2/ext2.cpp	/^bool chmod_path(FS& fs, const char* path, u1
 chown_path	kernel/ffext2/ext2.cpp	/^bool chown_path(FS& fs, const char* path, u16 uid, u16 gid) {$/;"	f	namespace:ext2full
 clearScreen	kernel/Console.cpp	/^void Console::clearScreen() {$/;"	f	class:Console
 clearScreen	kernel/vgraphics.cpp	/^void VGraphics::clearScreen() {$/;"	f	class:VGraphics
+clock	kernel/kernel.cpp	/^void clock() {$/;"	f
+cmdline	kernel/kernel.cpp	/^    char     cmdline[0];\/\/ string opcional (puede estar vacío)$/;"	m	struct:multiboot_tag_module	file:
 cmdline	kernel/multiboot.h	/^    uint32_t cmdline;$/;"	m	struct:__anon4
 cmdline	kernel/multiboot.h	/^    uint32_t cmdline;$/;"	m	struct:multiboot_info_t
 color	kernel/Console.cpp	/^uint8_t   Console::color        = 0x07;$/;"	m	class:Console	file:
@@ -381,6 +385,8 @@ main	PIMConverter.java	/^    public static void main(String[] args) {$/;"	m	clas
 main	files/hello.c	/^int main() {$/;"	f
 main	kernel/ffext2/host_blockdev.cpp	/^int main(int argc, char** argv) {$/;"	f
 make_symlink	kernel/ffext2/ext2.cpp	/^bool make_symlink(FS& fs, const char* target, const char* linkpath) {$/;"	f	namespace:ext2full
+mb2_first	kernel/kernel.cpp	/^static inline struct multiboot_tag* mb2_first(void* mbinfo) {$/;"	f	file:
+mb2_next	kernel/kernel.cpp	/^static inline struct multiboot_tag* mb2_next(struct multiboot_tag* tag) {$/;"	f	file:
 mbi	kernel/kernel.cpp	/^multiboot_info_t* mbi; \/\/ var global Mulitboot Info$/;"	v
 measure_cpu_frequency	kernel/kernel.cpp	/^uint32_t measure_cpu_frequency() {$/;"	f
 mem_lower	kernel/multiboot.h	/^    uint32_t mem_lower;$/;"	m	struct:multiboot_info_t
@@ -398,13 +404,17 @@ min_u32	kernel/ffext2/ext2.cpp	/^static u32 min_u32(u32 a, u32 b) { return (a < 
 mkfs_on_device	kernel/ffext2/ext2.cpp	/^bool mkfs_on_device(const BlockDevice& dev, u32 part_lba_start, u32 block_size, u32 groups_count, u32 inodes_per_group,$/;"	f	namespace:ext2full
 mmap_addr	kernel/multiboot.h	/^    uint32_t mmap_addr;$/;"	m	struct:multiboot_info_t
 mmap_length	kernel/multiboot.h	/^    uint32_t mmap_length;$/;"	m	struct:multiboot_info_t
+mod_end	kernel/kernel.cpp	/^    uint32_t mod_end;   \/\/ dirección física fin$/;"	m	struct:multiboot_tag_module	file:
 mod_end	kernel/multiboot.h	/^    uint32_t mod_end;$/;"	m	struct:__anon4
+mod_start	kernel/kernel.cpp	/^    uint32_t mod_start; \/\/ dirección física inicio$/;"	m	struct:multiboot_tag_module	file:
 mod_start	kernel/multiboot.h	/^    uint32_t mod_start;$/;"	m	struct:__anon4
 mods_addr	kernel/multiboot.h	/^    uint32_t mods_addr;$/;"	m	struct:multiboot_info_t
 mods_count	kernel/multiboot.h	/^    uint32_t mods_count;$/;"	m	struct:multiboot_info_t
 mount	kernel/ffext2/ext2.cpp	/^bool mount(FS& fs, const BlockDevice& dev, u32 part_lba_start,$/;"	f	namespace:ext2full
 multiboot_info_t	kernel/multiboot.h	/^struct multiboot_info_t {$/;"	s
 multiboot_module_t	kernel/multiboot.h	/^} multiboot_module_t;$/;"	t	typeref:struct:__anon4
+multiboot_tag	kernel/kernel.cpp	/^struct multiboot_tag {$/;"	s	file:
+multiboot_tag_module	kernel/kernel.cpp	/^struct multiboot_tag_module {$/;"	s	file:
 num	kernel/multiboot.h	/^    uint32_t num;$/;"	m	struct:multiboot_info_t
 offset_high	kernel/idt.h	/^    uint16_t offset_high;   \/\/ bits 16-31 del offset$/;"	m	struct:IDTEntry
 offset_low	kernel/idt.h	/^    uint16_t offset_low;    \/\/ bits 0-15 del offset$/;"	m	struct:IDTEntry
@@ -430,6 +440,7 @@ println	kernel/Console.h	/^void Console::println(T first, Args... rest) {$/;"	f	
 projection_matrix	kernel/Graphics.cpp	/^static float projection_matrix[4][4] = {{0}};$/;"	v	file:
 putChar	kernel/Console.cpp	/^void Console::putChar(char c) {$/;"	f	class:Console
 putPixel	kernel/vgraphics.cpp	/^void VGraphics::putPixel(uint32_t x, uint32_t y, uint32_t color) {$/;"	f	class:VGraphics
+put_image	kernel/vgraphics.cpp	/^void VGraphics::put_image(int dx, int dy, const char* img_data) {$/;"	f	class:VGraphics
 r	kernel/Graphics.h	/^    uint8_t r, g, b;$/;"	m	struct:vga_color
 r	kernel/vgraphics.h	/^	uint8_t r, g, b, a;$/;"	m	struct:Color
 rand_lcg	kernel/kernel.cpp	/^uint32_t rand_lcg() {$/;"	f
@@ -487,6 +498,8 @@ sin_lookup	kernel/vgraphics.cpp	/^float VGraphics::sin_lookup(int deg) {$/;"	f	c
 sinf	kernel/Graphics.cpp	/^static float sinf(float x) {$/;"	f	file:
 sinf	kernel/kernel.cpp	/^static float sinf(float x) {$/;"	f	file:
 sinf	kernel/vgraphics.cpp	/^float sinf(float x) {$/;"	f
+size	kernel/kernel.cpp	/^    uint32_t size;$/;"	m	struct:multiboot_tag	file:
+size	kernel/kernel.cpp	/^    uint32_t size;$/;"	m	struct:multiboot_tag_module	file:
 size	kernel/multiboot.h	/^    uint32_t size;$/;"	m	struct:multiboot_info_t
 srand_lcg	kernel/kernel.cpp	/^void srand_lcg(uint32_t seed) {$/;"	f
 ss	kernel/idt.h	/^    uint32_t eip, cs, eflags, useresp, ss; \/\/ Automáticamente pusheados por el CPU$/;"	m	struct:Registers
@@ -513,6 +526,8 @@ textColor	kernel/Console.cpp	/^static Color textColor = {255, 255, 255, 0};  \/\
 thread_switch_asm	threads.asm	/^thread_switch_asm:$/;"	l
 transform_point	kernel/Graphics.cpp	/^static Vec3 transform_point(const Vec3& point) {$/;"	f	file:
 truncate_path	kernel/ffext2/ext2.cpp	/^bool truncate_path(FS& fs, const char* path, u32 new_size) {$/;"	f	namespace:ext2full
+type	kernel/kernel.cpp	/^    uint32_t type;      \/\/ = 3$/;"	m	struct:multiboot_tag_module	file:
+type	kernel/kernel.cpp	/^    uint32_t type;$/;"	m	struct:multiboot_tag	file:
 type_attr	kernel/idt.h	/^    uint8_t type_attr;      \/\/ atributos (P, DPL, tipo)$/;"	m	struct:IDTEntry
 u16	kernel/ffext2/ext2.hpp	/^typedef uint16_t u16;$/;"	t	namespace:ext2full
 u16	kernel/kernel.cpp	/^typedef uint16_t u16;$/;"	t	file:

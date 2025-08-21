@@ -46,6 +46,8 @@ public:
 
     static float cos_lookup(int deg);
     static float sin_lookup(int deg);
+
+    static void put_image(int dx, int dy, const char* img_data);
 private:
 	static FBInfo fb;
 };

@@ -555,56 +555,87 @@ bool memory_region_is_safe(uint32_t addr, uint32_t size) {
     return (addr >= 0x100000 && (addr + size) <= 0xC0000000);
 }
 
+#define MULTIBOOT_TAG_TYPE_END     0
+#define MULTIBOOT_TAG_TYPE_MODULE  3
+
+struct multiboot_tag {
+    uint32_t type;
+    uint32_t size;
+};
+
+struct multiboot_tag_module {
+    uint32_t type;      // = 3
+    uint32_t size;
+    uint32_t mod_start; // dirección física inicio
+    uint32_t mod_end;   // dirección física fin
+    char     cmdline[0];// string opcional (puede estar vacío)
+};
+
+// Helpers para recorrer la lista de tags
+static inline struct multiboot_tag* mb2_first(void* mbinfo) {
+    return (struct multiboot_tag*)((uint8_t*)mbinfo + 8); // saltar total_size+reserved
+}
+static inline struct multiboot_tag* mb2_next(struct multiboot_tag* tag) {
+    return (struct multiboot_tag*)((uint8_t*)tag + ((tag->size + 7) & ~7));
+}
+
 const char* read_file_from_meta(char* name) {
-    multiboot_module_t* mods = (multiboot_module_t*)mbi->mods_addr;
+    uint8_t* ptr = (uint8_t*)mbi + 8; // Saltar total_size y reserved
 
-    for (uint32_t i = 0; i < mbi->mods_count; i++) 
-    {
-        int start = mods[i].mod_start;
+    while (true) {
+        auto* tag = (multiboot_tag*)ptr;
 
-        // Check if it isn't a valid module
-        if(strcmp(read_string_from_memory(start, 2), "n:")) {
-            continue;
-        }
+        if (tag->type == 0) break; // Fin de tags
 
-        // Check if the module has the name we're searching
-        if(strcmp(read_string_from_memory(start, 2 + String::strlen(name)), concat("n:", name))) {
-            continue;
-        }
+        if (tag->type == 3) { // MODULE
+            auto* mod = (multiboot_tag_module*)ptr;
+            int start = mod->mod_start;
 
-        int lengthStart = 5 + String::strlen(name) + start;
-        int length;
-
-        // Get the size of the file
-        int j = 0;
-        bool finished = false;
-        char* rawResult = "";
-
-        while(!finished) {
-            const char* c = read_string_from_memory(lengthStart + j, 1); // Get the char
-
-            if(!strcmp(c, "b")) {
-                finished = true;
-            } else {
-                if(isNumber(c)) {
-                    char* temp = rawResult;
-                    rawResult = concat(temp, c);
-                } else {
-                    finished = true;
-                }
+            // Verifica si tiene el prefijo "n:"
+            if (strcmp(read_string_from_memory(start, 2), "n:")) {
+                ptr += (tag->size + 7) & ~7;
+                continue;
             }
 
-            j++;
+            // Verifica si el nombre coincide
+            if (strcmp(read_string_from_memory(start, 2 + String::strlen(name)), concat("n:", name))) {
+                ptr += (tag->size + 7) & ~7;
+                continue;
+            }
+
+            int lengthStart = 5 + String::strlen(name) + start;
+            int length;
+
+            // Parsear la longitud
+            int j = 0;
+            bool finished = false;
+            char* rawResult = "";
+
+            while (!finished) {
+                const char* c = read_string_from_memory(lengthStart + j, 1);
+
+                if (!strcmp(c, "b")) {
+                    finished = true;
+                } else {
+                    if (isNumber(c)) {
+                        char* temp = rawResult;
+                        rawResult = concat(temp, c);
+                    } else {
+                        finished = true;
+                    }
+                }
+
+                j++;
+            }
+
+            length = stoi(rawResult) + 1;
+
+            int contentStart = lengthStart + String::strlen(rawResult) + 2;
+
+            return read_large_memory_string(contentStart, length);
         }
 
-        // Parse the file length
-        length = stoi(rawResult) + 1;
-
-        // Get the content start
-        int contentStart = lengthStart + String::strlen(rawResult) + 2;
-
-        // Return the actual content
-        return read_large_memory_string(contentStart, length);
+        ptr += (tag->size + 7) & ~7;
     }
 
     Console::write("File not found", VGA_COLOR_RED);
@@ -880,11 +911,7 @@ void runcommand(char* s, bool auth) {
         const char* imageContent = read_file_from_meta("tux.pim");
 
         Console::clearScreen();
-
-        gfx_init();
-        gfx_clear_screen(COLOR_WHITE);
-
-        gfx_put_image(0,0, imageContent);
+        VGraphics::put_image(0,0, imageContent);
 
         while(true) {}
 
@@ -893,8 +920,8 @@ void runcommand(char* s, bool auth) {
     } else if(!strcmp(s, "clock")) {
     	clock();
     } else {
-	Console::write("Unknown command \"");
-	Console::write(s);
+	    Console::write("Unknown command \"");
+	    Console::write(s);
        	Console::write("\". Use \"help\" to get a list of commands.\n");
     }
 }

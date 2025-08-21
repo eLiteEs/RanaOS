@@ -239,3 +239,52 @@ void VGraphics::fill_circle(int cx, int cy, int r, uint32_t color) {
         }
     }
 }
+
+void VGraphics::put_image(int dx, int dy, const char* img_data) {
+    int x = dx;
+    int y = dy;
+    const int max_width = 1920;
+    const int max_height = 1080;
+    bool rendering = true;
+
+    while (rendering && y < max_height) {
+        char c = *img_data++;
+
+        switch (c) {
+            case 'n': case 'b': case 'g': case 'c':
+            case 'r': case 'm': case 'l': case 'y': case 'w':
+                if (x < max_width && y >= 0 && y < max_height) {
+                    uint32_t color;
+                    switch (c) {
+                        case 'n': color = 0x0; break;
+                        case 'b': color = 0x0000ff; break;
+                        case 'g': color = 0x00ff00; break;
+                        case 'c': color = 0x3c7aff; break;
+                        case 'r': color = 0xff0000; break;
+                        case 'm': color = 0xF303FF; break;
+                        case 'l': color = 0x774342; break;
+                        case 'y': color = 0xFFFD55; break;
+                        case 'w': color = 0xffffff; break;
+                    }
+                    VGraphics::putPixel(x, y, color);
+                }
+                x++;
+                break;
+
+            case '\n':
+                x = dx;
+                y++;
+                break;
+
+            case 'q':
+            case '\0':
+                rendering = false;
+                break;
+
+            default:
+                VGraphics::putPixel(x, y, 0xff0000);
+                x++;
+                break;
+        }
+    }
+}
