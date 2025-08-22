@@ -184,6 +184,18 @@ bool was_c_pressed() {
     return sc == 0x2E;
 }
 
+bool was_key_pressed(char c) {
+    if (!keyboard_key_available())
+        return false;
+
+    uint8_t sc = keyboard_read_scancode();
+
+    // Ignora tecla liberada (bit 7 = 1)
+    if (sc & 0x80) return false;
+
+    return sc == Console::asciiToScancode(c);
+}
+
 // Funciones útiles para no usar libc
 int strcmp(const char* a, const char* b) {
 	while (*a && *b) {
@@ -711,7 +723,8 @@ void runcommand(char* s, bool auth) {
         	Console::write("  hex [hexadecimal] >> Shows the decimal value of a hexadecimal string.\n");
         	Console::write("  read [filename] >> Read the contents of a module in a better way.\n");
         	Console::write("  start >> Start OS in graphical mode.\n");
-		Console::write("  clock >> Show a analogic clock in the screen.\n");
+		Console::write("  clock >> Show an analogic clock in the screen.\n");
+        Console::write("  license >> Show the license of the project.\n");
     	} else if(!strcmp(s, "version")) {
 		Console::write("eLite Systems RanaOS beta 3\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
@@ -919,6 +932,37 @@ void runcommand(char* s, bool auth) {
         start_so(); // Llamar a la función de inicio del SO
     } else if(!strcmp(s, "clock")) {
     	clock();
+    } else if(!strcmp(s, "license")) {
+        Console::clearScreen();
+        
+        const char* licenseContent = read_file_from_meta("LICENSE");
+
+        int nls = 0; // New line count
+
+        for(size_t i = 0; i < strlen(licenseContent); i++) {
+            Console::write(licenseContent[i]);
+
+            if(licenseContent[i] == '\n') {
+                nls++;
+            }
+
+            if(nls == 60) {
+                Console::println("Press \'c\' to continue or \'q\' to quit...");
+
+                while(true) {
+                    if(was_c_pressed()) {
+                        break;
+                    } else if(was_key_pressed('q')) {
+                        Console::println();
+                        return;
+                    }
+                }
+
+                Console::clearScreen();
+                nls = 0;
+            }
+        }
+
     } else {
 	    Console::write("Unknown command \"");
 	    Console::write(s);

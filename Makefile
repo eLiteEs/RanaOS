@@ -51,7 +51,7 @@ CPP_OBJS := $(patsubst kernel/%.cpp, %.o, $(CPP_SRCS))
 
 LDSCRIPT := kernel/linker.ld
 
-MODULES = files/text.txt files/bg.pim files/tux.pim files/background.pim
+MODULES = files/text.txt files/bg.pim files/tux.pim files/background.pim files/LICENSE
 MODULES_DIR  := $(ISO_DIR)/files
 
 # Salidas
@@ -89,7 +89,8 @@ iso: $(KERNEL_ELF)
 	@mkdir -p $(MODULES_DIR)
 	@cp $(KERNEL_ELF) $(BOOT_DIR)/kernel.elf
 	@cp grub/grub.cfg $(GRUB_DIR)/grub.cfg
-	cp $(MODULES) $(MODULES_DIR)/
+	@cp $(MODULES) $(MODULES_DIR)/
+	@cp LICENSE $(ISO_DIR)/LICENSE
 	@$(GRUB_MKRESCUE) -o $(ISO_IMG) $(ISO_DIR) --modules="multiboot part_msdos fat"
 	@echo ">>> ISO generada: $(ISO_IMG)"
 

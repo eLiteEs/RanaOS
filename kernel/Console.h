@@ -49,6 +49,7 @@ public:
 
     static void itoa(int value, char* str, int base);
 
+    static uint8_t asciiToScancode(char c); 
 private:
     static const uint16_t VGA_WIDTH  = 80;
     static const uint16_t VGA_HEIGHT = 25;

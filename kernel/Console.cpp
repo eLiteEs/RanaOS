@@ -304,6 +304,27 @@ char scancodeToAscii(uint8_t sc, bool shift) {
     return 0;
 }
 
+uint8_t Console::asciiToScancode(char c) {
+    static const char table[][2] = {
+        {0,0}, {27,27}, {'1','!'}, {'2','\"'}, {'3','#'}, {'4','$'}, {'5','%'}, {'6','&'}, {'7','/'}, {'8','('},
+        {'9',')'}, {'0','='}, {'\'','?'}, {(char)161,'!'}, {'\b','\b'}, {'\t','\t'}, {'q','Q'}, {'w','W'}, {'e','E'}, {'r','R'},
+        {'t','T'}, {'y','Y'}, {'u','U'}, {'i','I'}, {'o','O'}, {'p','P'}, {'`','^'}, {'+','*'}, {'\n','\n'}, {0,0},
+        {'a','A'}, {'s','S'}, {'d','D'}, {'f','F'}, {'g','G'}, {'h','H'}, {'j','J'}, {'k','K'}, {'l','L'}, {(char)241,(char)209},
+        {(char)0x27,(char)0x22}, {(char)0x5C,(char)0x7C}, {0,0}, {(char)0x5B,(char)0x7B}, {'z','Z'}, {'x','X'},
+        {'c','C'}, {'v','V'}, {'b','B'}, {'n','N'}, {'m','M'}, {',',';'}, {'.',':'}, {'-','_'}, {0,0}, {'*','*'},
+        {0,0}, {' ',' '}
+    };
+
+    size_t tableSize = sizeof(table) / sizeof(table[0]);
+    for (uint8_t sc = 0; sc < tableSize; sc++) {
+        if (table[sc][0] == c || table[sc][1] == c) {
+            return sc;
+        }
+    }
+
+    return 0xFF; // no encontrado
+}
+
 char* Console::readLine(char* buffer, int maxLength) {
     if(!graphics) {
         int length = 0, cursor = 0, startPos = cursorPos;

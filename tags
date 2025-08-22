@@ -67,22 +67,22 @@ KERNEL_ELF	Makefile	/^KERNEL_ELF := kernel.elf$/;"	m
 KEYBOARD_H	kernel/Keyboard.h	4;"	d
 KEY_BACKSPACE	kernel/Console.cpp	290;"	d	file:
 KEY_BACKSPACE	kernel/Keyboard.cpp	99;"	d	file:
-KEY_BACKSPACE	kernel/kernel.cpp	347;"	d	file:
+KEY_BACKSPACE	kernel/kernel.cpp	359;"	d	file:
 KEY_DOWN	kernel/Console.cpp	289;"	d	file:
 KEY_DOWN	kernel/Keyboard.cpp	98;"	d	file:
-KEY_DOWN	kernel/kernel.cpp	346;"	d	file:
+KEY_DOWN	kernel/kernel.cpp	358;"	d	file:
 KEY_ENTER	kernel/Console.cpp	291;"	d	file:
 KEY_ENTER	kernel/Keyboard.cpp	100;"	d	file:
-KEY_ENTER	kernel/kernel.cpp	348;"	d	file:
+KEY_ENTER	kernel/kernel.cpp	360;"	d	file:
 KEY_LEFT	kernel/Console.cpp	286;"	d	file:
 KEY_LEFT	kernel/Keyboard.cpp	95;"	d	file:
-KEY_LEFT	kernel/kernel.cpp	343;"	d	file:
+KEY_LEFT	kernel/kernel.cpp	355;"	d	file:
 KEY_RIGHT	kernel/Console.cpp	287;"	d	file:
 KEY_RIGHT	kernel/Keyboard.cpp	96;"	d	file:
-KEY_RIGHT	kernel/kernel.cpp	344;"	d	file:
+KEY_RIGHT	kernel/kernel.cpp	356;"	d	file:
 KEY_UP	kernel/Console.cpp	288;"	d	file:
 KEY_UP	kernel/Keyboard.cpp	97;"	d	file:
-KEY_UP	kernel/kernel.cpp	345;"	d	file:
+KEY_UP	kernel/kernel.cpp	357;"	d	file:
 LD	Makefile	/^LD        := ld$/;"	m
 LD	build.bat	/^set LD="%TOOLCHAIN%\\i686-elf-ld"$/;"	v
 LDFLAGS	Makefile	/^LDFLAGS := -m elf_i386 -nostdlib -L$(shell dirname $$(gcc -m32 -print-libgcc-file-name))$/;"	m
@@ -90,12 +90,12 @@ LDFLAGS	build.bat	/^set LDFLAGS=-m elf_i386$/;"	v
 LDSCRIPT	Makefile	/^LDSCRIPT := kernel\/linker.ld$/;"	m
 MAXLEN	kernel/Console.h	/^    static const int MAXLEN = 256;$/;"	m	class:Console
 MAX_FILE_SIZE	kernel/kernel.cpp	36;"	d	file:
-MODULES	Makefile	/^MODULES = files\/text.txt files\/bg.pim files\/tux.pim files\/background.pim$/;"	m
+MODULES	Makefile	/^MODULES = files\/text.txt files\/bg.pim files\/tux.pim files\/background.pim files\/LICENSE$/;"	m
 MODULES_DIR	Makefile	/^MODULES_DIR  := $(ISO_DIR)\/files$/;"	m
 MULTIBOOT_H	kernel/multiboot.h	2;"	d
 MULTIBOOT_INFO_FRAMEBUFFER_INFO	kernel/multiboot.h	47;"	d
-MULTIBOOT_TAG_TYPE_END	kernel/kernel.cpp	558;"	d	file:
-MULTIBOOT_TAG_TYPE_MODULE	kernel/kernel.cpp	559;"	d	file:
+MULTIBOOT_TAG_TYPE_END	kernel/kernel.cpp	570;"	d	file:
+MULTIBOOT_TAG_TYPE_MODULE	kernel/kernel.cpp	571;"	d	file:
 NASM	Makefile	/^NASM      := nasm$/;"	m
 NASM	build.bat	/^set NASM=nasm$/;"	v
 NULL	kernel/parrot.cpp	2;"	d	file:
@@ -179,6 +179,7 @@ alloc_block	kernel/ffext2/ext2.cpp	/^static u32 alloc_block(FS& fs, u32 preferre
 alloc_inode	kernel/ffext2/ext2.cpp	/^static u32 alloc_inode(FS& fs, u32 preferred_group) {$/;"	f	namespace:ext2full
 allocate_block_for_inode	kernel/ffext2/ext2.cpp	/^static bool allocate_block_for_inode(FS& fs, Inode& in, u32 file_block_index, u32 preferred_group, u32& out_block) {$/;"	f	namespace:ext2full
 apm_table	kernel/multiboot.h	/^    uint32_t apm_table;$/;"	m	struct:multiboot_info_t
+asciiToScancode	kernel/Console.cpp	/^uint8_t Console::asciiToScancode(char c) {$/;"	f	class:Console
 b	kernel/Graphics.h	/^    uint8_t r, g, b;$/;"	m	struct:vga_color
 b	kernel/vgraphics.h	/^	uint8_t r, g, b, a;$/;"	m	struct:Color
 base	kernel/idt.h	/^    uint32_t base;$/;"	m	struct:IDTPtr
@@ -564,6 +565,7 @@ wait	kernel/kernel.cpp	/^void wait(int secs) {$/;"	f
 wait_ms	kernel/kernel.cpp	/^void wait_ms(uint32_t ms) {$/;"	f
 wait_ms	kernel/wait_wrapper.cpp	/^    void wait_ms(uint32_t ms) {$/;"	f
 was_c_pressed	kernel/kernel.cpp	/^bool was_c_pressed() {$/;"	f
+was_key_pressed	kernel/kernel.cpp	/^bool was_key_pressed(char c) {$/;"	f
 width	kernel/vgraphics.h	/^	uint32_t width;$/;"	m	struct:FBInfo
 work_buf	kernel/ffext2/ext2.hpp	/^    void* work_buf;$/;"	m	struct:ext2full::FS
 work_buf_bytes	kernel/ffext2/ext2.hpp	/^    u32 work_buf_bytes;$/;"	m	struct:ext2full::FS
