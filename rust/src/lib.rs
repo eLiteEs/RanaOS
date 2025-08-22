@@ -7,7 +7,7 @@
 extern "C" {
     // Graphics functions
     fn vgraphics_put_pixel(x: u32, y: u32, color: u32);
-    fn vgraphics_draw_char(x: u32, y: u32, c: u8, fg: u32, bg: u32);
+    fn vgraphics_draw_char(x: u32, y: u32, c: u8, fg: u32, bg: u32, bold: bool);
     fn vgraphics_clear_screen();
     fn vgraphics_get_width() -> u32;
     fn vgraphics_get_height() -> u32;
@@ -39,8 +39,8 @@ impl Graphics {
         unsafe { vgraphics_put_pixel(x, y, color) }
     }
 
-    pub fn draw_char(x: u32, y: u32, c: u8, fg: u32, bg: u32) {
-        unsafe { vgraphics_draw_char(x, y, c, fg, bg) }
+    pub fn draw_char(x: u32, y: u32, c: u8, fg: u32, bg: u32, bold: bool) {
+        unsafe { vgraphics_draw_char(x, y, c, fg, bg, bold) }
     }
 
     pub fn clear_screen() {
@@ -55,7 +55,7 @@ impl Graphics {
         unsafe { vgraphics_get_height() }
     }
 
-    pub fn draw_string(x: u32, y: u32, s: &str, fg: u32, bg: u32) {
+    pub fn draw_string(x: u32, y: u32, s: &str, fg: u32, bg: u32, bold: bool) {
         for (i, c) in s.chars().enumerate() {
             if c == '\n' {
                 continue; // Skip newlines
@@ -63,7 +63,7 @@ impl Graphics {
             if i >= 128 { // Limit to 128 characters
                 break;
             }
-            unsafe { vgraphics_draw_char(x + i as u32 * 8, y, c as u8, fg, bg); }
+            unsafe { vgraphics_draw_char(x + i as u32 * 8, y, c as u8, fg, bg, bold); }
         }
     }
 
@@ -261,7 +261,7 @@ pub extern "C" fn start_so() {
 
     // Draw toolbar
     Graphics::draw_rect(0, 0, Graphics::width(), 20, 0x000000);
-    Graphics::draw_string(2, 2, "RanaOS beta 2 | Press \'r\' for opening launch dialog", 0xffffff, 0x000000);
+    Graphics::draw_string(2, 2, "RanaOS beta 2 | Press \'r\' for opening launch dialog", 0xffffff, 0x000000, false);
 
     // Display datetime in toolbar (right-aligned)
     let datetime = DateTime;
@@ -270,7 +270,7 @@ pub extern "C" fn start_so() {
     
     let time_width = time_str.len() as u32 * 8;
 
-    Graphics::draw_string(Graphics::width() / 2 - time_width / 2, 2, time_str, 0xffffff, 0x0);
+    Graphics::draw_string(Graphics::width() / 2 - time_width / 2, 2, time_str, 0xffffff, 0x0, true);
     
     loop {
         // Display datetime in toolbar (middle-aligned)
@@ -282,7 +282,7 @@ pub extern "C" fn start_so() {
 
         Graphics::draw_rect(Graphics::width() / 2 - time_width / 2, 0, time_width, 20, 0x0);
 
-        Graphics::draw_string(Graphics::width() / 2 - time_width / 2, 2, time_str, 0xffffff, 0x0);
+        Graphics::draw_string(Graphics::width() / 2 - time_width / 2, 2, time_str, 0xffffff, 0x0, true);
 
         unsafe  { wait_ms(250); }       
     }

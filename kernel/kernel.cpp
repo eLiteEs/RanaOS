@@ -908,7 +908,7 @@ void runcommand(char* s, bool auth) {
         Console::println("Decimal: ", (long long unsigned) hex_to_dec(hex));
         Console::println("Char: ", (char) ((long long unsigned) hex_to_dec(hex)));
     } else if(!strcmp(s, "image")) {
-        const char* imageContent = read_file_from_meta("tux.pim");
+        const char* imageContent = read_file_from_meta("background.pim");
 
         Console::clearScreen();
         VGraphics::put_image(0,0, imageContent);

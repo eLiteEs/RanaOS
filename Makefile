@@ -51,7 +51,7 @@ CPP_OBJS := $(patsubst kernel/%.cpp, %.o, $(CPP_SRCS))
 
 LDSCRIPT := kernel/linker.ld
 
-MODULES = files/text.txt files/bg.pim files/tux.pim
+MODULES = files/text.txt files/bg.pim files/tux.pim files/background.pim
 MODULES_DIR  := $(ISO_DIR)/files
 
 # Salidas

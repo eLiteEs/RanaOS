@@ -56,7 +56,7 @@ void VGraphics::putPixel(uint32_t x, uint32_t y, uint32_t color) {
     fb.address[offset] = color;
 }
 
-void VGraphics::drawChar(uint32_t x, uint32_t y, char c, uint32_t color, uint32_t bg) {
+void VGraphics::drawChar(uint32_t x, uint32_t y, char c, uint32_t color, uint32_t bg, bool bold) {
     if (x >= fb.width || y >= fb.height) return; // Fuera de pantalla
 	if (c < 0 || c > 255) return;
 
@@ -75,11 +75,22 @@ void VGraphics::drawChar(uint32_t x, uint32_t y, char c, uint32_t color, uint32_
 			}
 		}
 	}
+
+    if(!bold) { return; } 
+
+    for (int row = 0; row < 16; row++) {
+		uint8_t line = font8x16[(uint8_t)c][row];
+		for (int col = 0; col < 8; col++) {
+			if (line & (1 << (7 - col))) {
+				putPixel(x + 1 + col, y + 1 + row, color);
+			}
+		}
+	} 
 }
 
-void VGraphics::drawString(uint32_t x, uint32_t y, const char* str, uint32_t fg, uint32_t bg) {
+void VGraphics::drawString(uint32_t x, uint32_t y, const char* str, uint32_t fg, uint32_t bg, bool bold) {
 	while (*str) {
-		drawChar(x, y, *str++, fg, bg);
+		drawChar(x, y, *str++, fg, bg, bold);
 		x += 8;
 	}
 }
