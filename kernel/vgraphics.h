@@ -21,8 +21,8 @@ class VGraphics {
 public:
 	static void init(uint32_t width, uint32_t height, uint32_t pitch, uint32_t bpp, uintptr_t addr);
 	static void putPixel(uint32_t x, uint32_t y, uint32_t color);
-    static void drawChar(uint32_t x, uint32_t y, char c, uint32_t fg, uint32_t bg = 0x000000, bool bold = false);
-    static void drawString(uint32_t x, uint32_t y, const char* str, uint32_t fg, uint32_t bg = 0x0, bool bold = false);
+    static void drawChar(uint32_t x, uint32_t y, char c, uint32_t fg, uint32_t bg = 0x000000, bool bold = false, bool underline = false);
+    static void drawString(uint32_t x, uint32_t y, const char* str, uint32_t fg, uint32_t bg = 0x0, bool bold = false, bool underline = false);
     static void clearScreen();
 
     static FBInfo getFBInfo() {

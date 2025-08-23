@@ -104,7 +104,7 @@ PACKED_STRUCT	kernel/ffext2/ext2.hpp	11;"	d
 PACKED_STRUCT	kernel/ffext2/ext2.hpp	9;"	d
 PALETTE	PIMConverter.java	/^    private static final Color[] PALETTE = {$/;"	f	class:PIMConverter	file:
 PI	kernel/Graphics.h	28;"	d
-PI	kernel/vgraphics.cpp	159;"	d	file:
+PI	kernel/vgraphics.cpp	165;"	d	file:
 PIC1_COMMAND	kernel/Keyboard.cpp	7;"	d	file:
 PIC1_COMMAND	kernel/pic.cpp	4;"	d	file:
 PIC1_COMMAND	kernel/pic_wrapper.cpp	3;"	d	file:
@@ -236,8 +236,8 @@ dev	kernel/ffext2/ext2.hpp	/^    BlockDevice dev;$/;"	m	struct:ext2full::FS
 dir_add_entry	kernel/ffext2/ext2.cpp	/^static bool dir_add_entry(FS& fs, u32 dir_inum, u32 child_inum, const char* name, u32 name_len, u8 file_type) {$/;"	f	namespace:ext2full
 dir_lookup_inode	kernel/ffext2/ext2.cpp	/^static u32 dir_lookup_inode(FS& fs, const Inode& dir, const char* name, u32 name_len) {$/;"	f	namespace:ext2full
 div_up	kernel/ffext2/ext2.cpp	/^static u32 div_up(u32 a, u32 b) { return (a + b - 1) \/ b; }$/;"	f	namespace:ext2full
-drawChar	kernel/vgraphics.cpp	/^void VGraphics::drawChar(uint32_t x, uint32_t y, char c, uint32_t color, uint32_t bg, bool bold) {$/;"	f	class:VGraphics
-drawString	kernel/vgraphics.cpp	/^void VGraphics::drawString(uint32_t x, uint32_t y, const char* str, uint32_t fg, uint32_t bg, bool bold) {$/;"	f	class:VGraphics
+drawChar	kernel/vgraphics.cpp	/^void VGraphics::drawChar(uint32_t x, uint32_t y, char c, uint32_t color, uint32_t bg, bool bold, bool underline) {$/;"	f	class:VGraphics
+drawString	kernel/vgraphics.cpp	/^void VGraphics::drawString(uint32_t x, uint32_t y, const char* str, uint32_t fg, uint32_t bg, bool bold, bool underline) {$/;"	f	class:VGraphics
 draw_circle	kernel/vgraphics.cpp	/^void VGraphics::draw_circle(int cx, int cy, int r, uint32_t color) {$/;"	f	class:VGraphics
 draw_line	kernel/vgraphics.cpp	/^void VGraphics::draw_line(int x0, int y0, int x1, int y1, uint32_t color) {$/;"	f	class:VGraphics
 draw_line_adv	kernel/vgraphics.cpp	/^void VGraphics::draw_line_adv(int x0, int y0, int length, int deg, uint32_t color) {$/;"	f	class:VGraphics
@@ -556,8 +556,8 @@ vgaBuffer	kernel/Console.cpp	/^uint16_t* Console::vgaBuffer    = (uint16_t*)VGA_
 vgaBuffer	kernel/Console.h	/^    static uint16_t* vgaBuffer;$/;"	m	class:Console
 vga_color	kernel/Graphics.h	/^struct vga_color {$/;"	s
 vgraphics_clear_screen	kernel/vgraphics_wrapper.cpp	/^void vgraphics_clear_screen() {$/;"	f
-vgraphics_draw_char	kernel/vgraphics_wrapper.cpp	/^void vgraphics_draw_char(uint32_t x, uint32_t y, char c, uint32_t fg, uint32_t bg, bool bold) {$/;"	f
-vgraphics_draw_string	kernel/vgraphics_wrapper.cpp	/^void vgraphics_draw_string(uint32_t x, uint32_t y, const char* str, uint32_t fg, bool bold) {$/;"	f
+vgraphics_draw_char	kernel/vgraphics_wrapper.cpp	/^void vgraphics_draw_char(uint32_t x, uint32_t y, char c, uint32_t fg, uint32_t bg, bool bold, bool underline) {$/;"	f
+vgraphics_draw_string	kernel/vgraphics_wrapper.cpp	/^void vgraphics_draw_string(uint32_t x, uint32_t y, const char* str, uint32_t fg, bool bold, bool underline) {$/;"	f
 vgraphics_get_height	kernel/vgraphics_wrapper.cpp	/^uint32_t vgraphics_get_height() {$/;"	f
 vgraphics_get_width	kernel/vgraphics_wrapper.cpp	/^uint32_t vgraphics_get_width() {$/;"	f
 vgraphics_put_pixel	kernel/vgraphics_wrapper.cpp	/^void vgraphics_put_pixel(uint32_t x, uint32_t y, uint32_t color) {$/;"	f
