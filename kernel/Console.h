@@ -42,7 +42,7 @@ public:
     static void setbColor(uint32_t newColor);
     static void setColors(uint32_t fg, uint32_t bg);
 
-    static char* readText(int x, int y, int maxLen, uint32_t color);
+    static char* readText(int x, int y, int maxLen, uint32_t color, char* outBuffer);
 
     static uint32_t cursorX; // Posición del cursor en X (modo gráfico)
     static uint32_t cursorY; // Posición del cursor en Y (modo gráfico)

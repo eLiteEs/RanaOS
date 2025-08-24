@@ -449,7 +449,7 @@ rand_range	kernel/kernel.cpp	/^int32_t rand_range(int32_t min, int32_t max) {$/;
 rand_seed	kernel/kernel.cpp	/^static uint32_t rand_seed = 1;$/;"	v	file:
 rdtsc	kernel/kernel.cpp	/^uint64_t rdtsc() {$/;"	f
 readLine	kernel/Console.cpp	/^char* Console::readLine(char* buffer, int maxLength) {$/;"	f	class:Console
-readText	kernel/Console.cpp	/^char* Console::readText(int x, int y, int maxLen, uint32_t color) {$/;"	f	class:Console
+readText	kernel/Console.cpp	/^char* Console::readText(int x, int y, int maxLen, uint32_t color, char* outBuffer) {$/;"	f	class:Console
 read_block	kernel/ffext2/ext2.cpp	/^static bool read_block(const FS& fs, u32 block_idx, void* out) {$/;"	f	namespace:ext2full
 read_blocks	kernel/ffext2/ext2.hpp	/^    bool (*read_blocks)(void* user, u32 lba, u32 count, void* buf);$/;"	m	struct:ext2full::BlockDevice
 read_bytes	kernel/ffext2/ext2.cpp	/^static bool read_bytes(const FS& fs, u32 byte_off, void* out, u32 n) {$/;"	f	namespace:ext2full
@@ -488,6 +488,7 @@ setColor	kernel/Console.cpp	/^void Console::setColor(uint32_t newColor) {   $/;"
 setColor	kernel/Console.cpp	/^void Console::setColor(uint8_t newColor) {$/;"	f	class:Console
 setColors	kernel/Console.cpp	/^void Console::setColors(uint32_t fg, uint32_t bg) {   $/;"	f	class:Console
 setGraphics	kernel/Console.cpp	/^void Console::setGraphics(bool f) {$/;"	f	class:Console
+set_cmos_time	kernel/kernel.cpp	/^void set_cmos_time(uint8_t hour, uint8_t minute, uint8_t second) {$/;"	f
 set_cursor	kernel/Console.cpp	/^void Console::set_cursor(uint16_t pos) {$/;"	f	class:Console
 set_cursor	kernel/kernel.cpp	/^void set_cursor(uint8_t row, uint8_t col) {$/;"	f
 setbColor	kernel/Console.cpp	/^void Console::setbColor(uint32_t newColor) {   $/;"	f	class:Console
@@ -511,6 +512,7 @@ strchr	kernel/string.cpp	/^char* strchr(const char* s, int c) {$/;"	f
 strcmp	kernel/ffext2/ext2.cpp	43;"	d	file:
 strcmp	kernel/kernel.cpp	/^int strcmp(const char* a, const char* b) {$/;"	f
 strcpy	kernel/ffext2/ext2.cpp	45;"	d	file:
+strcpy	kernel/kernel.cpp	/^char* strcpy(char* dest, const char* src) {$/;"	f
 strlen	kernel/ffext2/ext2.cpp	42;"	d	file:
 strlen	kernel/string.cpp	/^size_t strlen(const char* s) {$/;"	f
 strlen	kernel/string.hpp	/^    static size_t strlen(const char* str) {$/;"	f	namespace:String
@@ -525,6 +527,7 @@ tanf	kernel/vgraphics.cpp	/^float tanf(float x) {$/;"	f
 textBuffer	kernel/Console.cpp	/^static char textBuffer[FB_HEIGHT][FB_WIDTH];$/;"	v	file:
 textColor	kernel/Console.cpp	/^static Color textColor = {255, 255, 255, 0};  \/\/ Blanco por defecto$/;"	v	file:
 thread_switch_asm	threads.asm	/^thread_switch_asm:$/;"	l
+to_bcd	kernel/kernel.cpp	/^static inline uint8_t to_bcd(uint8_t val) {$/;"	f	file:
 transform_point	kernel/Graphics.cpp	/^static Vec3 transform_point(const Vec3& point) {$/;"	f	file:
 truncate_path	kernel/ffext2/ext2.cpp	/^bool truncate_path(FS& fs, const char* path, u32 new_size) {$/;"	f	namespace:ext2full
 type	kernel/kernel.cpp	/^    uint32_t type;      \/\/ = 3$/;"	m	struct:multiboot_tag_module	file:

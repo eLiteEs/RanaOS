@@ -377,22 +377,19 @@ char* Console::readLine(char* buffer, int maxLength) {
         buffer[length] = 0;
         return buffer;
     } else {
-        char* result = readText(cursorX * 8, cursorY * 16, maxLength, gcolor);
-        return result;
+        return readText(cursorX * 8, cursorY * 16, maxLength, gcolor, buffer);    
     }
 }
 
-char* Console::readText(int x, int y, int maxLen, uint32_t color) {
-    static char buffer[256];
+char* Console::readText(int x, int y, int maxLen, uint32_t color, char* outBuffer) {
     int len = 0, cursor = 0;
     bool shift = false;
 
     VGraphics::drawChar(x + cursor * 8 + 1, y, '_', gcolor);
 
-    // Copia el contenido gráfico actual desde el buffer lógico
-    strncpy(buffer, textBuffer[y], maxLen - 1);
-    buffer[maxLen - 1] = 0;
-    len = strlen(buffer);
+    strncpy(outBuffer, textBuffer[y], maxLen - 1);
+    outBuffer[maxLen - 1] = 0;
+    len = strlen(outBuffer);
     cursor = len;
 
     while (true) {
@@ -401,7 +398,7 @@ char* Console::readText(int x, int y, int maxLen, uint32_t color) {
 
         if (sc == KEY_BACKSPACE && cursor > 0) {
             for (int i = cursor - 1; i < len - 1; ++i)
-                buffer[i] = buffer[i + 1];
+                outBuffer[i] = outBuffer[i + 1];
             len--; cursor--;
         } else if (sc == KEY_LEFT && cursor > 0) cursor--;
         else if (sc == KEY_RIGHT && cursor < len) cursor++;
@@ -409,28 +406,27 @@ char* Console::readText(int x, int y, int maxLen, uint32_t color) {
             char c = scancodeToAscii(sc, shift);
             if (c && c >= 32 && c <= 126 && len < maxLen - 1) {
                 for (int i = len; i > cursor; --i)
-                    buffer[i] = buffer[i - 1];
-                buffer[cursor] = c;
+                    outBuffer[i] = outBuffer[i - 1];
+                outBuffer[cursor] = c;
                 len++; cursor++;
             }
         }
 
-        buffer[len] = 0;
+        outBuffer[len] = 0;
 
         VGraphics::fillRect(x, y, 8 * 128 - x * 8, 16, bcolor);
-        VGraphics::drawString(x, y, buffer, gcolor);
+        VGraphics::drawString(x, y, outBuffer, gcolor);
         VGraphics::drawChar(x + cursor * 8 + 1, y, '_', gcolor);
 
-        // Guardar nuevo estado en buffer lógico
-        strncpy(textBuffer[y], buffer, maxLen);
+        strncpy(textBuffer[y], outBuffer, maxLen);
     }
 
     VGraphics::drawChar(x + cursor * 8 + 1, y, '_', bcolor);
 
-    buffer[len] = 0;
+    outBuffer[len] = 0;
     cursorX = 0;
     cursorY++;
-    return buffer;
+    return outBuffer;
 }
 
 void Console::itoa(int value, char* str, int base) {

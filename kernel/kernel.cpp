@@ -701,6 +701,27 @@ void clock() {
 
 extern "C" void start_so();
 
+static inline uint8_t to_bcd(uint8_t val) {
+    return ((val / 10) << 4) | (val % 10);
+}
+
+void set_cmos_time(uint8_t hour, uint8_t minute, uint8_t second) {
+    outb(0x70, 0x80 | 0x00);  // selecciona segundos
+    outb(0x71, to_bcd(second));
+
+    outb(0x70, 0x80 | 0x02);  // minutos
+    outb(0x71, to_bcd(minute));
+
+    outb(0x70, 0x80 | 0x04);  // horas
+    outb(0x71, to_bcd(hour));
+}
+
+char* strcpy(char* dest, const char* src) {
+    char* r = dest;
+    while ((*r++ = *src++)); // copia incluyendo el '\0'
+    return dest;
+}
+
 // Ejecutar comandos
 void runcommand(char* s, bool auth) {	
 	if(!strcmp(s, "help")) {
@@ -725,6 +746,7 @@ void runcommand(char* s, bool auth) {
         	Console::write("  start >> Start OS in graphical mode.\n");
 		Console::write("  clock >> Show an analogic clock in the screen.\n");
         Console::write("  license >> Show the license of the project.\n");
+        Console::write("  time --set >> Update the time.\n");
     	} else if(!strcmp(s, "version")) {
 		Console::write("eLite Systems RanaOS beta 3\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
@@ -963,6 +985,62 @@ void runcommand(char* s, bool auth) {
             }
         }
 
+    } else if(!strcmp(s, "time --set")) {
+        int hour, minutes, seconds;
+
+        Console::println("Config new time:");
+
+        Console::write("hour: (");
+        Console::write(getHour());
+        Console::write(") ");
+    
+        char linebuf2[256];
+        char* hours = Console::readLine(linebuf2, sizeof(linebuf2));
+
+        Console::write("minutes: (");
+        Console::write(getMinute());
+        Console::write(") ");
+    
+        char linebuf3[256];
+        char* minutess = Console::readLine(linebuf3, sizeof(linebuf3));
+
+        Console::write("seconds: (");
+        Console::write(getSecond());
+        Console::write(") ");
+
+        char linebuf4[256];
+        char* secondss = Console::readLine(linebuf4, sizeof(linebuf4));
+
+        if (strcmp(hours, "") == 0) {
+            strcpy(linebuf2, int_to_str(getHour()));  // copia a su buffer
+            hours = linebuf2;
+        }
+
+        if (strcmp(minutess, "") == 0) {
+            strcpy(linebuf3, int_to_str(getMinute()));
+            minutess = linebuf3;
+        }
+
+        if (strcmp(secondss, "") == 0) {
+            strcpy(linebuf4, int_to_str(getSecond()));
+            secondss = linebuf4;
+        }
+
+        if(isNumber(hours) && isNumber(minutess) && isNumber(secondss)) {
+            hour = stoi(hours);
+            minutes = stoi(minutess);
+            seconds = stoi(secondss);   
+
+            if(hour >= 0 && hour <= 23 && minutes >= 0 && minutes <= 59 && seconds >= 0 && seconds <= 59) {
+                set_cmos_time(hour, minutes, seconds);
+                Console::println("Time updated!");
+                return;
+            }
+            Console::println("Invalid time, exceeds limits.");
+            return;
+        }
+        Console::println("Invalid time, not numbers.");
+        return;
     } else {
 	    Console::write("Unknown command \"");
 	    Console::write(s);
