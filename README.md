@@ -1,4 +1,6 @@
 [![Build RanaOS ISO](https://github.com/eLiteEs/RanaOS/actions/workflows/build.yml/badge.svg)](https://github.com/eLiteEs/RanaOS/actions/workflows/build.yml)
+[![pages-build-deployment](https://github.com/eLiteEs/RanaOS/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/eLiteEs/RanaOS/actions/workflows/pages/pages-build-deployment)
+[![Build and Publish RanaOS](https://github.com/eLiteEs/RanaOS/actions/workflows/release.yml/badge.svg)](https://github.com/eLiteEs/RanaOS/actions/workflows/release.yml)
 
 # RanaOS
 32-bit OS made using C++, C and Assembly
