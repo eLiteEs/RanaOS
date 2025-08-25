@@ -19,6 +19,7 @@
 #include "vgraphics.h"
 #include "Debug.h" // Debugging functions
 #include "date.h"
+#include "Keyboard.h" // Read single-key events
 
 // Typedef for C++ look like Rust
 typedef uint8_t u8;
@@ -159,41 +160,6 @@ uint32_t measure_cpu_frequency() {
 
 	uint32_t cycles = end - start;
 	return cycles / 100;
-}
-
-// Funciones que estan redifinidas
-int keyboard_key_available() {
-    return inb(0x64) & 1;
-}
-
-uint8_t keyboard_read_scancode() {
-    return inb(0x60);
-}
-
-// Funcion para comprobar si c fue pulsada
-bool was_c_pressed() {
-    if (!keyboard_key_available())
-        return false;
-
-    uint8_t sc = keyboard_read_scancode();
-
-    // Ignora tecla liberada (bit 7 = 1)
-    if (sc & 0x80) return false;
-
-    // Código 0x2E = tecla 'C' (scancode set 1)
-    return sc == 0x2E;
-}
-
-bool was_key_pressed(char c) {
-    if (!keyboard_key_available())
-        return false;
-
-    uint8_t sc = keyboard_read_scancode();
-
-    // Ignora tecla liberada (bit 7 = 1)
-    if (sc & 0x80) return false;
-
-    return sc == Console::asciiToScancode(c);
 }
 
 // Funciones útiles para no usar libc
@@ -768,7 +734,7 @@ void runcommand(char* s, bool auth) {
         	Console::println(parrot[i]);
         	pit_wait_ticks(1000);
 
-        	if (was_c_pressed()) {
+        	if (Keyboard::was_c_pressed()) {
     			break;
             }
 
@@ -972,9 +938,9 @@ void runcommand(char* s, bool auth) {
                 Console::println("Press \'c\' to continue or \'q\' to quit...");
 
                 while(true) {
-                    if(was_c_pressed()) {
+                    if(Keyboard::was_c_pressed()) {
                         break;
-                    } else if(was_key_pressed('q')) {
+                    } else if(Keyboard::was_key_pressed('q')) {
                         Console::println();
                         return;
                     }

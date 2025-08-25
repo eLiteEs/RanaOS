@@ -46,7 +46,9 @@ CPP_SRCS := kernel/kernel.cpp \
 	kernel/wait_wrapper.cpp \
 	kernel/pic.cpp \
 	kernel/io_wrapper.cpp \
-	kernel/pic_wrapper.cpp
+	kernel/pic_wrapper.cpp \
+	kernel/Keyboard.cpp \
+	kernel/keyboard_wrapper.cpp
 CPP_OBJS := $(patsubst kernel/%.cpp, %.o, $(CPP_SRCS))
 
 LDSCRIPT := kernel/linker.ld

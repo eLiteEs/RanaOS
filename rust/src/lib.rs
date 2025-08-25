@@ -2,6 +2,8 @@
 #![no_std]
 #![no_main]
 #![feature(lang_items)]
+#[warn(improper_ctypes)]
+#[warn(internal_features)]
 
 // External C functions from your kernel
 extern "C" {
@@ -11,6 +13,8 @@ extern "C" {
     fn vgraphics_clear_screen();
     fn vgraphics_get_width() -> u32;
     fn vgraphics_get_height() -> u32;
+    fn vgraphics_put_image(dx: u32, y: u32, img_data: *const i8);
+    
     // Date and time functions
     fn get_second() -> u32;
     fn get_minute() -> u32;
@@ -28,11 +32,16 @@ extern "C" {
 
     // IRQ functions
     fn enable_irq(irq: u8);
+
+    // Keyboard
+    fn was_c_pressed() -> bool;
+    fn was_key_pressed(key: char) -> bool;
 }
 
 // Public Rust interface
 pub struct Graphics;
 pub struct DateTime;
+pub struct Keyboard;
 
 impl Graphics {
     pub fn put_pixel(x: u32, y: u32, color: u32) {
@@ -73,6 +82,10 @@ impl Graphics {
                 Self::put_pixel(x + i, y + j, color);
             }
         }
+    }
+
+    pub fn put_image(dx: u32, dy: u32, img_data: *const i8) {
+        unsafe { vgraphics_put_image(dx, dy, img_data); }
     }
 }
 impl DateTime {
@@ -138,6 +151,17 @@ pub struct Mouse {
     buttons: u8,
     width: u32,
     height: u32
+}
+
+impl Keyboard {
+
+    pub fn was_c_pressed() -> bool {
+        unsafe { was_c_pressed() }
+    }
+    
+    pub fn was_key_pressed(key: char) -> bool {
+        unsafe { was_key_pressed(key) }
+    }
 }
 
 // Registros PS/2
@@ -237,7 +261,11 @@ impl Mouse {
 
     // Dibujar cursor (simple)
     pub fn draw(&self) {
-        Graphics::draw_rect(self.x as u32, self.y as u32, 10, 10, 0xFFFFFF);
+        // Literal de bytes terminada en NUL
+        static IMAGE: &[u8] = b"w\nww\nwnw\nwnnw\nwnnnw\nwnnnnw\nwnnnnnw\nwnnwwwww\nwnw\nww\nw\n\0";
+
+        Graphics::put_image(self.x as u32, self.y as u32, IMAGE.as_ptr() as *const i8);
+
     }
 }
 
@@ -272,20 +300,35 @@ pub extern "C" fn start_so() {
 
     Graphics::draw_string(Graphics::width() / 2 - time_width / 2, 2, time_str, 0xffffff, 0x0, true, false);
     
+    let mut i = 0u32;
+
     loop {
-        // Display datetime in toolbar (middle-aligned)
-        let datetime = DateTime;
-        let datetime_str = datetime.format();
-        let time_str = unsafe { core::str::from_utf8_unchecked(&datetime_str) };
-        
-        let time_width = time_str.len() as u32 * 8;
+        if i == 1000 {
+            mouse.handle_interrupt();
 
-        Graphics::draw_rect(Graphics::width() / 2 - time_width / 2, 0, time_width, 20, 0x0);
+            mouse.draw();
+    
+            // Mostrar hora en toolbar
+            let datetime = DateTime;
+            let datetime_str = datetime.format();
+            let time_str = unsafe { core::str::from_utf8_unchecked(&datetime_str) };
 
-        Graphics::draw_string(Graphics::width() / 2 - time_width / 2, 2, time_str, 0xffffff, 0x0, true, false);
+            let time_width = time_str.len() as u32 * 8;
 
-        unsafe  { wait_ms(250); }       
+            Graphics::draw_rect(Graphics::width() / 2 - time_width / 2, 0, time_width, 20, 0x0);
+            Graphics::draw_string(Graphics::width() / 2 - time_width / 2, 2, time_str, 0xffffff, 0x0, true, false);
+
+            i = 0;
+        }
+
+        i += 1;
+
+        //if Keyboard::was_c_pressed() {
+        //    Graphics::draw_rect(0, 0, 1920, 1080, 0xffffff);
+        //    unsafe { wait_ms(5000); }
+        //}
     }
+ 
 }
 
 #[lang = "eh_personality"] extern "C" fn eh_personality() {}

@@ -28,4 +28,8 @@ void vgraphics_draw_string(uint32_t x, uint32_t y, const char* str, uint32_t fg,
     VGraphics::drawString(x, y, str, fg, bold, underline);
 }
 
+void vgraphics_put_image(int dx, int dy, const char* img_data) {
+    VGraphics::put_image(dx, dy, img_data);
+}
+
 }

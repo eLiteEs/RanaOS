@@ -44,7 +44,7 @@ Color	kernel/vgraphics.h	/^struct Color {$/;"	s
 Console	kernel/Console.h	/^class Console {$/;"	c
 DATE_H	kernel/date.h	2;"	d
 DEG_TO_RAD	kernel/Graphics.h	29;"	d
-DISK_SIZE_BYTES	kernel/kernel.cpp	35;"	d	file:
+DISK_SIZE_BYTES	kernel/kernel.cpp	36;"	d	file:
 Debug	kernel/Debug.cpp	/^namespace Debug {$/;"	n	file:
 Debug	kernel/Debug.h	/^namespace Debug {$/;"	n
 EXT2_FULL_HPP	kernel/ffext2/ext2.hpp	3;"	d
@@ -64,38 +64,33 @@ ISO_IMG	Makefile	/^ISO_IMG    := RanaOS.iso$/;"	m
 ISRHandler	kernel/idt.h	/^typedef void (*ISRHandler)(Registers*);$/;"	t
 Init	kernel/Debug.cpp	/^    void Init() {$/;"	f	namespace:Debug
 KERNEL_ELF	Makefile	/^KERNEL_ELF := kernel.elf$/;"	m
-KEYBOARD_H	kernel/Keyboard.h	4;"	d
+KEYBOARD_H	kernel/Keyboard.h	2;"	d
 KEY_BACKSPACE	kernel/Console.cpp	290;"	d	file:
-KEY_BACKSPACE	kernel/Keyboard.cpp	99;"	d	file:
-KEY_BACKSPACE	kernel/kernel.cpp	359;"	d	file:
+KEY_BACKSPACE	kernel/kernel.cpp	325;"	d	file:
 KEY_DOWN	kernel/Console.cpp	289;"	d	file:
-KEY_DOWN	kernel/Keyboard.cpp	98;"	d	file:
-KEY_DOWN	kernel/kernel.cpp	358;"	d	file:
+KEY_DOWN	kernel/kernel.cpp	324;"	d	file:
 KEY_ENTER	kernel/Console.cpp	291;"	d	file:
-KEY_ENTER	kernel/Keyboard.cpp	100;"	d	file:
-KEY_ENTER	kernel/kernel.cpp	360;"	d	file:
+KEY_ENTER	kernel/kernel.cpp	326;"	d	file:
 KEY_LEFT	kernel/Console.cpp	286;"	d	file:
-KEY_LEFT	kernel/Keyboard.cpp	95;"	d	file:
-KEY_LEFT	kernel/kernel.cpp	355;"	d	file:
+KEY_LEFT	kernel/kernel.cpp	321;"	d	file:
 KEY_RIGHT	kernel/Console.cpp	287;"	d	file:
-KEY_RIGHT	kernel/Keyboard.cpp	96;"	d	file:
-KEY_RIGHT	kernel/kernel.cpp	356;"	d	file:
+KEY_RIGHT	kernel/kernel.cpp	322;"	d	file:
 KEY_UP	kernel/Console.cpp	288;"	d	file:
-KEY_UP	kernel/Keyboard.cpp	97;"	d	file:
-KEY_UP	kernel/kernel.cpp	357;"	d	file:
+KEY_UP	kernel/kernel.cpp	323;"	d	file:
+Keyboard	kernel/Keyboard.h	/^class Keyboard {$/;"	c
 LD	Makefile	/^LD        := ld$/;"	m
 LD	build.bat	/^set LD="%TOOLCHAIN%\\i686-elf-ld"$/;"	v
 LDFLAGS	Makefile	/^LDFLAGS := -m elf_i386 -nostdlib -L$(shell dirname $$(gcc -m32 -print-libgcc-file-name))$/;"	m
 LDFLAGS	build.bat	/^set LDFLAGS=-m elf_i386$/;"	v
 LDSCRIPT	Makefile	/^LDSCRIPT := kernel\/linker.ld$/;"	m
 MAXLEN	kernel/Console.h	/^    static const int MAXLEN = 256;$/;"	m	class:Console
-MAX_FILE_SIZE	kernel/kernel.cpp	36;"	d	file:
+MAX_FILE_SIZE	kernel/kernel.cpp	37;"	d	file:
 MODULES	Makefile	/^MODULES = files\/text.txt files\/bg.pim files\/tux.pim files\/background.pim files\/LICENSE$/;"	m
 MODULES_DIR	Makefile	/^MODULES_DIR  := $(ISO_DIR)\/files$/;"	m
 MULTIBOOT_H	kernel/multiboot.h	2;"	d
 MULTIBOOT_INFO_FRAMEBUFFER_INFO	kernel/multiboot.h	47;"	d
-MULTIBOOT_TAG_TYPE_END	kernel/kernel.cpp	570;"	d	file:
-MULTIBOOT_TAG_TYPE_MODULE	kernel/kernel.cpp	571;"	d	file:
+MULTIBOOT_TAG_TYPE_END	kernel/kernel.cpp	536;"	d	file:
+MULTIBOOT_TAG_TYPE_MODULE	kernel/kernel.cpp	537;"	d	file:
 NASM	Makefile	/^NASM      := nasm$/;"	m
 NASM	build.bat	/^set NASM=nasm$/;"	v
 NULL	kernel/parrot.cpp	2;"	d	file:
@@ -105,7 +100,6 @@ PACKED_STRUCT	kernel/ffext2/ext2.hpp	9;"	d
 PALETTE	PIMConverter.java	/^    private static final Color[] PALETTE = {$/;"	f	class:PIMConverter	file:
 PI	kernel/Graphics.h	28;"	d
 PI	kernel/vgraphics.cpp	165;"	d	file:
-PIC1_COMMAND	kernel/Keyboard.cpp	7;"	d	file:
 PIC1_COMMAND	kernel/pic.cpp	4;"	d	file:
 PIC1_COMMAND	kernel/pic_wrapper.cpp	3;"	d	file:
 PIC1_DATA	kernel/pic.cpp	5;"	d	file:
@@ -114,17 +108,16 @@ PIC2_COMMAND	kernel/pic.cpp	6;"	d	file:
 PIC2_COMMAND	kernel/pic_wrapper.cpp	5;"	d	file:
 PIC2_DATA	kernel/pic.cpp	7;"	d	file:
 PIC2_DATA	kernel/pic_wrapper.cpp	6;"	d	file:
-PIC_EOI	kernel/Keyboard.cpp	8;"	d	file:
 PIC_H	kernel/pic.h	2;"	d
 PIMConverter	PIMConverter.java	/^public class PIMConverter {$/;"	c
 PIT_CHANNEL0	kernel/io.h	5;"	d
-PIT_CHANNEL0	kernel/kernel.cpp	39;"	d	file:
+PIT_CHANNEL0	kernel/kernel.cpp	40;"	d	file:
 PIT_CHANNEL0	kernel/wait_wrapper.cpp	3;"	d	file:
 PIT_COMMAND	kernel/io.h	6;"	d
-PIT_COMMAND	kernel/kernel.cpp	40;"	d	file:
+PIT_COMMAND	kernel/kernel.cpp	41;"	d	file:
 PIT_COMMAND	kernel/wait_wrapper.cpp	4;"	d	file:
 PIT_FREQUENCY	kernel/io.h	7;"	d
-PIT_FREQUENCY	kernel/kernel.cpp	41;"	d	file:
+PIT_FREQUENCY	kernel/kernel.cpp	42;"	d	file:
 PIT_FREQUENCY	kernel/wait_wrapper.cpp	5;"	d	file:
 Print	kernel/Debug.cpp	/^    void Print(const char* s) {$/;"	f	namespace:Debug
 PrintChar	kernel/Debug.cpp	/^    void PrintChar(char c) {$/;"	f	namespace:Debug
@@ -145,22 +138,22 @@ ThreadFunc	kernel/Graphics.h	/^typedef void (*ThreadFunc)(void*);$/;"	t
 Triangle	kernel/Graphics.h	/^} Triangle;$/;"	t	typeref:struct:__anon3
 VGA	kernel/Graphics.cpp	/^static uint8_t* const VGA = (uint8_t*)0xA0000;$/;"	v	file:
 VGA_ADDRESS	kernel/Console.cpp	7;"	d	file:
-VGA_COLOR_BLACK	kernel/kernel.cpp	44;"	d	file:
-VGA_COLOR_BLUE	kernel/kernel.cpp	45;"	d	file:
-VGA_COLOR_BROWN	kernel/kernel.cpp	50;"	d	file:
-VGA_COLOR_CYAN	kernel/kernel.cpp	47;"	d	file:
-VGA_COLOR_DARK_GREY	kernel/kernel.cpp	52;"	d	file:
-VGA_COLOR_GREEN	kernel/kernel.cpp	46;"	d	file:
-VGA_COLOR_LIGHT_BLUE	kernel/kernel.cpp	53;"	d	file:
-VGA_COLOR_LIGHT_CYAN	kernel/kernel.cpp	55;"	d	file:
-VGA_COLOR_LIGHT_GREEN	kernel/kernel.cpp	54;"	d	file:
-VGA_COLOR_LIGHT_GREY	kernel/kernel.cpp	51;"	d	file:
-VGA_COLOR_LIGHT_MAGENTA	kernel/kernel.cpp	57;"	d	file:
-VGA_COLOR_LIGHT_RED	kernel/kernel.cpp	56;"	d	file:
-VGA_COLOR_MAGENTA	kernel/kernel.cpp	49;"	d	file:
-VGA_COLOR_RED	kernel/kernel.cpp	48;"	d	file:
-VGA_COLOR_WHITE	kernel/kernel.cpp	59;"	d	file:
-VGA_COLOR_YELLOW	kernel/kernel.cpp	58;"	d	file:
+VGA_COLOR_BLACK	kernel/kernel.cpp	45;"	d	file:
+VGA_COLOR_BLUE	kernel/kernel.cpp	46;"	d	file:
+VGA_COLOR_BROWN	kernel/kernel.cpp	51;"	d	file:
+VGA_COLOR_CYAN	kernel/kernel.cpp	48;"	d	file:
+VGA_COLOR_DARK_GREY	kernel/kernel.cpp	53;"	d	file:
+VGA_COLOR_GREEN	kernel/kernel.cpp	47;"	d	file:
+VGA_COLOR_LIGHT_BLUE	kernel/kernel.cpp	54;"	d	file:
+VGA_COLOR_LIGHT_CYAN	kernel/kernel.cpp	56;"	d	file:
+VGA_COLOR_LIGHT_GREEN	kernel/kernel.cpp	55;"	d	file:
+VGA_COLOR_LIGHT_GREY	kernel/kernel.cpp	52;"	d	file:
+VGA_COLOR_LIGHT_MAGENTA	kernel/kernel.cpp	58;"	d	file:
+VGA_COLOR_LIGHT_RED	kernel/kernel.cpp	57;"	d	file:
+VGA_COLOR_MAGENTA	kernel/kernel.cpp	50;"	d	file:
+VGA_COLOR_RED	kernel/kernel.cpp	49;"	d	file:
+VGA_COLOR_WHITE	kernel/kernel.cpp	60;"	d	file:
+VGA_COLOR_YELLOW	kernel/kernel.cpp	59;"	d	file:
 VGA_HEIGHT	kernel/Console.h	/^    static const uint16_t VGA_HEIGHT = 25;$/;"	m	class:Console
 VGA_WIDTH	kernel/Console.h	/^    static const uint16_t VGA_WIDTH  = 80;$/;"	m	class:Console
 VGraphics	kernel/vgraphics.h	/^class VGraphics {$/;"	c
@@ -299,7 +292,6 @@ getFBInfo	kernel/vgraphics.h	/^    static FBInfo getFBInfo() {$/;"	f	class:VGrap
 getHeight	kernel/vgraphics.h	/^    static uint32_t getHeight() {$/;"	f	class:VGraphics
 getHour	kernel/date.cpp	/^uint8_t getHour() {$/;"	f
 getKey	kernel/Console.cpp	/^extern "C" int Console::getKey(bool& shift) {$/;"	f	class:Console
-getKey	kernel/Keyboard.cpp	/^extern "C" int getKey() {$/;"	f
 getMinute	kernel/date.cpp	/^uint8_t getMinute() {$/;"	f
 getMonth	kernel/date.cpp	/^uint8_t getMonth() {$/;"	f
 getSecond	kernel/date.cpp	/^uint8_t getSecond() {$/;"	f
@@ -334,7 +326,6 @@ graphics	kernel/Console.cpp	/^bool Console::graphics = false;$/;"	m	class:Consol
 graphics	kernel/Console.h	/^    static bool graphics;$/;"	m	class:Console
 groups_count	kernel/ffext2/ext2.hpp	/^    u32 groups_count;$/;"	m	struct:ext2full::FS
 handlers	kernel/idt.cpp	/^static ISRHandler handlers[256];$/;"	v	file:
-head	kernel/Keyboard.cpp	/^static volatile int head = 0, tail = 0;$/;"	v	file:
 header_end	boot.asm	/^header_end:$/;"	l
 header_start	boot.asm	/^header_start:$/;"	l
 height	kernel/vgraphics.h	/^	uint32_t height;$/;"	m	struct:FBInfo
@@ -350,7 +341,6 @@ idt_init	kernel/idt.cpp	/^extern "C" void idt_init() {$/;"	f
 idt_ptr	kernel/idt.cpp	/^static IDTPtr idt_ptr;$/;"	v	file:
 idt_set_gate	kernel/idt.cpp	/^void idt_set_gate(uint8_t num, uint32_t handler, uint8_t flags) {$/;"	f
 inb	kernel/Debug.cpp	/^static inline uint8_t inb(uint16_t port) {$/;"	f	file:
-inb	kernel/Keyboard.cpp	/^static inline uint8_t inb(uint16_t port) {$/;"	f	file:
 inb	kernel/io.asm	/^inb:$/;"	l
 inb	kernel/io.cpp	/^uint8_t inb(uint16_t port) {$/;"	f
 inb	kernel/pic.cpp	/^static inline uint8_t inb(uint16_t port) {$/;"	f	file:
@@ -370,11 +360,8 @@ irq_handler	kernel/idt.cpp	/^extern "C" void irq_handler(Registers* regs) {$/;"	
 isNumber	kernel/kernel.cpp	/^bool isNumber(const char* str) {$/;"	f
 isr_handler	kernel/idt.cpp	/^extern "C" void isr_handler(Registers* regs) {$/;"	f
 itoa	kernel/Console.cpp	/^void Console::itoa(int value, char* str, int base) {$/;"	f	class:Console
-keyBuffer	kernel/Keyboard.cpp	/^static volatile int keyBuffer[256];$/;"	v	file:
-keyboard_handler	kernel/Keyboard.cpp	/^extern "C" void keyboard_handler() {$/;"	f
-keyboard_install	kernel/Keyboard.cpp	/^void keyboard_install() {$/;"	f
-keyboard_key_available	kernel/kernel.cpp	/^int keyboard_key_available() {$/;"	f
-keyboard_read_scancode	kernel/kernel.cpp	/^uint8_t keyboard_read_scancode() {$/;"	f
+keyboard_key_available	kernel/Keyboard.cpp	/^int Keyboard::keyboard_key_available() {$/;"	f	class:Keyboard
+keyboard_read_scancode	kernel/Keyboard.cpp	/^uint8_t Keyboard::keyboard_read_scancode() {$/;"	f	class:Keyboard
 kfree	kernel/memory.cpp	/^void kfree(void* ptr) {$/;"	f
 kmain	kernel/kernel.cpp	/^extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {$/;"	f
 kmalloc	kernel/memory.cpp	/^void* kmalloc(size_t size) {$/;"	f
@@ -422,7 +409,6 @@ offset_low	kernel/idt.h	/^    uint16_t offset_low;    \/\/ bits 0-15 del offset$
 operator new	kernel/memory.cpp	/^void* operator new(size_t size) {$/;"	f
 operator new[]	kernel/memory.cpp	/^void* operator new[](size_t size) {$/;"	f
 outb	kernel/Debug.cpp	/^static inline void outb(uint16_t port, uint8_t val) {$/;"	f	file:
-outb	kernel/Keyboard.cpp	/^static inline void outb(uint16_t port, uint8_t val) {$/;"	f	file:
 outb	kernel/io.asm	/^outb:$/;"	l
 outb	kernel/io.cpp	/^void outb(uint16_t port, uint8_t value) {$/;"	f
 outb	kernel/pic.cpp	/^static inline void outb(uint16_t port, uint8_t val) {$/;"	f	file:
@@ -474,10 +460,7 @@ rotation_z	kernel/kernel.cpp	/^static float rotation_z = 0.0f;$/;"	v	file:
 runcommand	kernel/kernel.cpp	/^void runcommand(char* s, bool auth) {	$/;"	f
 s32	kernel/ffext2/ext2.hpp	/^typedef int32_t  s32;$/;"	t	namespace:ext2full
 sb	kernel/ffext2/ext2.hpp	/^    Superblock sb;$/;"	m	struct:ext2full::FS
-scancodeMap	kernel/Keyboard.cpp	/^static const char scancodeMap[128] = {$/;"	v	file:
-scancodeMapShift	kernel/Keyboard.cpp	/^static const char scancodeMapShift[128] = {$/;"	v	file:
 scancodeToAscii	kernel/Console.cpp	/^char scancodeToAscii(uint8_t sc, bool shift) {$/;"	f
-scancodeToAscii	kernel/Keyboard.cpp	/^char scancodeToAscii(uint8_t sc) {$/;"	f
 scroll	kernel/Console.cpp	/^void Console::scroll() {$/;"	f	class:Console
 scroll	kernel/vgraphics.cpp	/^void VGraphics::scroll() {$/;"	f	class:VGraphics
 section	boot.asm	/^section .bss$/;"	l
@@ -493,7 +476,6 @@ set_cursor	kernel/Console.cpp	/^void Console::set_cursor(uint16_t pos) {$/;"	f	c
 set_cursor	kernel/kernel.cpp	/^void set_cursor(uint8_t row, uint8_t col) {$/;"	f
 setbColor	kernel/Console.cpp	/^void Console::setbColor(uint32_t newColor) {   $/;"	f	class:Console
 setup_idt	kernel/idt.cpp	/^extern "C" void setup_idt() {$/;"	f
-shiftDown	kernel/Keyboard.cpp	/^static bool shiftDown = false;$/;"	v	file:
 shndx	kernel/multiboot.h	/^    uint32_t shndx;$/;"	m	struct:multiboot_info_t
 shownModulesExplanation	kernel/kernel.cpp	/^bool shownModulesExplanation = false; \/\/ Flag para saber si se explico los modulos de GRUB en la sesion actual$/;"	v
 sin_lookup	kernel/vgraphics.cpp	/^float VGraphics::sin_lookup(int deg) {$/;"	f	class:VGraphics
@@ -521,7 +503,6 @@ strncmp	kernel/string.cpp	/^int strncmp(const char* s1, const char* s2, size_t n
 strncpy	kernel/string.cpp	/^void strncpy(char* dest, const char* src, int maxLen) {$/;"	f
 strrchr	kernel/string.cpp	/^char* strrchr(const char* s, int c) {$/;"	f
 substr	kernel/kernel.cpp	/^char* substr(const char* str, int start, int length = -1) {$/;"	f
-tail	kernel/Keyboard.cpp	/^static volatile int head = 0, tail = 0;$/;"	v	file:
 tanf	kernel/Graphics.cpp	/^float tanf(float x) {$/;"	f
 tanf	kernel/vgraphics.cpp	/^float tanf(float x) {$/;"	f
 textBuffer	kernel/Console.cpp	/^static char textBuffer[FB_HEIGHT][FB_WIDTH];$/;"	v	file:
@@ -563,12 +544,15 @@ vgraphics_draw_char	kernel/vgraphics_wrapper.cpp	/^void vgraphics_draw_char(uint
 vgraphics_draw_string	kernel/vgraphics_wrapper.cpp	/^void vgraphics_draw_string(uint32_t x, uint32_t y, const char* str, uint32_t fg, bool bold, bool underline) {$/;"	f
 vgraphics_get_height	kernel/vgraphics_wrapper.cpp	/^uint32_t vgraphics_get_height() {$/;"	f
 vgraphics_get_width	kernel/vgraphics_wrapper.cpp	/^uint32_t vgraphics_get_width() {$/;"	f
+vgraphics_put_image	kernel/vgraphics_wrapper.cpp	/^void vgraphics_put_image(int dx, int dy, const char* img_data) {$/;"	f
 vgraphics_put_pixel	kernel/vgraphics_wrapper.cpp	/^void vgraphics_put_pixel(uint32_t x, uint32_t y, uint32_t color) {$/;"	f
 wait	kernel/kernel.cpp	/^void wait(int secs) {$/;"	f
 wait_ms	kernel/kernel.cpp	/^void wait_ms(uint32_t ms) {$/;"	f
 wait_ms	kernel/wait_wrapper.cpp	/^    void wait_ms(uint32_t ms) {$/;"	f
-was_c_pressed	kernel/kernel.cpp	/^bool was_c_pressed() {$/;"	f
-was_key_pressed	kernel/kernel.cpp	/^bool was_key_pressed(char c) {$/;"	f
+was_c_pressed	kernel/Keyboard.cpp	/^bool Keyboard::was_c_pressed() {$/;"	f	class:Keyboard
+was_c_pressed	kernel/keyboard_wrapper.cpp	/^bool was_c_pressed() {$/;"	f
+was_key_pressed	kernel/Keyboard.cpp	/^bool Keyboard::was_key_pressed(char key) {$/;"	f	class:Keyboard
+was_key_pressed	kernel/keyboard_wrapper.cpp	/^bool was_key_pressed(char key) {$/;"	f
 width	kernel/vgraphics.h	/^	uint32_t width;$/;"	m	struct:FBInfo
 work_buf	kernel/ffext2/ext2.hpp	/^    void* work_buf;$/;"	m	struct:ext2full::FS
 work_buf_bytes	kernel/ffext2/ext2.hpp	/^    u32 work_buf_bytes;$/;"	m	struct:ext2full::FS

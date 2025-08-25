@@ -299,7 +299,6 @@ void VGraphics::put_image(int dx, int dy, const char* img_data) {
                 break;
 
             default:
-                VGraphics::putPixel(x, y, 0xff0000);
                 x++;
                 break;
         }
