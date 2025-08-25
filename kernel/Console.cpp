@@ -290,7 +290,7 @@ extern "C" int Console::getKey(bool& shift) {
 #define KEY_BACKSPACE  0x0E
 #define KEY_ENTER      0x1C
 
-char scancodeToAscii(uint8_t sc, bool shift) {
+char Console::scancodeToAscii(uint8_t sc, bool shift) {
     static const char table[][2] = {
         {0,0}, {27,27}, {'1','!'}, {'2','\"'}, {'3','#'}, {'4','$'}, {'5','%'}, {'6','&'}, {'7','/'}, {'8','('},
         {'9',')'}, {'0','='}, {'\'','?'}, {(char)161,'!'}, {'\b','\b'}, {'\t','\t'}, {'q','Q'}, {'w','W'}, {'e','E'}, {'r','R'},

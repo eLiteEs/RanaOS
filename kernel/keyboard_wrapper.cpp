@@ -10,4 +10,8 @@ bool was_key_pressed(char key) {
     return Keyboard::was_key_pressed(key);
 }
 
+char key_pressed() {
+    return Keyboard::key_pressed();
+}
+
 }

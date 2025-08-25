@@ -36,3 +36,15 @@ bool Keyboard::was_key_pressed(char key) {
 
     return sc == Console::asciiToScancode(key);
 }
+
+char Keyboard::key_pressed() {
+    if (!keyboard_key_available())
+        return '\0';
+
+    uint8_t sc = keyboard_read_scancode();
+
+    // Ignora tecla liberada (bit 7 = 1)
+    if (sc & 0x80) return false;
+
+    return Console::scancodeToAscii(sc, false);
+}

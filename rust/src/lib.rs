@@ -36,6 +36,7 @@ extern "C" {
     // Keyboard
     fn was_c_pressed() -> bool;
     fn was_key_pressed(key: char) -> bool;
+    fn key_pressed() -> char;
 }
 
 // Public Rust interface
@@ -162,6 +163,26 @@ impl Keyboard {
     pub fn was_key_pressed(key: char) -> bool {
         unsafe { was_key_pressed(key) }
     }
+
+    pub fn key_pressed() -> char {
+        unsafe { key_pressed() }
+    }
+}
+
+fn u32_to_str(mut n: u32, buf: &mut [u8]) -> &str {
+    if n == 0 {
+        buf[0] = b'0';
+        return core::str::from_utf8(&buf[..1]).unwrap();
+    }
+
+    let mut i = buf.len();
+    while n > 0 {
+        i -= 1;
+        buf[i] = b'0' + (n % 10) as u8;
+        n /= 10;
+    }
+
+    core::str::from_utf8(&buf[i..]).unwrap()
 }
 
 // Registros PS/2
@@ -269,6 +290,11 @@ impl Mouse {
     }
 }
 
+fn char_to_utf8_str(c: char, buf: &mut [u8; 4]) -> &str {
+    let len = c.encode_utf8(buf).len();
+    unsafe { core::str::from_utf8_unchecked(&buf[..len]) }
+}
+
 #[no_mangle]
 pub extern "C" fn start_so() {
     Graphics::clear_screen();
@@ -303,10 +329,10 @@ pub extern "C" fn start_so() {
     let mut i = 0u32;
 
     loop {
+        mouse.handle_interrupt();
+        mouse.draw();
+    
         if i == 1000 {
-            mouse.handle_interrupt();
-
-            mouse.draw();
     
             // Mostrar hora en toolbar
             let datetime = DateTime;
@@ -321,6 +347,17 @@ pub extern "C" fn start_so() {
             i = 0;
         }
 
+        let mut s: &str;
+
+        match mouse.buttons {
+            0 => s = "0",
+            1 => s = "1",
+            2 => s = "2",
+            _ => s = "o",
+        }
+
+        Graphics::draw_rect(0, 20, 100, 20, 0x0);
+        Graphics::draw_string(0, 20, s, 0xffffff, 0x0, false, false);
         i += 1;
 
         //if Keyboard::was_c_pressed() {

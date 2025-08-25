@@ -360,6 +360,8 @@ irq_handler	kernel/idt.cpp	/^extern "C" void irq_handler(Registers* regs) {$/;"	
 isNumber	kernel/kernel.cpp	/^bool isNumber(const char* str) {$/;"	f
 isr_handler	kernel/idt.cpp	/^extern "C" void isr_handler(Registers* regs) {$/;"	f
 itoa	kernel/Console.cpp	/^void Console::itoa(int value, char* str, int base) {$/;"	f	class:Console
+key_pressed	kernel/Keyboard.cpp	/^char Keyboard::key_pressed() {$/;"	f	class:Keyboard
+key_pressed	kernel/keyboard_wrapper.cpp	/^char key_pressed() {$/;"	f
 keyboard_key_available	kernel/Keyboard.cpp	/^int Keyboard::keyboard_key_available() {$/;"	f	class:Keyboard
 keyboard_read_scancode	kernel/Keyboard.cpp	/^uint8_t Keyboard::keyboard_read_scancode() {$/;"	f	class:Keyboard
 kfree	kernel/memory.cpp	/^void kfree(void* ptr) {$/;"	f
@@ -460,7 +462,7 @@ rotation_z	kernel/kernel.cpp	/^static float rotation_z = 0.0f;$/;"	v	file:
 runcommand	kernel/kernel.cpp	/^void runcommand(char* s, bool auth) {	$/;"	f
 s32	kernel/ffext2/ext2.hpp	/^typedef int32_t  s32;$/;"	t	namespace:ext2full
 sb	kernel/ffext2/ext2.hpp	/^    Superblock sb;$/;"	m	struct:ext2full::FS
-scancodeToAscii	kernel/Console.cpp	/^char scancodeToAscii(uint8_t sc, bool shift) {$/;"	f
+scancodeToAscii	kernel/Console.cpp	/^char Console::scancodeToAscii(uint8_t sc, bool shift) {$/;"	f	class:Console
 scroll	kernel/Console.cpp	/^void Console::scroll() {$/;"	f	class:Console
 scroll	kernel/vgraphics.cpp	/^void VGraphics::scroll() {$/;"	f	class:VGraphics
 section	boot.asm	/^section .bss$/;"	l

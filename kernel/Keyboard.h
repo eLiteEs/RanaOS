@@ -7,6 +7,7 @@ class Keyboard {
     public:
         static bool was_c_pressed();
         static bool was_key_pressed(char key);
+        static char key_pressed();
     private:
         static int keyboard_key_available();
         static uint8_t keyboard_read_scancode();
