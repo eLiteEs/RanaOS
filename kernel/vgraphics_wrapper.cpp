@@ -32,4 +32,8 @@ void vgraphics_put_image(int dx, int dy, const char* img_data) {
     VGraphics::put_image(dx, dy, img_data);
 }
 
+uint32_t vgraphics_get_pixel(uint32_t x, uint32_t y) {
+    return VGraphics::getPixel(x, y);
+}
+
 }

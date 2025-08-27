@@ -34,7 +34,7 @@ COLOR_YELLOW	kernel/Graphics.h	/^    COLOR_YELLOW,$/;"	e	enum:__anon1
 COM1	kernel/Debug.cpp	/^    constexpr uint16_t COM1 = 0x3F8;$/;"	m	namespace:Debug	file:
 CONSOLE_H	kernel/Console.h	2;"	d
 CPP_OBJS	Makefile	/^CPP_OBJS := $(patsubst kernel\/%.cpp, %.o, $(CPP_SRCS))$/;"	m
-CPP_SRCS	Makefile	/^CPP_SRCS := kernel\/kernel.cpp \\$/;"	m
+CPP_SRCS	Makefile	/^CPP_SRCS := kernel\/Console.cpp \\$/;"	m
 CXX	Makefile	/^CXX       := g++$/;"	m
 CXX	build.bat	/^set CXX="%TOOLCHAIN%\\i686-elf-g++"$/;"	v
 CXXFLAGS	Makefile	/^CXXFLAGS := -m32 -ffreestanding -O2 \\$/;"	m
@@ -85,7 +85,7 @@ LDFLAGS	build.bat	/^set LDFLAGS=-m elf_i386$/;"	v
 LDSCRIPT	Makefile	/^LDSCRIPT := kernel\/linker.ld$/;"	m
 MAXLEN	kernel/Console.h	/^    static const int MAXLEN = 256;$/;"	m	class:Console
 MAX_FILE_SIZE	kernel/kernel.cpp	37;"	d	file:
-MODULES	Makefile	/^MODULES = files\/text.txt files\/bg.pim files\/tux.pim files\/background.pim files\/LICENSE$/;"	m
+MODULES	Makefile	/^MODULES = files\/text.txt files\/bg.pim files\/tux.pim files\/background.pim files\/LICENSE files\/cursor.pim$/;"	m
 MODULES_DIR	Makefile	/^MODULES_DIR  := $(ISO_DIR)\/files$/;"	m
 MULTIBOOT_H	kernel/multiboot.h	2;"	d
 MULTIBOOT_INFO_FRAMEBUFFER_INFO	kernel/multiboot.h	47;"	d
@@ -99,7 +99,7 @@ PACKED_STRUCT	kernel/ffext2/ext2.hpp	11;"	d
 PACKED_STRUCT	kernel/ffext2/ext2.hpp	9;"	d
 PALETTE	PIMConverter.java	/^    private static final Color[] PALETTE = {$/;"	f	class:PIMConverter	file:
 PI	kernel/Graphics.h	28;"	d
-PI	kernel/vgraphics.cpp	165;"	d	file:
+PI	kernel/vgraphics.cpp	171;"	d	file:
 PIC1_COMMAND	kernel/pic.cpp	4;"	d	file:
 PIC1_COMMAND	kernel/pic_wrapper.cpp	3;"	d	file:
 PIC1_DATA	kernel/pic.cpp	5;"	d	file:
@@ -224,6 +224,9 @@ cursorX	kernel/Console.cpp	/^uint32_t Console::cursorX = 0;$/;"	m	class:Console	
 cursorX	kernel/Console.h	/^    static uint32_t cursorX; \/\/ Posición del cursor en X (modo gráfico)$/;"	m	class:Console
 cursorY	kernel/Console.cpp	/^uint32_t Console::cursorY = 0;$/;"	m	class:Console	file:
 cursorY	kernel/Console.h	/^    static uint32_t cursorY; \/\/ Posición del cursor en Y (modo gráfico)$/;"	m	class:Console
+debug_print	kernel/debug_wrapper.cpp	/^void debug_print(const char* m) {$/;"	f
+debug_print_dec	kernel/debug_wrapper.cpp	/^void debug_print_dec(uint32_t n) {$/;"	f
+debug_print_hex	kernel/debug_wrapper.cpp	/^void debug_print_hex(uint32_t h) {$/;"	f
 delay_ms	kernel/kernel.cpp	/^void delay_ms(uint32_t ms) {$/;"	f
 dev	kernel/ffext2/ext2.hpp	/^    BlockDevice dev;$/;"	m	struct:ext2full::FS
 dir_add_entry	kernel/ffext2/ext2.cpp	/^static bool dir_add_entry(FS& fs, u32 dir_inum, u32 child_inum, const char* name, u32 name_len, u8 file_type) {$/;"	f	namespace:ext2full
@@ -294,6 +297,7 @@ getHour	kernel/date.cpp	/^uint8_t getHour() {$/;"	f
 getKey	kernel/Console.cpp	/^extern "C" int Console::getKey(bool& shift) {$/;"	f	class:Console
 getMinute	kernel/date.cpp	/^uint8_t getMinute() {$/;"	f
 getMonth	kernel/date.cpp	/^uint8_t getMonth() {$/;"	f
+getPixel	kernel/vgraphics.cpp	/^uint32_t VGraphics::getPixel(uint32_t x, uint32_t y) {$/;"	f	class:VGraphics
 getSecond	kernel/date.cpp	/^uint8_t getSecond() {$/;"	f
 getWidth	kernel/vgraphics.h	/^    static uint32_t getWidth() {$/;"	f	class:VGraphics
 getYear	kernel/date.cpp	/^uint8_t getYear() {$/;"	f
@@ -371,6 +375,7 @@ limit	kernel/idt.h	/^    uint16_t limit;$/;"	m	struct:IDTPtr
 lineBuffer	kernel/Console.cpp	/^char      Console::lineBuffer[] = {0};$/;"	m	class:Console	file:
 lineBuffer	kernel/Console.h	/^    static char      lineBuffer[MAXLEN];$/;"	m	class:Console
 linebuf	kernel/kernel.cpp	/^static char linebuf[256]; \/\/ Algo para la consola$/;"	v	file:
+list_all_modules	kernel/kernel.cpp	/^void list_all_modules(multiboot_info_t* mbi) {$/;"	f
 main	PIMConverter.java	/^    public static void main(String[] args) {$/;"	m	class:PIMConverter
 main	files/hello.c	/^int main() {$/;"	f
 main	kernel/ffext2/host_blockdev.cpp	/^int main(int argc, char** argv) {$/;"	f
@@ -459,6 +464,7 @@ rotate_vertex	kernel/kernel.cpp	/^static void rotate_vertex(Vec3* vertex, float 
 rotation_x	kernel/kernel.cpp	/^static float rotation_x = 0.0f;$/;"	v	file:
 rotation_y	kernel/kernel.cpp	/^static float rotation_y = 0.0f;$/;"	v	file:
 rotation_z	kernel/kernel.cpp	/^static float rotation_z = 0.0f;$/;"	v	file:
+rread_file_from_meta	kernel/kernel_wrapper.cpp	/^const char* rread_file_from_meta(const char* name) {$/;"	f
 runcommand	kernel/kernel.cpp	/^void runcommand(char* s, bool auth) {	$/;"	f
 s32	kernel/ffext2/ext2.hpp	/^typedef int32_t  s32;$/;"	t	namespace:ext2full
 sb	kernel/ffext2/ext2.hpp	/^    Superblock sb;$/;"	m	struct:ext2full::FS
@@ -545,6 +551,7 @@ vgraphics_clear_screen	kernel/vgraphics_wrapper.cpp	/^void vgraphics_clear_scree
 vgraphics_draw_char	kernel/vgraphics_wrapper.cpp	/^void vgraphics_draw_char(uint32_t x, uint32_t y, char c, uint32_t fg, uint32_t bg, bool bold, bool underline) {$/;"	f
 vgraphics_draw_string	kernel/vgraphics_wrapper.cpp	/^void vgraphics_draw_string(uint32_t x, uint32_t y, const char* str, uint32_t fg, bool bold, bool underline) {$/;"	f
 vgraphics_get_height	kernel/vgraphics_wrapper.cpp	/^uint32_t vgraphics_get_height() {$/;"	f
+vgraphics_get_pixel	kernel/vgraphics_wrapper.cpp	/^uint32_t vgraphics_get_pixel(uint32_t x, uint32_t y) {$/;"	f
 vgraphics_get_width	kernel/vgraphics_wrapper.cpp	/^uint32_t vgraphics_get_width() {$/;"	f
 vgraphics_put_image	kernel/vgraphics_wrapper.cpp	/^void vgraphics_put_image(int dx, int dy, const char* img_data) {$/;"	f
 vgraphics_put_pixel	kernel/vgraphics_wrapper.cpp	/^void vgraphics_put_pixel(uint32_t x, uint32_t y, uint32_t color) {$/;"	f

@@ -466,7 +466,7 @@ const char* read_string_from_memory(uint32_t start_addr, size_t max_len = 1024) 
 }
 
 /**
- * Lee una cadena desde memoria con control preciso del tamaño máximo
+ * Lee una cadena dese memoria con control preciso del tamaño máximo
  * @param start_addr Dirección de memoria inicial
  * @param max_bytes Máximo de bytes a leer (0 para automático hasta null terminator)
  * @return Puntero a la cadena leída o NULL en error
@@ -555,6 +555,36 @@ static inline struct multiboot_tag* mb2_first(void* mbinfo) {
 }
 static inline struct multiboot_tag* mb2_next(struct multiboot_tag* tag) {
     return (struct multiboot_tag*)((uint8_t*)tag + ((tag->size + 7) & ~7));
+}
+
+// Lista todos los módulos cargados por GRUB2
+void list_all_modules(multiboot_info_t* mbi) {
+    uint8_t* ptr = (uint8_t*)mbi + 8; // Saltar total_size y reserved
+
+    while (true) {
+        multiboot_tag* tag = (multiboot_tag*)ptr;
+
+        if (tag->type == 0) break; // Fin de tags
+
+        if (tag->type == 3) { // MODULE
+            multiboot_tag_module* mod = (multiboot_tag_module*)ptr;
+
+            const char* name = (const char*)mod->cmdline;
+            uint32_t start = mod->mod_start;
+            uint32_t end   = mod->mod_end;
+
+            Console::write("Module: ");
+            Console::write(read_string_from_memory(start, 12));
+            Console::write("  start: ");
+            Console::write((unsigned long long)start);
+            Console::write("  end: ");
+            Console::write((unsigned long long)end);
+            Console::write("\n");
+        }
+
+        // Avanzar al siguiente tag (alineado a 8 bytes)
+        ptr += (tag->size + 7) & ~7;
+    }
 }
 
 const char* read_file_from_meta(char* name) {
@@ -1007,6 +1037,8 @@ void runcommand(char* s, bool auth) {
         }
         Console::println("Invalid time, not numbers.");
         return;
+    } else if(!strcmp(s, "ls")) {
+        list_all_modules(mbi);
     } else {
 	    Console::write("Unknown command \"");
 	    Console::write(s);

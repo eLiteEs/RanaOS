@@ -30,7 +30,7 @@ The UI it's going to be made with Rust and other programs and tools maybe are wr
 On my Ubuntu WSL I have instaled `qemu`, `nasm`, `xorriso`, `grub_mkrescue`, `binutils`, `mtools`, rust and `g++`. (maybe some are missing)
 
 ## Credits
-- Also I have used code from [hubenchang0515/font8x16](https://github.com/hubenchang0515/font8x16) (MIT License) in CGraphics for adding fonts to graphical console mode, thanks!
+- Also I have used code from [hubenchang0515/font8x16](https://github.com/hubenchang0515/font8x16) (MIT License) in VGraphics for adding fonts to graphical console mode, thanks!
 
 ## License
 

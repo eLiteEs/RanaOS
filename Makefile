@@ -30,8 +30,7 @@ GRUB_DIR  := $(BOOT_DIR)/grub
 ASM_SRCS := boot.asm
 ASM_OBJS := $(patsubst %.asm, %.o, $(ASM_SRCS))
 
-CPP_SRCS := kernel/kernel.cpp \
-    	kernel/Console.cpp \
+CPP_SRCS := kernel/Console.cpp \
     	kernel/io.cpp \
     	kernel/Graphics.cpp \
     	kernel/string.cpp \
@@ -48,12 +47,14 @@ CPP_SRCS := kernel/kernel.cpp \
 	kernel/io_wrapper.cpp \
 	kernel/pic_wrapper.cpp \
 	kernel/Keyboard.cpp \
-	kernel/keyboard_wrapper.cpp
+	kernel/keyboard_wrapper.cpp \
+	kernel/kernel_wrapper.cpp \
+	kernel/debug_wrapper.cpp
 CPP_OBJS := $(patsubst kernel/%.cpp, %.o, $(CPP_SRCS))
 
 LDSCRIPT := kernel/linker.ld
 
-MODULES = files/text.txt files/bg.pim files/tux.pim files/background.pim files/LICENSE
+MODULES = files/text.txt files/bg.pim files/tux.pim files/background.pim files/LICENSE files/cursor.pim
 MODULES_DIR  := $(ISO_DIR)/files
 
 # Salidas

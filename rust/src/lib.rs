@@ -14,7 +14,8 @@ extern "C" {
     fn vgraphics_get_width() -> u32;
     fn vgraphics_get_height() -> u32;
     fn vgraphics_put_image(dx: u32, y: u32, img_data: *const i8);
-    
+    fn vgraphics_get_pixel(x: u32, y: u32) -> u32;
+
     // Date and time functions
     fn get_second() -> u32;
     fn get_minute() -> u32;
@@ -37,12 +38,21 @@ extern "C" {
     fn was_c_pressed() -> bool;
     fn was_key_pressed(key: char) -> bool;
     fn key_pressed() -> char;
+
+    // GRUB Modules
+    fn rread_file_from_meta(name: *const u8) -> *const u8;
+
+    // Debug funcionst
+    fn debug_print(m: *const u8);
+    fn debug_print_dec(n: u32);
+    fn debug_print_hex(h: u32);
 }
 
 // Public Rust interface
 pub struct Graphics;
 pub struct DateTime;
 pub struct Keyboard;
+pub struct Debug;
 
 impl Graphics {
     pub fn put_pixel(x: u32, y: u32, color: u32) {
@@ -87,6 +97,10 @@ impl Graphics {
 
     pub fn put_image(dx: u32, dy: u32, img_data: *const i8) {
         unsafe { vgraphics_put_image(dx, dy, img_data); }
+    }
+
+    pub fn get_pixel(x: u32, y: u32) -> u32 {
+        unsafe { vgraphics_get_pixel(x, y) }
     }
 }
 impl DateTime {
@@ -149,9 +163,12 @@ impl DateTime {
 pub struct Mouse {
     x: i32,
     y: i32,
+    prev_x: i32,
+    prev_y: i32,
     buttons: u8,
     width: u32,
-    height: u32
+    height: u32,
+    saved_pixels: [u32; 20 * 15], // buffer de fondo
 }
 
 impl Keyboard {
@@ -185,6 +202,30 @@ fn u32_to_str(mut n: u32, buf: &mut [u8]) -> &str {
     core::str::from_utf8(&buf[i..]).unwrap()
 }
 
+fn read_file_from_meta(name: &str) -> &str {
+    // Crear un buffer con null terminator
+    let mut buf = [0u8; 256];
+    let bytes = name.as_bytes();
+    let len = bytes.len().min(buf.len() - 1);
+    buf[..len].copy_from_slice(&bytes[..len]);
+    buf[len] = 0; // Null terminator
+
+    unsafe {
+        let c_ptr = rread_file_from_meta(buf.as_ptr());
+        if c_ptr.is_null() {
+            return "";
+        }
+
+        // Buscar longitud hasta null
+        let mut end = 0;
+        while *c_ptr.add(end) != 0 {
+            end += 1;
+        }
+
+        core::str::from_utf8_unchecked(core::slice::from_raw_parts(c_ptr, end))
+    }
+}
+
 // Registros PS/2
 const PS2_DATA: u16 = 0x60;
 const PS2_CMD: u16 = 0x64;
@@ -194,9 +235,12 @@ impl Mouse {
         Self {
             x: (screen_width / 2) as i32,
             y: (screen_height / 2) as i32,
+            prev_x: (screen_width / 2) as i32,
+            prev_y: (screen_height / 2) as i32,
             buttons: 0,
             width: screen_width,
-            height: screen_height
+            height: screen_height,
+            saved_pixels: [0; 20 * 15]
         }
     }
 
@@ -280,17 +324,73 @@ impl Mouse {
         }
     }
 
-    // Dibujar cursor (simple)
-    pub fn draw(&self) {
-        // Literal de bytes terminada en NUL
-        static IMAGE: &[u8] = b"w\nww\nwnw\nwnnw\nwnnnw\nwnnnnw\nwnnnnnw\nwnnwwwww\nwnw\nww\nw\n\0";
+    pub fn draw(&mut self) {
+        // 1. Restaurar fondo en la posición anterior
+        self.restore_background(self.prev_x, self.prev_y);
 
-        Graphics::put_image(self.x as u32, self.y as u32, IMAGE.as_ptr() as *const i8);
+        // 2. Guardar fondo en la posición nueva
+        self.save_background(self.x, self.y);
 
+        // 3. Dibujar el cursor en la posición nueva
+        let img = read_file_from_meta("cursor.pim");
+        Graphics::put_image(self.x as u32, self.y as u32, img.as_ptr() as *const i8);
+
+        // 4. Actualizar posición anterior
+        self.prev_x = self.x;
+        self.prev_y = self.y;
+    }
+
+    fn save_background(&mut self, x: i32, y: i32) {
+        let w = 15;
+        let h = 20;
+
+        for yy in 0..h {
+            for xx in 0..w {
+                let screen_x = (x + xx as i32).max(0).min((self.width - 1) as i32) as u32;
+                let screen_y = (y + yy as i32).max(0).min((self.height - 1) as i32) as u32;
+                self.saved_pixels[(yy * w + xx) as usize] =
+                    Graphics::get_pixel(screen_x, screen_y);
+            }
+        }
+    }
+
+    fn restore_background(&self, x: i32, y: i32) {
+        let w = 15;
+        let h = 20;
+
+        for yy in 0..h {
+            for xx in 0..w {
+                let screen_x = (x + xx as i32).max(0).min((self.width - 1) as i32) as u32;
+                let screen_y = (y + yy as i32).max(0).min((self.height - 1) as i32) as u32;
+                let color = self.saved_pixels[(yy * w + xx) as usize];
+
+                Graphics::put_pixel(screen_x, screen_y, color);
+            }
+        }
     }
 }
 
-fn char_to_utf8_str(c: char, buf: &mut [u8; 4]) -> &str {
+impl Debug {
+    pub fn print(m: &str) {
+        let mut buf = [0u8; 256];
+        let bytes = m.as_bytes();
+        let len = bytes.len().min(buf.len() - 1);
+        buf[..len].copy_from_slice(&bytes[..len]);
+        buf[len] = 0; // Null terminator
+
+        unsafe { debug_print(buf.as_ptr());  }
+    }
+
+    pub fn print_dec(n: u32) {
+        unsafe { debug_print_dec(n); }
+    }
+
+    pub fn print_hex(h: u32) {
+        unsafe { debug_print_hex(h); }
+    }
+}
+
+fn _char_to_utf8_str(c: char, buf: &mut [u8; 4]) -> &str {
     let len = c.encode_utf8(buf).len();
     unsafe { core::str::from_utf8_unchecked(&buf[..len]) }
 }
@@ -309,13 +409,12 @@ pub extern "C" fn start_so() {
     let mut mouse = Mouse::new(width, height);
     unsafe { mouse.init() };
     unsafe {
-        // (Aquí debes implementar tu configuración de IDT)
         enable_irq(12);  // Habilitar IRQ del ratón
     }
 
     // Draw toolbar
     Graphics::draw_rect(0, 0, Graphics::width(), 20, 0x000000);
-    Graphics::draw_string(2, 2, "RanaOS beta 2 | Press \'r\' for opening launch dialog", 0xffffff, 0x000000, false, true);
+    Graphics::draw_string(2, 2, "RanaOS beta 3 | Press \'r\' for opening launch dialog", 0xffffff, 0x000000, false, false);
 
     // Display datetime in toolbar (right-aligned)
     let datetime = DateTime;
@@ -330,6 +429,7 @@ pub extern "C" fn start_so() {
 
     loop {
         mouse.handle_interrupt();
+        mouse.save_background(mouse.x, mouse.y);
         mouse.draw();
     
         if i == 1000 {

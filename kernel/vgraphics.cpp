@@ -2,6 +2,7 @@
 
 #include "font8x16/font8x16.h" // Fuente de 8x16
 #include "string.h" // Para memcpy
+#include "Debug.h"
 
 float absf(float x) { return (x < 0) ? -x : x; }
 int absi(int x) { return (x < 0) ? -x : x; }
@@ -54,6 +55,11 @@ void VGraphics::putPixel(uint32_t x, uint32_t y, uint32_t color) {
     if (fb.bpp != 32) return;
     uint32_t offset = y * (fb.pitch / 4) + x;
     fb.address[offset] = color;
+}
+
+uint32_t VGraphics::getPixel(uint32_t x, uint32_t y) {
+    uint32_t offset = y * (fb.pitch / 4) + x;
+    return fb.address[offset];
 }
 
 void VGraphics::drawChar(uint32_t x, uint32_t y, char c, uint32_t color, uint32_t bg, bool bold, bool underline) {
