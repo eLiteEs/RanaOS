@@ -20,6 +20,8 @@
 #include "Debug.h" // Debugging functions
 #include "date.h"
 #include "Keyboard.h" // Read single-key events
+#include "Syscalls.h"
+#include "Elf.h"
 
 // Typedef for C++ look like Rust
 typedef uint8_t u8;
@@ -718,6 +720,17 @@ char* strcpy(char* dest, const char* src) {
     return dest;
 }
 
+Syscalls syscalls = {
+    Console::write,
+    Console::println,
+    Debug::Print,
+};
+    
+void run_program(char* name) {
+    const char* elf_data = read_file_from_meta(name);
+    Elf::execute(elf_data, &syscalls);
+}
+
 // Ejecutar comandos
 void runcommand(char* s, bool auth) {	
 	if(!strcmp(s, "help")) {
@@ -1039,6 +1052,8 @@ void runcommand(char* s, bool auth) {
         return;
     } else if(!strcmp(s, "ls")) {
         list_all_modules(mbi);
+    } else if(!strcmp(s, "run")) {
+        run_program("program.elf");
     } else {
 	    Console::write("Unknown command \"");
 	    Console::write(s);

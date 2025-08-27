@@ -49,12 +49,13 @@ CPP_SRCS := kernel/Console.cpp \
 	kernel/Keyboard.cpp \
 	kernel/keyboard_wrapper.cpp \
 	kernel/kernel_wrapper.cpp \
-	kernel/debug_wrapper.cpp
+	kernel/debug_wrapper.cpp \
+	kernel/Elf.cpp
 CPP_OBJS := $(patsubst kernel/%.cpp, %.o, $(CPP_SRCS))
 
 LDSCRIPT := kernel/linker.ld
 
-MODULES = files/text.txt files/bg.pim files/tux.pim files/background.pim files/LICENSE files/cursor.pim
+MODULES = files/text.txt files/bg.pim files/tux.pim files/background.pim files/LICENSE files/cursor.pim files/program.elf
 MODULES_DIR  := $(ISO_DIR)/files
 
 # Salidas

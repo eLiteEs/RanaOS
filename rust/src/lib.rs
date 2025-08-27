@@ -168,7 +168,7 @@ pub struct Mouse {
     buttons: u8,
     width: u32,
     height: u32,
-    saved_pixels: [u32; 20 * 15], // buffer de fondo
+    saved_pixel: u32
 }
 
 impl Keyboard {
@@ -240,7 +240,7 @@ impl Mouse {
             buttons: 0,
             width: screen_width,
             height: screen_height,
-            saved_pixels: [0; 20 * 15]
+            saved_pixel: 0xffffff
         }
     }
 
@@ -331,9 +331,8 @@ impl Mouse {
         // 2. Guardar fondo en la posición nueva
         self.save_background(self.x, self.y);
 
-        // 3. Dibujar el cursor en la posición nueva
-        let img = read_file_from_meta("cursor.pim");
-        Graphics::put_image(self.x as u32, self.y as u32, img.as_ptr() as *const i8);
+        // 3. Draw cursor
+        Graphics::put_pixel(self.x as u32, self.y as u32, 0x000000);
 
         // 4. Actualizar posición anterior
         self.prev_x = self.x;
@@ -341,32 +340,11 @@ impl Mouse {
     }
 
     fn save_background(&mut self, x: i32, y: i32) {
-        let w = 15;
-        let h = 20;
-
-        for yy in 0..h {
-            for xx in 0..w {
-                let screen_x = (x + xx as i32).max(0).min((self.width - 1) as i32) as u32;
-                let screen_y = (y + yy as i32).max(0).min((self.height - 1) as i32) as u32;
-                self.saved_pixels[(yy * w + xx) as usize] =
-                    Graphics::get_pixel(screen_x, screen_y);
-            }
-        }
+        self.saved_pixel = Graphics::get_pixel(x as u32, y as u32); 
     }
 
     fn restore_background(&self, x: i32, y: i32) {
-        let w = 15;
-        let h = 20;
-
-        for yy in 0..h {
-            for xx in 0..w {
-                let screen_x = (x + xx as i32).max(0).min((self.width - 1) as i32) as u32;
-                let screen_y = (y + yy as i32).max(0).min((self.height - 1) as i32) as u32;
-                let color = self.saved_pixels[(yy * w + xx) as usize];
-
-                Graphics::put_pixel(screen_x, screen_y, color);
-            }
-        }
+        Graphics::put_pixel(x as u32, y as u32, self.saved_pixel);
     }
 }
 

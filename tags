@@ -14,23 +14,23 @@ CC	Makefile	/^CC        := gcc$/;"	m
 CFLAGS	Makefile	/^CFLAGS   := -m32 -ffreestanding -O2 -Wall -Wextra \\$/;"	m
 CMOS_ADDRESS	kernel/date.cpp	7;"	d	file:
 CMOS_DATA	kernel/date.cpp	8;"	d	file:
-COLOR_BLACK	kernel/Graphics.h	/^    COLOR_BLACK,$/;"	e	enum:__anon1
-COLOR_BLUE	kernel/Graphics.h	/^    COLOR_BLUE,$/;"	e	enum:__anon1
-COLOR_BROWN	kernel/Graphics.h	/^    COLOR_BROWN,$/;"	e	enum:__anon1
+COLOR_BLACK	kernel/Graphics.h	/^    COLOR_BLACK,$/;"	e	enum:__anon3
+COLOR_BLUE	kernel/Graphics.h	/^    COLOR_BLUE,$/;"	e	enum:__anon3
+COLOR_BROWN	kernel/Graphics.h	/^    COLOR_BROWN,$/;"	e	enum:__anon3
 COLOR_CHARS	PIMConverter.java	/^    private static final char[] COLOR_CHARS = {'n', 'b', 'g', 'c', 'r', 'm', 'l', 'y', 'w'};$/;"	f	class:PIMConverter	file:
-COLOR_CYAN	kernel/Graphics.h	/^    COLOR_CYAN,$/;"	e	enum:__anon1
-COLOR_DARK_GRAY	kernel/Graphics.h	/^    COLOR_DARK_GRAY,$/;"	e	enum:__anon1
-COLOR_GREEN	kernel/Graphics.h	/^    COLOR_GREEN,$/;"	e	enum:__anon1
-COLOR_LIGHT_BLUE	kernel/Graphics.h	/^    COLOR_LIGHT_BLUE,$/;"	e	enum:__anon1
-COLOR_LIGHT_CYAN	kernel/Graphics.h	/^    COLOR_LIGHT_CYAN,$/;"	e	enum:__anon1
-COLOR_LIGHT_GRAY	kernel/Graphics.h	/^    COLOR_LIGHT_GRAY,$/;"	e	enum:__anon1
-COLOR_LIGHT_GREEN	kernel/Graphics.h	/^    COLOR_LIGHT_GREEN,$/;"	e	enum:__anon1
-COLOR_LIGHT_MAGENTA	kernel/Graphics.h	/^    COLOR_LIGHT_MAGENTA,$/;"	e	enum:__anon1
-COLOR_LIGHT_RED	kernel/Graphics.h	/^    COLOR_LIGHT_RED,$/;"	e	enum:__anon1
-COLOR_MAGENTA	kernel/Graphics.h	/^    COLOR_MAGENTA,$/;"	e	enum:__anon1
-COLOR_RED	kernel/Graphics.h	/^    COLOR_RED,$/;"	e	enum:__anon1
-COLOR_WHITE	kernel/Graphics.h	/^    COLOR_WHITE$/;"	e	enum:__anon1
-COLOR_YELLOW	kernel/Graphics.h	/^    COLOR_YELLOW,$/;"	e	enum:__anon1
+COLOR_CYAN	kernel/Graphics.h	/^    COLOR_CYAN,$/;"	e	enum:__anon3
+COLOR_DARK_GRAY	kernel/Graphics.h	/^    COLOR_DARK_GRAY,$/;"	e	enum:__anon3
+COLOR_GREEN	kernel/Graphics.h	/^    COLOR_GREEN,$/;"	e	enum:__anon3
+COLOR_LIGHT_BLUE	kernel/Graphics.h	/^    COLOR_LIGHT_BLUE,$/;"	e	enum:__anon3
+COLOR_LIGHT_CYAN	kernel/Graphics.h	/^    COLOR_LIGHT_CYAN,$/;"	e	enum:__anon3
+COLOR_LIGHT_GRAY	kernel/Graphics.h	/^    COLOR_LIGHT_GRAY,$/;"	e	enum:__anon3
+COLOR_LIGHT_GREEN	kernel/Graphics.h	/^    COLOR_LIGHT_GREEN,$/;"	e	enum:__anon3
+COLOR_LIGHT_MAGENTA	kernel/Graphics.h	/^    COLOR_LIGHT_MAGENTA,$/;"	e	enum:__anon3
+COLOR_LIGHT_RED	kernel/Graphics.h	/^    COLOR_LIGHT_RED,$/;"	e	enum:__anon3
+COLOR_MAGENTA	kernel/Graphics.h	/^    COLOR_MAGENTA,$/;"	e	enum:__anon3
+COLOR_RED	kernel/Graphics.h	/^    COLOR_RED,$/;"	e	enum:__anon3
+COLOR_WHITE	kernel/Graphics.h	/^    COLOR_WHITE$/;"	e	enum:__anon3
+COLOR_YELLOW	kernel/Graphics.h	/^    COLOR_YELLOW,$/;"	e	enum:__anon3
 COM1	kernel/Debug.cpp	/^    constexpr uint16_t COM1 = 0x3F8;$/;"	m	namespace:Debug	file:
 CONSOLE_H	kernel/Console.h	2;"	d
 CPP_OBJS	Makefile	/^CPP_OBJS := $(patsubst kernel\/%.cpp, %.o, $(CPP_SRCS))$/;"	m
@@ -44,10 +44,14 @@ Color	kernel/vgraphics.h	/^struct Color {$/;"	s
 Console	kernel/Console.h	/^class Console {$/;"	c
 DATE_H	kernel/date.h	2;"	d
 DEG_TO_RAD	kernel/Graphics.h	29;"	d
-DISK_SIZE_BYTES	kernel/kernel.cpp	36;"	d	file:
+DISK_SIZE_BYTES	kernel/kernel.cpp	38;"	d	file:
 Debug	kernel/Debug.cpp	/^namespace Debug {$/;"	n	file:
 Debug	kernel/Debug.h	/^namespace Debug {$/;"	n
 EXT2_FULL_HPP	kernel/ffext2/ext2.hpp	3;"	d
+Elf	kernel/Elf.cpp	/^namespace Elf {$/;"	n	file:
+Elf	kernel/Elf.h	/^namespace Elf {$/;"	n
+Elf32_Ehdr	kernel/elf32.h	/^} Elf32_Ehdr;$/;"	t	typeref:struct:__anon1
+Elf32_Phdr	kernel/elf32.h	/^} Elf32_Phdr;$/;"	t	typeref:struct:__anon2
 FBInfo	kernel/vgraphics.h	/^struct FBInfo {$/;"	s
 FB_HEIGHT	kernel/Console.cpp	15;"	d	file:
 FB_WIDTH	kernel/Console.cpp	14;"	d	file:
@@ -66,17 +70,17 @@ Init	kernel/Debug.cpp	/^    void Init() {$/;"	f	namespace:Debug
 KERNEL_ELF	Makefile	/^KERNEL_ELF := kernel.elf$/;"	m
 KEYBOARD_H	kernel/Keyboard.h	2;"	d
 KEY_BACKSPACE	kernel/Console.cpp	290;"	d	file:
-KEY_BACKSPACE	kernel/kernel.cpp	325;"	d	file:
+KEY_BACKSPACE	kernel/kernel.cpp	327;"	d	file:
 KEY_DOWN	kernel/Console.cpp	289;"	d	file:
-KEY_DOWN	kernel/kernel.cpp	324;"	d	file:
+KEY_DOWN	kernel/kernel.cpp	326;"	d	file:
 KEY_ENTER	kernel/Console.cpp	291;"	d	file:
-KEY_ENTER	kernel/kernel.cpp	326;"	d	file:
+KEY_ENTER	kernel/kernel.cpp	328;"	d	file:
 KEY_LEFT	kernel/Console.cpp	286;"	d	file:
-KEY_LEFT	kernel/kernel.cpp	321;"	d	file:
+KEY_LEFT	kernel/kernel.cpp	323;"	d	file:
 KEY_RIGHT	kernel/Console.cpp	287;"	d	file:
-KEY_RIGHT	kernel/kernel.cpp	322;"	d	file:
+KEY_RIGHT	kernel/kernel.cpp	324;"	d	file:
 KEY_UP	kernel/Console.cpp	288;"	d	file:
-KEY_UP	kernel/kernel.cpp	323;"	d	file:
+KEY_UP	kernel/kernel.cpp	325;"	d	file:
 Keyboard	kernel/Keyboard.h	/^class Keyboard {$/;"	c
 LD	Makefile	/^LD        := ld$/;"	m
 LD	build.bat	/^set LD="%TOOLCHAIN%\\i686-elf-ld"$/;"	v
@@ -84,13 +88,13 @@ LDFLAGS	Makefile	/^LDFLAGS := -m elf_i386 -nostdlib -L$(shell dirname $$(gcc -m3
 LDFLAGS	build.bat	/^set LDFLAGS=-m elf_i386$/;"	v
 LDSCRIPT	Makefile	/^LDSCRIPT := kernel\/linker.ld$/;"	m
 MAXLEN	kernel/Console.h	/^    static const int MAXLEN = 256;$/;"	m	class:Console
-MAX_FILE_SIZE	kernel/kernel.cpp	37;"	d	file:
-MODULES	Makefile	/^MODULES = files\/text.txt files\/bg.pim files\/tux.pim files\/background.pim files\/LICENSE files\/cursor.pim$/;"	m
+MAX_FILE_SIZE	kernel/kernel.cpp	39;"	d	file:
+MODULES	Makefile	/^MODULES = files\/text.txt files\/bg.pim files\/tux.pim files\/background.pim files\/LICENSE files\/cursor.pim files\/program.elf$/;"	m
 MODULES_DIR	Makefile	/^MODULES_DIR  := $(ISO_DIR)\/files$/;"	m
 MULTIBOOT_H	kernel/multiboot.h	2;"	d
 MULTIBOOT_INFO_FRAMEBUFFER_INFO	kernel/multiboot.h	47;"	d
-MULTIBOOT_TAG_TYPE_END	kernel/kernel.cpp	536;"	d	file:
-MULTIBOOT_TAG_TYPE_MODULE	kernel/kernel.cpp	537;"	d	file:
+MULTIBOOT_TAG_TYPE_END	kernel/kernel.cpp	538;"	d	file:
+MULTIBOOT_TAG_TYPE_MODULE	kernel/kernel.cpp	539;"	d	file:
 NASM	Makefile	/^NASM      := nasm$/;"	m
 NASM	build.bat	/^set NASM=nasm$/;"	v
 NULL	kernel/parrot.cpp	2;"	d	file:
@@ -111,14 +115,21 @@ PIC2_DATA	kernel/pic_wrapper.cpp	6;"	d	file:
 PIC_H	kernel/pic.h	2;"	d
 PIMConverter	PIMConverter.java	/^public class PIMConverter {$/;"	c
 PIT_CHANNEL0	kernel/io.h	5;"	d
-PIT_CHANNEL0	kernel/kernel.cpp	40;"	d	file:
+PIT_CHANNEL0	kernel/kernel.cpp	42;"	d	file:
 PIT_CHANNEL0	kernel/wait_wrapper.cpp	3;"	d	file:
 PIT_COMMAND	kernel/io.h	6;"	d
-PIT_COMMAND	kernel/kernel.cpp	41;"	d	file:
+PIT_COMMAND	kernel/kernel.cpp	43;"	d	file:
 PIT_COMMAND	kernel/wait_wrapper.cpp	4;"	d	file:
 PIT_FREQUENCY	kernel/io.h	7;"	d
-PIT_FREQUENCY	kernel/kernel.cpp	42;"	d	file:
+PIT_FREQUENCY	kernel/kernel.cpp	44;"	d	file:
 PIT_FREQUENCY	kernel/wait_wrapper.cpp	5;"	d	file:
+PT_DYNAMIC	kernel/elf32.h	7;"	d
+PT_INTERP	kernel/elf32.h	8;"	d
+PT_LOAD	kernel/elf32.h	6;"	d
+PT_NOTE	kernel/elf32.h	9;"	d
+PT_NULL	kernel/elf32.h	5;"	d
+PT_PHDR	kernel/elf32.h	11;"	d
+PT_SHLIB	kernel/elf32.h	10;"	d
 Print	kernel/Debug.cpp	/^    void Print(const char* s) {$/;"	f	namespace:Debug
 PrintChar	kernel/Debug.cpp	/^    void PrintChar(char c) {$/;"	f	namespace:Debug
 PrintDec	kernel/Debug.cpp	/^    void PrintDec(uint32_t val) {$/;"	f	namespace:Debug
@@ -133,34 +144,37 @@ SCREEN_HEIGHT	kernel/Graphics.cpp	8;"	d	file:
 SCREEN_WIDTH	kernel/Graphics.cpp	7;"	d	file:
 SIN_TABLE	kernel/vgraphics.cpp	/^static const float SIN_TABLE[360] = {$/;"	v	file:
 String	kernel/string.hpp	/^namespace String {$/;"	n
+Syscalls	kernel/Syscalls.h	/^struct Syscalls {$/;"	s
+Syscalls	programs/test/Syscalls.h	/^struct Syscalls {$/;"	s
 TOOLCHAIN	build.bat	/^set TOOLCHAIN=C:\\Users\\blasf\\Downloads\\i686-elf-tools-windows\\bin$/;"	v
 ThreadFunc	kernel/Graphics.h	/^typedef void (*ThreadFunc)(void*);$/;"	t
-Triangle	kernel/Graphics.h	/^} Triangle;$/;"	t	typeref:struct:__anon3
+Triangle	kernel/Graphics.h	/^} Triangle;$/;"	t	typeref:struct:__anon5
 VGA	kernel/Graphics.cpp	/^static uint8_t* const VGA = (uint8_t*)0xA0000;$/;"	v	file:
 VGA_ADDRESS	kernel/Console.cpp	7;"	d	file:
-VGA_COLOR_BLACK	kernel/kernel.cpp	45;"	d	file:
-VGA_COLOR_BLUE	kernel/kernel.cpp	46;"	d	file:
-VGA_COLOR_BROWN	kernel/kernel.cpp	51;"	d	file:
-VGA_COLOR_CYAN	kernel/kernel.cpp	48;"	d	file:
-VGA_COLOR_DARK_GREY	kernel/kernel.cpp	53;"	d	file:
-VGA_COLOR_GREEN	kernel/kernel.cpp	47;"	d	file:
-VGA_COLOR_LIGHT_BLUE	kernel/kernel.cpp	54;"	d	file:
-VGA_COLOR_LIGHT_CYAN	kernel/kernel.cpp	56;"	d	file:
-VGA_COLOR_LIGHT_GREEN	kernel/kernel.cpp	55;"	d	file:
-VGA_COLOR_LIGHT_GREY	kernel/kernel.cpp	52;"	d	file:
-VGA_COLOR_LIGHT_MAGENTA	kernel/kernel.cpp	58;"	d	file:
-VGA_COLOR_LIGHT_RED	kernel/kernel.cpp	57;"	d	file:
-VGA_COLOR_MAGENTA	kernel/kernel.cpp	50;"	d	file:
-VGA_COLOR_RED	kernel/kernel.cpp	49;"	d	file:
-VGA_COLOR_WHITE	kernel/kernel.cpp	60;"	d	file:
-VGA_COLOR_YELLOW	kernel/kernel.cpp	59;"	d	file:
+VGA_COLOR_BLACK	kernel/kernel.cpp	47;"	d	file:
+VGA_COLOR_BLUE	kernel/kernel.cpp	48;"	d	file:
+VGA_COLOR_BROWN	kernel/kernel.cpp	53;"	d	file:
+VGA_COLOR_CYAN	kernel/kernel.cpp	50;"	d	file:
+VGA_COLOR_DARK_GREY	kernel/kernel.cpp	55;"	d	file:
+VGA_COLOR_GREEN	kernel/kernel.cpp	49;"	d	file:
+VGA_COLOR_LIGHT_BLUE	kernel/kernel.cpp	56;"	d	file:
+VGA_COLOR_LIGHT_CYAN	kernel/kernel.cpp	58;"	d	file:
+VGA_COLOR_LIGHT_GREEN	kernel/kernel.cpp	57;"	d	file:
+VGA_COLOR_LIGHT_GREY	kernel/kernel.cpp	54;"	d	file:
+VGA_COLOR_LIGHT_MAGENTA	kernel/kernel.cpp	60;"	d	file:
+VGA_COLOR_LIGHT_RED	kernel/kernel.cpp	59;"	d	file:
+VGA_COLOR_MAGENTA	kernel/kernel.cpp	52;"	d	file:
+VGA_COLOR_RED	kernel/kernel.cpp	51;"	d	file:
+VGA_COLOR_WHITE	kernel/kernel.cpp	62;"	d	file:
+VGA_COLOR_YELLOW	kernel/kernel.cpp	61;"	d	file:
 VGA_HEIGHT	kernel/Console.h	/^    static const uint16_t VGA_HEIGHT = 25;$/;"	m	class:Console
 VGA_WIDTH	kernel/Console.h	/^    static const uint16_t VGA_WIDTH  = 80;$/;"	m	class:Console
 VGraphics	kernel/vgraphics.h	/^class VGraphics {$/;"	c
-Vec3	kernel/Graphics.h	/^} Vec3;$/;"	t	typeref:struct:__anon2
+Vec3	kernel/Graphics.h	/^} Vec3;$/;"	t	typeref:struct:__anon4
 __udivdi3	kernel/Console.cpp	/^unsigned long long __udivdi3(unsigned long long n, unsigned long long d) {$/;"	f
 __umoddi3	kernel/Console.cpp	/^unsigned long long __umoddi3(unsigned long long n, unsigned long long d) {$/;"	f
 _start	boot.asm	/^_start:$/;"	l
+_start	programs/test/program.cpp	/^extern "C" void _start(Syscalls* sys) {$/;"	f
 a	kernel/vgraphics.h	/^	uint8_t r, g, b, a;$/;"	m	struct:Color
 absf	kernel/Graphics.cpp	/^static float absf(float x) { return (x < 0) ? -x : x; }$/;"	f	file:
 absf	kernel/vgraphics.cpp	/^float absf(float x) { return (x < 0) ? -x : x; }$/;"	f
@@ -198,11 +212,11 @@ clearScreen	kernel/Console.cpp	/^void Console::clearScreen() {$/;"	f	class:Conso
 clearScreen	kernel/vgraphics.cpp	/^void VGraphics::clearScreen() {$/;"	f	class:VGraphics
 clock	kernel/kernel.cpp	/^void clock() {$/;"	f
 cmdline	kernel/kernel.cpp	/^    char     cmdline[0];\/\/ string opcional (puede estar vacío)$/;"	m	struct:multiboot_tag_module	file:
-cmdline	kernel/multiboot.h	/^    uint32_t cmdline;$/;"	m	struct:__anon4
+cmdline	kernel/multiboot.h	/^    uint32_t cmdline;$/;"	m	struct:__anon6
 cmdline	kernel/multiboot.h	/^    uint32_t cmdline;$/;"	m	struct:multiboot_info_t
 color	kernel/Console.cpp	/^uint8_t   Console::color        = 0x07;$/;"	m	class:Console	file:
 color	kernel/Console.h	/^    static uint8_t   color;$/;"	m	class:Console
-color	kernel/Graphics.h	/^    uint8_t color;$/;"	m	struct:__anon3
+color	kernel/Graphics.h	/^    uint8_t color;$/;"	m	struct:__anon5
 colorDistance	PIMConverter.java	/^    private static double colorDistance(Color c1, Color c2) {$/;"	m	class:PIMConverter	file:
 color_info	kernel/multiboot.h	/^    uint8_t color_info[6];$/;"	m	struct:multiboot_info_t
 compute_block_bitmap_bytes	kernel/ffext2/ext2.cpp	/^u32 compute_block_bitmap_bytes(u32 blocks_count) {$/;"	f	namespace:ext2full
@@ -210,6 +224,10 @@ compute_gdt_bytes	kernel/ffext2/ext2.cpp	/^u32 compute_gdt_bytes(u32 groups_coun
 compute_inode_bitmap_bytes	kernel/ffext2/ext2.cpp	/^u32 compute_inode_bitmap_bytes(u32 inodes_count) {$/;"	f	namespace:ext2full
 concat	kernel/kernel.cpp	/^char* concat(const char* a, const char* b) {$/;"	f
 config_table	kernel/multiboot.h	/^    uint32_t config_table;$/;"	m	struct:multiboot_info_t
+console_println	kernel/Syscalls.h	/^    void (*console_println)(const char* str);   \/\/ Imprime con salto de línea$/;"	m	struct:Syscalls
+console_println	programs/test/Syscalls.h	/^    void (*console_println)(const char* str);   \/\/ Imprime con salto de línea$/;"	m	struct:Syscalls
+console_write	kernel/Syscalls.h	/^    void (*console_write)(const char* str);     \/\/ Imprime sin salto de línea$/;"	m	struct:Syscalls
+console_write	programs/test/Syscalls.h	/^    void (*console_write)(const char* str);     \/\/ Imprime sin salto de línea$/;"	m	struct:Syscalls
 convertPNGtoPIM	PIMConverter.java	/^    public static void convertPNGtoPIM(File pngFile, File pimFile) throws IOException {$/;"	m	class:PIMConverter
 cos_lookup	kernel/vgraphics.cpp	/^float VGraphics::cos_lookup(int deg) {$/;"	f	class:VGraphics
 cosf	kernel/Graphics.cpp	/^static float cosf(float x) {$/;"	f	file:
@@ -224,8 +242,12 @@ cursorX	kernel/Console.cpp	/^uint32_t Console::cursorX = 0;$/;"	m	class:Console	
 cursorX	kernel/Console.h	/^    static uint32_t cursorX; \/\/ Posición del cursor en X (modo gráfico)$/;"	m	class:Console
 cursorY	kernel/Console.cpp	/^uint32_t Console::cursorY = 0;$/;"	m	class:Console	file:
 cursorY	kernel/Console.h	/^    static uint32_t cursorY; \/\/ Posición del cursor en Y (modo gráfico)$/;"	m	class:Console
+debug_print	kernel/Syscalls.h	/^    void (*debug_print)(const char* str);       \/\/ Imprime en modo debug$/;"	m	struct:Syscalls
 debug_print	kernel/debug_wrapper.cpp	/^void debug_print(const char* m) {$/;"	f
+debug_print	programs/test/Syscalls.h	/^    void (*debug_print)(const char* str);       \/\/ Imprime en modo debug$/;"	m	struct:Syscalls
+debug_print_dec	kernel/Syscalls.h	/^    void (*debug_print_dec)(int value);         \/\/ Imprime un entero decimal$/;"	m	struct:Syscalls
 debug_print_dec	kernel/debug_wrapper.cpp	/^void debug_print_dec(uint32_t n) {$/;"	f
+debug_print_dec	programs/test/Syscalls.h	/^    void (*debug_print_dec)(int value);         \/\/ Imprime un entero decimal$/;"	m	struct:Syscalls
 debug_print_hex	kernel/debug_wrapper.cpp	/^void debug_print_hex(uint32_t h) {$/;"	f
 delay_ms	kernel/kernel.cpp	/^void delay_ms(uint32_t ms) {$/;"	f
 dev	kernel/ffext2/ext2.hpp	/^    BlockDevice dev;$/;"	m	struct:ext2full::FS
@@ -241,6 +263,20 @@ draw_rotating_cube	kernel/kernel.cpp	/^void draw_rotating_cube() {$/;"	f
 drives_addr	kernel/multiboot.h	/^    uint32_t drives_addr;$/;"	m	struct:multiboot_info_t
 drives_length	kernel/multiboot.h	/^    uint32_t drives_length;$/;"	m	struct:multiboot_info_t
 ds	kernel/idt.h	/^    uint32_t ds;                 \/\/ Segmento de datos$/;"	m	struct:Registers
+e_ehsize	kernel/elf32.h	/^    uint16_t e_ehsize;          \/\/ Tamaño del ELF header$/;"	m	struct:__anon1
+e_entry	kernel/elf32.h	/^    uint32_t e_entry;           \/\/ Dirección de entrada$/;"	m	struct:__anon1
+e_flags	kernel/elf32.h	/^    uint32_t e_flags;           \/\/ Flags específicos de arquitectura$/;"	m	struct:__anon1
+e_ident	kernel/elf32.h	/^    unsigned char e_ident[16]; \/\/ Magia, clase, endianess, versión...$/;"	m	struct:__anon1
+e_machine	kernel/elf32.h	/^    uint16_t e_machine;         \/\/ Arquitectura$/;"	m	struct:__anon1
+e_phentsize	kernel/elf32.h	/^    uint16_t e_phentsize;       \/\/ Tamaño de cada entrada de tabla de programas$/;"	m	struct:__anon1
+e_phnum	kernel/elf32.h	/^    uint16_t e_phnum;           \/\/ Número de entradas de tabla de programas$/;"	m	struct:__anon1
+e_phoff	kernel/elf32.h	/^    uint32_t e_phoff;           \/\/ Offset a tabla de programas$/;"	m	struct:__anon1
+e_shentsize	kernel/elf32.h	/^    uint16_t e_shentsize;       \/\/ Tamaño de cada entrada de sección$/;"	m	struct:__anon1
+e_shnum	kernel/elf32.h	/^    uint16_t e_shnum;           \/\/ Número de entradas de sección$/;"	m	struct:__anon1
+e_shoff	kernel/elf32.h	/^    uint32_t e_shoff;           \/\/ Offset a tabla de secciones$/;"	m	struct:__anon1
+e_shstrndx	kernel/elf32.h	/^    uint16_t e_shstrndx;        \/\/ Índice de sección con nombres$/;"	m	struct:__anon1
+e_type	kernel/elf32.h	/^    uint16_t e_type;            \/\/ Tipo de ELF$/;"	m	struct:__anon1
+e_version	kernel/elf32.h	/^    uint32_t e_version;         \/\/ Versión$/;"	m	struct:__anon1
 eax	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
 ebp	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
 ebx	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
@@ -257,6 +293,7 @@ err_code	kernel/idt.h	/^    uint32_t int_no, err_code;   \/\/ Número de interru
 esi	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
 esp	kernel/idt.h	/^    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; \/\/ Registros pusha$/;"	m	struct:Registers
 exception_handler	kernel/idt.cpp	/^static void exception_handler(Registers* regs) {$/;"	f	file:
+execute	kernel/Elf.cpp	/^    bool execute(const char* file, Syscalls* s) {$/;"	f	namespace:Elf
 ext2_memcpy	kernel/ffext2/ext2.cpp	/^static inline void* ext2_memcpy(void* dst, const void* src, unsigned long n) {$/;"	f	file:
 ext2_memset	kernel/ffext2/ext2.cpp	/^static inline void* ext2_memset(void* dst, int c, unsigned long n) {$/;"	f	file:
 ext2_strcmp	kernel/ffext2/ext2.cpp	/^static inline int ext2_strcmp(const char* a, const char* b) {$/;"	f	file:
@@ -305,6 +342,8 @@ get_day	kernel/date_wrapper.cpp	/^uint8_t get_day() {$/;"	f
 get_hour	kernel/date_wrapper.cpp	/^uint8_t get_hour() {$/;"	f
 get_minute	kernel/date_wrapper.cpp	/^uint8_t get_minute() {$/;"	f
 get_month	kernel/date_wrapper.cpp	/^uint8_t get_month() {$/;"	f
+get_pixel	kernel/Syscalls.h	/^    uint32_t (*get_pixel)(uint32_t x, uint32_t y);$/;"	m	struct:Syscalls
+get_pixel	programs/test/Syscalls.h	/^    uint32_t (*get_pixel)(uint32_t x, uint32_t y);$/;"	m	struct:Syscalls
 get_second	kernel/date_wrapper.cpp	/^uint8_t get_second() {$/;"	f
 get_weekday_name	kernel/date.cpp	/^const char* get_weekday_name() {$/;"	f
 get_weekday_nme	kernel/date_wrapper.cpp	/^const char* get_weekday_nme() {$/;"	f
@@ -400,14 +439,14 @@ mkfs_on_device	kernel/ffext2/ext2.cpp	/^bool mkfs_on_device(const BlockDevice& d
 mmap_addr	kernel/multiboot.h	/^    uint32_t mmap_addr;$/;"	m	struct:multiboot_info_t
 mmap_length	kernel/multiboot.h	/^    uint32_t mmap_length;$/;"	m	struct:multiboot_info_t
 mod_end	kernel/kernel.cpp	/^    uint32_t mod_end;   \/\/ dirección física fin$/;"	m	struct:multiboot_tag_module	file:
-mod_end	kernel/multiboot.h	/^    uint32_t mod_end;$/;"	m	struct:__anon4
+mod_end	kernel/multiboot.h	/^    uint32_t mod_end;$/;"	m	struct:__anon6
 mod_start	kernel/kernel.cpp	/^    uint32_t mod_start; \/\/ dirección física inicio$/;"	m	struct:multiboot_tag_module	file:
-mod_start	kernel/multiboot.h	/^    uint32_t mod_start;$/;"	m	struct:__anon4
+mod_start	kernel/multiboot.h	/^    uint32_t mod_start;$/;"	m	struct:__anon6
 mods_addr	kernel/multiboot.h	/^    uint32_t mods_addr;$/;"	m	struct:multiboot_info_t
 mods_count	kernel/multiboot.h	/^    uint32_t mods_count;$/;"	m	struct:multiboot_info_t
 mount	kernel/ffext2/ext2.cpp	/^bool mount(FS& fs, const BlockDevice& dev, u32 part_lba_start,$/;"	f	namespace:ext2full
 multiboot_info_t	kernel/multiboot.h	/^struct multiboot_info_t {$/;"	s
-multiboot_module_t	kernel/multiboot.h	/^} multiboot_module_t;$/;"	t	typeref:struct:__anon4
+multiboot_module_t	kernel/multiboot.h	/^} multiboot_module_t;$/;"	t	typeref:struct:__anon6
 multiboot_tag	kernel/kernel.cpp	/^struct multiboot_tag {$/;"	s	file:
 multiboot_tag_module	kernel/kernel.cpp	/^struct multiboot_tag_module {$/;"	s	file:
 num	kernel/multiboot.h	/^    uint32_t num;$/;"	m	struct:multiboot_info_t
@@ -420,7 +459,15 @@ outb	kernel/io.asm	/^outb:$/;"	l
 outb	kernel/io.cpp	/^void outb(uint16_t port, uint8_t value) {$/;"	f
 outb	kernel/pic.cpp	/^static inline void outb(uint16_t port, uint8_t val) {$/;"	f	file:
 outw	kernel/io.cpp	/^void outw(uint16_t port, uint16_t val) {$/;"	f
-pad	kernel/multiboot.h	/^    uint32_t pad;$/;"	m	struct:__anon4
+p_align	kernel/elf32.h	/^    uint32_t p_align;  \/\/ Alineación$/;"	m	struct:__anon2
+p_filesz	kernel/elf32.h	/^    uint32_t p_filesz; \/\/ Tamaño del segmento en el archivo$/;"	m	struct:__anon2
+p_flags	kernel/elf32.h	/^    uint32_t p_flags;  \/\/ Flags de segmento (R\/W\/X)$/;"	m	struct:__anon2
+p_memsz	kernel/elf32.h	/^    uint32_t p_memsz;  \/\/ Tamaño del segmento en memoria (BSS incluido)$/;"	m	struct:__anon2
+p_offset	kernel/elf32.h	/^    uint32_t p_offset; \/\/ Offset del segmento en el archivo ELF$/;"	m	struct:__anon2
+p_paddr	kernel/elf32.h	/^    uint32_t p_paddr;  \/\/ Dirección física (no usado aquí)$/;"	m	struct:__anon2
+p_type	kernel/elf32.h	/^    uint32_t p_type;   \/\/ Tipo de segmento (PT_LOAD, PT_NULL, etc.)$/;"	m	struct:__anon2
+p_vaddr	kernel/elf32.h	/^    uint32_t p_vaddr;  \/\/ Dirección virtual donde cargar el segmento$/;"	m	struct:__anon2
+pad	kernel/multiboot.h	/^    uint32_t pad;$/;"	m	struct:__anon6
 parrot	kernel/parrot.cpp	/^const char* parrot[] = {$/;"	v
 part_lba_start	kernel/ffext2/ext2.hpp	/^    u32 part_lba_start;$/;"	m	struct:ext2full::FS
 pit_init	kernel/kernel.cpp	/^void pit_init(uint32_t frequency) {$/;"	f
@@ -435,6 +482,8 @@ projection_matrix	kernel/Graphics.cpp	/^static float projection_matrix[4][4] = {
 putChar	kernel/Console.cpp	/^void Console::putChar(char c) {$/;"	f	class:Console
 putPixel	kernel/vgraphics.cpp	/^void VGraphics::putPixel(uint32_t x, uint32_t y, uint32_t color) {$/;"	f	class:VGraphics
 put_image	kernel/vgraphics.cpp	/^void VGraphics::put_image(int dx, int dy, const char* img_data) {$/;"	f	class:VGraphics
+put_pixel	kernel/Syscalls.h	/^    void (*put_pixel)(uint32_t x, uint32_t y, uint32_t color);$/;"	m	struct:Syscalls
+put_pixel	programs/test/Syscalls.h	/^    void (*put_pixel)(uint32_t x, uint32_t y, uint32_t color);$/;"	m	struct:Syscalls
 r	kernel/Graphics.h	/^    uint8_t r, g, b;$/;"	m	struct:vga_color
 r	kernel/vgraphics.h	/^	uint8_t r, g, b, a;$/;"	m	struct:Color
 rand_lcg	kernel/kernel.cpp	/^uint32_t rand_lcg() {$/;"	f
@@ -465,6 +514,7 @@ rotation_x	kernel/kernel.cpp	/^static float rotation_x = 0.0f;$/;"	v	file:
 rotation_y	kernel/kernel.cpp	/^static float rotation_y = 0.0f;$/;"	v	file:
 rotation_z	kernel/kernel.cpp	/^static float rotation_z = 0.0f;$/;"	v	file:
 rread_file_from_meta	kernel/kernel_wrapper.cpp	/^const char* rread_file_from_meta(const char* name) {$/;"	f
+run_program	kernel/kernel.cpp	/^void run_program(char* name) {$/;"	f
 runcommand	kernel/kernel.cpp	/^void runcommand(char* s, bool auth) {	$/;"	f
 s32	kernel/ffext2/ext2.hpp	/^typedef int32_t  s32;$/;"	t	namespace:ext2full
 sb	kernel/ffext2/ext2.hpp	/^    Superblock sb;$/;"	m	struct:ext2full::FS
@@ -511,6 +561,8 @@ strncmp	kernel/string.cpp	/^int strncmp(const char* s1, const char* s2, size_t n
 strncpy	kernel/string.cpp	/^void strncpy(char* dest, const char* src, int maxLen) {$/;"	f
 strrchr	kernel/string.cpp	/^char* strrchr(const char* s, int c) {$/;"	f
 substr	kernel/kernel.cpp	/^char* substr(const char* str, int start, int length = -1) {$/;"	f
+sys	kernel/Elf.cpp	/^    Syscalls* sys = nullptr;$/;"	m	namespace:Elf	file:
+syscalls	kernel/kernel.cpp	/^Syscalls syscalls = {$/;"	v
 tanf	kernel/Graphics.cpp	/^float tanf(float x) {$/;"	f
 tanf	kernel/vgraphics.cpp	/^float tanf(float x) {$/;"	f
 textBuffer	kernel/Console.cpp	/^static char textBuffer[FB_HEIGHT][FB_WIDTH];$/;"	v	file:
@@ -534,9 +586,9 @@ updateCursor	kernel/Console.cpp	/^void Console::updateCursor() {$/;"	f	class:Con
 usage	kernel/ffext2/host_blockdev.cpp	/^static void usage(const char* prog) {$/;"	f	file:
 user	kernel/ffext2/ext2.hpp	/^    void* user;$/;"	m	struct:ext2full::BlockDevice
 useresp	kernel/idt.h	/^    uint32_t eip, cs, eflags, useresp, ss; \/\/ Automáticamente pusheados por el CPU$/;"	m	struct:Registers
-v0	kernel/Graphics.h	/^    Vec3 v0, v1, v2;$/;"	m	struct:__anon3
-v1	kernel/Graphics.h	/^    Vec3 v0, v1, v2;$/;"	m	struct:__anon3
-v2	kernel/Graphics.h	/^    Vec3 v0, v1, v2;$/;"	m	struct:__anon3
+v0	kernel/Graphics.h	/^    Vec3 v0, v1, v2;$/;"	m	struct:__anon5
+v1	kernel/Graphics.h	/^    Vec3 v0, v1, v2;$/;"	m	struct:__anon5
+v2	kernel/Graphics.h	/^    Vec3 v0, v1, v2;$/;"	m	struct:__anon5
 vbe_control_info	kernel/multiboot.h	/^    uint32_t vbe_control_info;$/;"	m	struct:multiboot_info_t
 vbe_interface_len	kernel/multiboot.h	/^    uint16_t vbe_interface_len;$/;"	m	struct:multiboot_info_t
 vbe_interface_off	kernel/multiboot.h	/^    uint16_t vbe_interface_off;$/;"	m	struct:multiboot_info_t
@@ -581,7 +633,7 @@ write_bytes	kernel/ffext2/ext2.cpp	/^static bool write_bytes(const FS& fs, u32 b
 write_file	kernel/ffext2/ext2.cpp	/^bool write_file(FS& fs, const char* path, const void* data, u32 size) {$/;"	f	namespace:ext2full
 write_inode	kernel/ffext2/ext2.cpp	/^static bool write_inode(const FS& fs, u32 inum, const Inode& in) {$/;"	f	namespace:ext2full
 write_registers	kernel/Graphics.cpp	/^void write_registers(uint8_t* regs) {$/;"	f
-x	kernel/Graphics.h	/^    float x, y, z;$/;"	m	struct:__anon2
-y	kernel/Graphics.h	/^    float x, y, z;$/;"	m	struct:__anon2
-z	kernel/Graphics.h	/^    float x, y, z;$/;"	m	struct:__anon2
+x	kernel/Graphics.h	/^    float x, y, z;$/;"	m	struct:__anon4
+y	kernel/Graphics.h	/^    float x, y, z;$/;"	m	struct:__anon4
+z	kernel/Graphics.h	/^    float x, y, z;$/;"	m	struct:__anon4
 zero	kernel/idt.h	/^    uint8_t zero;           \/\/ siempre 0$/;"	m	struct:IDTEntry
