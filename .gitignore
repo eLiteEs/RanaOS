@@ -1,7 +1,6 @@
 *.o
 *.bin
 *.img
-*.elf
 isodir/
 rust/target/
 tags
