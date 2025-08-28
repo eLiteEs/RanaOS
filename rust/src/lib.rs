@@ -21,6 +21,9 @@ pub use ps2::*;
 extern "C" {
     // Wait functions
     fn wait_ms(ms: u32);
+
+    // Run programs
+    fn run_elf(name: *const u8);
 }
 
 fn _char_to_utf8_str(c: char, buf: &mut [u8; 4]) -> &str {

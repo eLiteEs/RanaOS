@@ -514,6 +514,7 @@ rotation_x	kernel/kernel.cpp	/^static float rotation_x = 0.0f;$/;"	v	file:
 rotation_y	kernel/kernel.cpp	/^static float rotation_y = 0.0f;$/;"	v	file:
 rotation_z	kernel/kernel.cpp	/^static float rotation_z = 0.0f;$/;"	v	file:
 rread_file_from_meta	kernel/kernel_wrapper.cpp	/^const char* rread_file_from_meta(const char* name) {$/;"	f
+run_elf	kernel/kernel_wrapper.cpp	/^void run_elf(char* name) {$/;"	f
 run_program	kernel/kernel.cpp	/^void run_program(char* name) {$/;"	f
 runcommand	kernel/kernel.cpp	/^void runcommand(char* s, bool auth) {	$/;"	f
 s32	kernel/ffext2/ext2.hpp	/^typedef int32_t  s32;$/;"	t	namespace:ext2full
