@@ -743,20 +743,21 @@ void runcommand(char* s, bool auth) {
 		Console::write("  date >> Show current date.\n");
 		Console::write("  parrot >> Dancing parrot animation from ascii.live.\n");
 		Console::write("  day >> Get the weekday name.\n");
-        	Console::write("  shutdwn || shutdown >> Power off the computer.\n");
-        	Console::write("      ... /y >> Power off the computer without asking.\n");
-        	Console::write("  reboot >> Reboot the computer.\n");
+    	Console::write("  shutdwn || shutdown >> Power off the computer.\n");
+    	Console::write("      ... /y >> Power off the computer without asking.\n");
+        Console::write("  reboot >> Reboot the computer.\n");
 		Console::write("      ... /y >> Reboot the computer without asking.\n");
-        	Console::write("  jogo >> Play a game on graphical mode.\n");
-        	Console::write("  3d >> Shooow a rotating 3d cube on the screen.\n");
-        	Console::write("  auth >> Prints yes if the command was runned authenticated.\n");
-        	Console::write("  hex [hexadecimal] >> Shows the decimal value of a hexadecimal string.\n");
-        	Console::write("  read [filename] >> Read the contents of a module in a better way.\n");
-        	Console::write("  start >> Start OS in graphical mode.\n");
+    	Console::write("  jogo >> Play a game on graphical mode.\n");
+    	Console::write("  3d >> Shooow a rotating 3d cube on the screen.\n");
+        Console::write("  auth >> Prints yes if the command was runned authenticated.\n");
+    	Console::write("  hex [hexadecimal] >> Shows the decimal value of a hexadecimal string.\n");
+    	Console::write("  read [filename] >> Read the contents of a module in a better way.\n");
+        Console::write("  start >> Start OS in graphical mode.\n");
 		Console::write("  clock >> Show an analogic clock in the screen.\n");
         Console::write("  license >> Show the license of the project.\n");
         Console::write("  time --set >> Update the time.\n");
-    	} else if(!strcmp(s, "version")) {
+        Console::write("  run [program] >> Run a .elf file in grub modules.\n");
+    } else if(!strcmp(s, "version")) {
 		Console::write("eLite Systems RanaOS beta 3\nLicensed with GNU GPL v3.\n");
 	} else if(!strcmp(substr(s, 0, 5), "echo ")) {
 		Console::println(substr(s, 5));
@@ -1052,8 +1053,9 @@ void runcommand(char* s, bool auth) {
         return;
     } else if(!strcmp(s, "ls")) {
         list_all_modules(mbi);
-    } else if(!strcmp(s, "run")) {
-        run_program("program.elf");
+    } else if(!strcmp(substr(s, 0, 4), "run ")) {
+        run_program(substr(s, 4));
+        Console::println();
     } else {
 	    Console::write("Unknown command \"");
 	    Console::write(s);
