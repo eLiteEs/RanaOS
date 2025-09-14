@@ -1131,7 +1131,7 @@ extern "C" void kmain(uint32_t magic, multiboot_info_t* mbi2) {
 
     Console::setGraphics(true); // Set graphics mode
 
-    // Arch-like startup
+    // Plymouth-like startup
     Console::clearScreen();
     Console::println("Starting RanaOS...");
 
