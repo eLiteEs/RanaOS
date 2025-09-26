@@ -6,9 +6,9 @@ I'm going to write documentation about the use of the OS as an user and another 
 
 ## Index:
 - RanaOS for users:
-    1. Running RanaOS on a Virtual Machine
-    2. Using the command interface
-    3. Basic comands
+    1. [Running RanaOS on a Virtual Machine](user/running-ranaos-in-vm.md)
+    2. [Using the command interface]()
+    3. [Basic comands](user/basic-commands.md)
     4. Basic configuration
     5. Starting graphical mode
     6. Using games
