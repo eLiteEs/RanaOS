@@ -1,0 +1,9 @@
+{
+  "versions": [
+    {
+      "version": "nightly",
+      "iso": "https://eLiteEs.github.io/eLiteEs/RanaOS/nightly/RanaOS.iso",
+      "sha256": "https://eLiteEs.github.io/eLiteEs/RanaOS/nightly/RanaOS.sha256"
+    }
+  ]
+}
