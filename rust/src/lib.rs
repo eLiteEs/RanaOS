@@ -42,11 +42,8 @@ pub extern "C" fn start_so() {
     let width = Graphics::width();
     let height = Graphics::height();
     
-    let mut mouse = Mouse::new(width, height);
+    let mut mouse = PS2::new(width, height);
     unsafe { mouse.init() };
-    unsafe {
-        enable_irq(12);  // Habilitar IRQ del ratón
-    }
 
     // Draw toolbar
     Graphics::draw_rect(0, 0, Graphics::width(), 20, 0x000000);
@@ -64,10 +61,9 @@ pub extern "C" fn start_so() {
     let mut i = 0u32;
 
     loop {
-        mouse.handle_interrupt();
-        mouse.save_background(mouse.x, mouse.y);
-        mouse.draw();
-    
+        mouse.handle_mouse_interrupt();
+        mouse.draw_mouse();
+
         if i == 1000 {
     
             // Mostrar hora en toolbar
@@ -85,7 +81,7 @@ pub extern "C" fn start_so() {
 
         let mut s: &str;
 
-        match mouse.buttons {
+        match mouse.mouse.buttons {
             0 => s = "0",
             1 => s = "1",
             2 => s = "2",
@@ -95,6 +91,15 @@ pub extern "C" fn start_so() {
         Graphics::draw_rect(0, 20, 100, 20, 0x0);
         Graphics::draw_string(0, 20, s, 0xffffff, 0x0, false, false);
         i += 1;
+
+        Graphics::draw_rect(0,40,100,40,0x0);
+        let byte: u8 = mouse.keyboard.last_key as u8;
+        Graphics::draw_char(0,40,byte, 0xffffff, 0x0, false, false);
+
+        //mouse.wait_data();
+        //if Keyboard::was_c_pressed() {
+        //    Graphics::draw_rect(0,40,100,20,0x0);
+        //}
 
         //if Keyboard::was_c_pressed() {
         //    Graphics::draw_rect(0, 0, 1920, 1080, 0xffffff);
