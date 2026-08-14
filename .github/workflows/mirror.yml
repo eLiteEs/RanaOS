@@ -23,4 +23,6 @@ jobs:
                 cd repo.git
                 git remote add github \
                         https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git
-                git push --mirror github
+                git push github --prune \
+                  'refs/heads/*:refs/heads/*' \
+                  'refs/tags/*:refs/tags/*'
