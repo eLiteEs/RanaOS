@@ -26,3 +26,4 @@ jobs:
                 git push github --prune --force\
                   'refs/heads/*:refs/heads/*' \
                   'refs/tags/*:refs/tags/*'
+ 
